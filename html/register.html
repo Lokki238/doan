@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Đăng ký | FreshMart</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/all.min.css">
+  <link href="../css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .page-banner {
+      background: linear-gradient(135deg, var(--bg-soft) 0%, #fff 100%);
+      padding: 40px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .breadcrumb { background: none; padding: 0; margin: 0 0 8px; font-size: 0.85rem; }
+    .breadcrumb-item a { color: var(--primary); }
+    .breadcrumb-item.active { color: var(--text-muted); }
+    .page-banner h1 {
+      font-family: var(--font-display);
+      font-size: 2rem;
+      font-weight: 700;
+      margin: 0;
+    }
+    .auth-section { padding: 60px 0 80px; }
+    .auth-card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      max-width: 960px;
+      margin: 0 auto;
+    }
+    .auth-left {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+      color: #fff;
+      padding: 50px 40px;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      min-height: 580px;
+    }
+    .auth-left h2 {
+      font-family: var(--font-display);
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+    .auth-left p {
+      opacity: 0.85;
+      line-height: 1.7;
+      margin-bottom: 28px;
+      font-size: 0.95rem;
+    }
+    .auth-left ul { padding: 0; margin: 0; list-style: none; }
+    .auth-left ul li {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 14px;
+      font-size: 0.95rem;
+    }
+    .auth-left ul li i {
+      width: 28px;
+      height: 28px;
+      background: rgba(255,255,255,0.15);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      color: var(--secondary);
+    }
+    .auth-right { padding: 40px; }
+    .auth-right h3 {
+      font-family: var(--font-display);
+      font-size: 1.6rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+    .auth-right .subtitle {
+      color: var(--text-muted);
+      margin-bottom: 24px;
+      font-size: 0.95rem;
+    }
+    .auth-form .form-group { margin-bottom: 16px; }
+    .auth-form .form-label {
+      font-weight: 600;
+      font-size: 0.88rem;
+      margin-bottom: 5px;
+      display: block;
+    }
+    .auth-form .form-control {
+      width: 100%;
+      padding: 12px 16px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-size: 0.95rem;
+      outline: none;
+      transition: var(--transition);
+      background: var(--bg-light);
+    }
+    .auth-form .form-control:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(45, 106, 79, 0.12);
+      background: #fff;
+    }
+    .password-wrap { position: relative; }
+    .password-wrap .toggle-pass {
+      position: absolute;
+      right: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 1rem;
+      background: none;
+      border: none;
+      padding: 0;
+    }
+    .password-wrap .toggle-pass:hover { color: var(--primary); }
+    .terms-check {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      margin-bottom: 20px;
+      font-size: 0.88rem;
+      color: var(--text-muted);
+    }
+    .terms-check input { margin-top: 3px; accent-color: var(--primary); }
+    .terms-check a { color: var(--primary); font-weight: 500; }
+    .terms-check a:hover { text-decoration: underline; }
+    .auth-divider {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin: 20px 0;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+    .auth-divider::before,
+    .auth-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+    .social-btns { display: flex; gap: 12px; }
+    .social-btns a {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-weight: 500;
+      font-size: 0.9rem;
+      transition: var(--transition);
+      color: var(--text);
+    }
+    .social-btns a:hover { background: var(--bg-light); border-color: var(--primary); }
+    .social-btns .fa-facebook-f { color: #1877f2; }
+    .social-btns .fa-google { color: #ea4335; }
+    .auth-footer {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+    .auth-footer a { color: var(--primary); font-weight: 600; }
+    .auth-footer a:hover { text-decoration: underline; }
+    @media (max-width: 767px) {
+      .auth-left { display: none; }
+      .auth-right { padding: 32px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- TOP BAR -->
+  <div class="top-bar">
+    <div class="container">
+      <div class="d-flex justify-content-between align-items-center">
+        <div class="top-bar-left">
+          <span><i class="fas fa-phone-alt me-1"></i> Hotline: 1900 1234</span>
+          <span class="ms-3 d-none d-md-inline"><i class="fas fa-envelope me-1"></i> support@freshmart.vn</span>
+        </div>
+        <div class="top-bar-right">
+          <a href="#">Theo dõi đơn hàng</a>
+          <a href="#">Hỗ trợ</a>
+          <a href="login.html">Đăng nhập</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HEADER -->
+  <header class="header sticky-top">
+    <div class="container">
+      <div class="header-inner">
+        <a href="index.html" class="logo">
+          <i class="fas fa-leaf logo-icon"></i>
+          <span>Fresh<span class="logo-accent">Mart</span></span>
+        </a>
+        <nav class="main-nav d-none d-lg-block">
+          <ul class="nav-list">
+            <li><a href="index.html" class="nav-link">Trang chủ</a></li>
+            <li class="has-dropdown">
+              <a href="products.html" class="nav-link">Sản phẩm <i class="fas fa-chevron-down ms-1"></i></a>
+              <ul class="dropdown-menu">
+                <li><a href="products.html">Rau củ quả</a></li>
+                <li><a href="products.html">Thịt & Hải sản</a></li>
+                <li><a href="products.html">Sữa & Trứng</a></li>
+                <li><a href="products.html">Gạo & Ngũ cốc</a></li>
+                <li><a href="products.html">Đồ khô & Gia vị</a></li>
+                <li><a href="products.html">Đồ uống</a></li>
+              </ul>
+            </li>
+            <li><a href="about.html" class="nav-link">Về chúng tôi</a></li>
+            <li><a href="contact.html" class="nav-link">Liên hệ</a></li>
+          </ul>
+        </nav>
+        <div class="header-actions">
+          <button class="action-btn search-btn" id="searchToggle"><i class="fas fa-search"></i></button>
+          <a href="#" class="action-btn"><i class="far fa-heart"></i><span class="badge-count">0</span></a>
+          <a href="cart.html" class="action-btn cart-btn"><i class="fas fa-shopping-basket"></i><span class="badge-count">3</span></a>
+          <button class="action-btn mobile-menu-btn d-lg-none" id="mobileMenuBtn"><i class="fas fa-bars"></i></button>
+        </div>
+      </div>
+    </div>
+    <div class="search-overlay" id="searchOverlay">
+      <div class="container">
+        <form class="search-form" action="products.html" method="get">
+          <input type="text" name="q" placeholder="Tìm kiếm rau củ, thịt, sữa..." class="search-input">
+          <button type="submit" class="search-submit"><i class="fas fa-search"></i></button>
+          <button type="button" class="search-close" id="searchClose"><i class="fas fa-times"></i></button>
+        </form>
+      </div>
+    </div>
+  </header>
+
+  <!-- MOBILE MENU -->
+  <div class="mobile-menu" id="mobileMenu">
+    <div class="mobile-menu-header">
+      <a href="index.html" class="logo">
+        <i class="fas fa-leaf logo-icon"></i>
+        <span>Fresh<span class="logo-accent">Mart</span></span>
+      </a>
+      <button class="mobile-menu-close" id="mobileMenuClose"><i class="fas fa-times"></i></button>
+    </div>
+    <ul class="mobile-nav">
+      <li><a href="index.html">Trang chủ</a></li>
+      <li><a href="products.html">Sản phẩm</a></li>
+      <li><a href="about.html">Về chúng tôi</a></li>
+      <li><a href="contact.html">Liên hệ</a></li>
+      <li><a href="login.html">Đăng nhập</a></li>
+    </ul>
+  </div>
+  <div class="overlay" id="overlay"></div>
+
+  <!-- PAGE BANNER -->
+  <div class="page-banner">
+    <div class="container">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="index.html">Trang chủ</a></li>
+          <li class="breadcrumb-item active">Đăng ký</li>
+        </ol>
+      </nav>
+      <h1>Đăng ký tài khoản</h1>
+    </div>
+  </div>
+
+  <!-- AUTH FORM -->
+  <section class="auth-section">
+    <div class="container">
+      <div class="auth-card">
+        <div class="row g-0">
+          <div class="col-md-5">
+            <div class="auth-left">
+              <h2>Tham gia FreshMart!</h2>
+              <p>Tạo tài khoản để nhận ưu đãi dành riêng thành viên và trải nghiệm mua sắm tuyệt vời.</p>
+              <ul>
+                <li><i class="fas fa-check"></i> Giảm 30% đơn hàng đầu tiên</li>
+                <li><i class="fas fa-check"></i> Tích điểm đổi quà mỗi lần mua</li>
+                <li><i class="fas fa-check"></i> Ưu đãi sinh nhật độc quyền</li>
+                <li><i class="fas fa-check"></i> Theo dõi đơn hàng real-time</li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-md-7">
+            <div class="auth-right">
+              <h3>Đăng ký tài khoản</h3>
+              <p class="subtitle">Điền thông tin bên dưới để tạo tài khoản mới</p>
+              <form class="auth-form" id="registerForm">
+                <div id="regAlert" class="alert d-none mb-3" role="alert"></div>
+                <div class="row g-2">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label class="form-label">Họ và tên *</label>
+                      <input type="text" name="ho_ten" class="form-control" placeholder="Nguyễn Văn A" required>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label class="form-label">Số điện thoại *</label>
+                      <input type="tel" name="so_dien_thoai" class="form-control" placeholder="0901 234 567" required>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Email *</label>
+                  <input type="email" name="email" class="form-control" placeholder="email@example.com" required>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Tên cửa hàng (tùy chọn)</label>
+                  <input type="text" name="ten_cua_hang" class="form-control" placeholder="Ví dụ: Cửa hàng rau sạch ABC">
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Mật khẩu *</label>
+                  <div class="password-wrap">
+                    <input type="password" name="mat_khau" class="form-control" id="regPassword" placeholder="Tối thiểu 6 ký tự" required minlength="6">
+                    <button type="button" class="toggle-pass" onclick="togglePassword('regPassword', this)">
+                      <i class="fas fa-eye"></i>
+                    </button>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Xác nhận mật khẩu *</label>
+                  <div class="password-wrap">
+                    <input type="password" class="form-control" id="regPasswordConfirm" placeholder="Nhập lại mật khẩu" required>
+                    <button type="button" class="toggle-pass" onclick="togglePassword('regPasswordConfirm', this)">
+                      <i class="fas fa-eye"></i>
+                    </button>
+                  </div>
+                </div>
+                <div class="terms-check">
+                  <input type="checkbox" id="terms" required>
+                  <label for="terms">
+                    Tôi đồng ý với <a href="#">Điều khoản sử dụng</a> và <a href="#">Chính sách bảo mật</a> của FreshMart
+                  </label>
+                </div>
+                <button type="submit" class="btn btn-primary w-100 btn-lg" id="btnRegister">
+                  Tạo tài khoản <i class="fas fa-user-plus ms-2"></i>
+                </button>
+              </form>
+              <div class="auth-divider">hoặc đăng ký với</div>
+              <div class="social-btns">
+                <a href="#"><i class="fab fa-facebook-f"></i> Facebook</a>
+                <a href="#"><i class="fab fa-google"></i> Google</a>
+              </div>
+              <p class="auth-footer">
+                Đã có tài khoản? <a href="login.html">Đăng nhập</a>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <div class="row g-4">
+        <div class="col-lg-4">
+          <a href="index.html" class="footer-logo">
+            <i class="fas fa-leaf logo-icon"></i>
+            <span>Fresh<span class="logo-accent">Mart</span></span>
+          </a>
+          <p class="footer-about">FreshMart mang đến thực phẩm tươi sạch, an toàn từ nông trại đến bàn ăn. Cam kết chất lượng và dịch vụ tốt nhất.</p>
+          <div class="footer-social">
+            <a href="#"><i class="fab fa-facebook-f"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-tiktok"></i></a>
+            <a href="#"><i class="fab fa-youtube"></i></a>
+          </div>
+        </div>
+        <div class="col-6 col-md-3 col-lg-2">
+          <h5 class="footer-title">Cửa hàng</h5>
+          <ul class="footer-links">
+            <li><a href="index.html">Trang chủ</a></li>
+            <li><a href="products.html">Sản phẩm</a></li>
+            <li><a href="about.html">Về chúng tôi</a></li>
+            <li><a href="contact.html">Liên hệ</a></li>
+          </ul>
+        </div>
+        <div class="col-6 col-md-3 col-lg-2">
+          <h5 class="footer-title">Hỗ trợ</h5>
+          <ul class="footer-links">
+            <li><a href="#">Theo dõi đơn</a></li>
+            <li><a href="#">Đổi trả</a></li>
+            <li><a href="#">Vận chuyển</a></li>
+            <li><a href="#">FAQ</a></li>
+          </ul>
+        </div>
+        <div class="col-md-6 col-lg-4">
+          <h5 class="footer-title">Liên hệ</h5>
+          <ul class="footer-contact">
+            <li><i class="fas fa-map-marker-alt"></i> 123 Nguyễn Văn Linh, Q.7, TP.HCM</li>
+            <li><i class="fas fa-phone-alt"></i> 1900 1234</li>
+            <li><i class="fas fa-envelope"></i> support@freshmart.vn</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2026 FreshMart. All rights reserved.</p>
+        <div class="payment-icons">
+          <i class="fab fa-cc-visa"></i>
+          <i class="fab fa-cc-mastercard"></i>
+          <i class="fab fa-cc-paypal"></i>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <button class="back-to-top" id="backToTop"><i class="fas fa-chevron-up"></i></button>
+
+  <script src="../js/bootstrap.bundle.min.js"></script>
+  <script src="../js/main.js"></script>
+  <script>
+    function togglePassword(inputId, btn) {
+      var input = document.getElementById(inputId);
+      var icon = btn.querySelector('i');
+      if (input.type === 'password') {
+        input.type = 'text';
+        icon.classList.replace('fa-eye', 'fa-eye-slash');
+      } else {
+        input.type = 'password';
+        icon.classList.replace('fa-eye-slash', 'fa-eye');
+      }
+    }
+    document.getElementById('registerForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const alertBox = document.getElementById('regAlert');
+      const btn = document.getElementById('btnRegister');
+      const pass = document.getElementById('regPassword').value;
+      const confirm = document.getElementById('regPasswordConfirm').value;
+
+      if (pass !== confirm) {
+        alertBox.className = 'alert alert-danger mb-3';
+        alertBox.textContent = 'Mật khẩu xác nhận không khớp!';
+        alertBox.classList.remove('d-none');
+        return;
+      }
+
+      const formData = new FormData(this);
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i> Đang tạo tài khoản...';
+      alertBox.classList.add('d-none');
+
+      try {
+        const res = await fetch('../api/register.php', {
+          method: 'POST',
+          body: formData
+        });
+        const data = await res.json();
+
+        if (data.success) {
+          alertBox.className = 'alert alert-success mb-3';
+          alertBox.textContent = data.message;
+          alertBox.classList.remove('d-none');
+          setTimeout(() => {
+            window.location.href = '../dashboard.php';
+          }, 1000);
+        } else {
+          alertBox.className = 'alert alert-danger mb-3';
+          alertBox.textContent = data.message || 'Đăng ký thất bại';
+          alertBox.classList.remove('d-none');
+        }
+      } catch (err) {
+        alertBox.className = 'alert alert-danger mb-3';
+        alertBox.textContent = 'Không thể kết nối máy chủ. Kiểm tra lại backend.';
+        alertBox.classList.remove('d-none');
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = 'Tạo tài khoản <i class="fas fa-user-plus ms-2"></i>';
+      }
+    });
+  </script>
+</body>
+</html>

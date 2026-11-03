@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FreshMart - Thực phẩm tươi sạch mỗi ngày</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/all.min.css">
+  <link href="../css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+  <!-- TOP BAR -->
+  <div class="top-bar">
+    <div class="container">
+      <div class="d-flex justify-content-between align-items-center">
+        <div class="top-bar-left">
+          <span><i class="fas fa-phone-alt me-1"></i> Hotline: 1900 1234</span>
+          <span class="ms-3 d-none d-md-inline"><i class="fas fa-envelope me-1"></i> support@freshmart.vn</span>
+        </div>
+        <div class="top-bar-right">
+          <a href="#">Theo dõi đơn hàng</a>
+          <a href="#">Hỗ trợ</a>
+          <a href="login.html">Đăng nhập</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HEADER -->
+  <header class="header sticky-top">
+    <div class="container">
+      <div class="header-inner">
+        <a href="index.html" class="logo">
+          <i class="fas fa-leaf logo-icon"></i>
+          <span>Fresh<span class="logo-accent">Mart</span></span>
+        </a>
+
+        <nav class="main-nav d-none d-lg-block">
+          <ul class="nav-list">
+            <li><a href="index.html" class="nav-link active">Trang chủ</a></li>
+            <li class="has-dropdown">
+              <a href="products.html" class="nav-link">Sản phẩm <i class="fas fa-chevron-down ms-1"></i></a>
+              <ul class="dropdown-menu">
+                <li><a href="products.html">Rau củ quả</a></li>
+                <li><a href="products.html">Thịt & Hải sản</a></li>
+                <li><a href="products.html">Sữa & Trứng</a></li>
+                <li><a href="products.html">Gạo & Ngũ cốc</a></li>
+                <li><a href="products.html">Đồ khô & Gia vị</a></li>
+                <li><a href="products.html">Đồ uống</a></li>
+              </ul>
+            </li>
+            <li><a href="about.html" class="nav-link">Về chúng tôi</a></li>
+            <li><a href="contact.html" class="nav-link">Liên hệ</a></li>
+          </ul>
+        </nav>
+
+        <div class="header-actions">
+          <button class="action-btn search-btn" id="searchToggle">
+            <i class="fas fa-search"></i>
+          </button>
+          <a href="#" class="action-btn">
+            <i class="far fa-heart"></i>
+            <span class="badge-count">0</span>
+          </a>
+          <a href="cart.html" class="action-btn cart-btn">
+            <i class="fas fa-shopping-basket"></i>
+            <span class="badge-count">3</span>
+          </a>
+          <button class="action-btn mobile-menu-btn d-lg-none" id="mobileMenuBtn">
+            <i class="fas fa-bars"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Search Overlay -->
+    <div class="search-overlay" id="searchOverlay">
+      <div class="container">
+        <form class="search-form" action="products.html" method="get">
+          <input type="text" name="q" placeholder="Tìm kiếm rau củ, thịt, sữa..." class="search-input">
+          <button type="submit" class="search-submit"><i class="fas fa-search"></i></button>
+          <button type="button" class="search-close" id="searchClose"><i class="fas fa-times"></i></button>
+        </form>
+      </div>
+    </div>
+  </header>
+
+  <!-- MOBILE MENU -->
+  <div class="mobile-menu" id="mobileMenu">
+    <div class="mobile-menu-header">
+      <a href="index.html" class="logo">
+        <i class="fas fa-leaf logo-icon"></i>
+        <span>Fresh<span class="logo-accent">Mart</span></span>
+      </a>
+      <button class="mobile-menu-close" id="mobileMenuClose">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    <ul class="mobile-nav">
+      <li><a href="index.html">Trang chủ</a></li>
+      <li><a href="products.html">Sản phẩm</a></li>
+      <li><a href="about.html">Về chúng tôi</a></li>
+      <li><a href="contact.html">Liên hệ</a></li>
+      <li><a href="login.html">Đăng nhập</a></li>
+    </ul>
+  </div>
+  <div class="overlay" id="overlay"></div>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-lg-6">
+          <div class="hero-content">
+            <span class="hero-badge">
+              <i class="fas fa-leaf me-1"></i> 100% Tươi sạch
+            </span>
+            <h1 class="hero-title">
+              Thực phẩm tươi ngon<br>
+              <span class="text-primary">giao tận nhà</span>
+            </h1>
+            <p class="hero-desc">
+              Từ nông trại đến bàn ăn — FreshMart mang đến rau củ, thịt cá, sữa trứng tươi ngon mỗi ngày. Giao hàng nhanh trong 2 giờ.
+            </p>
+            <div class="hero-btns">
+              <a href="products.html" class="btn btn-primary btn-lg">
+                Mua ngay <i class="fas fa-arrow-right ms-2"></i>
+              </a>
+              <a href="about.html" class="btn btn-outline btn-lg">Tìm hiểu thêm</a>
+            </div>
+            <div class="hero-stats">
+              <div class="stat-item">
+                <strong>2.500+</strong>
+                <span>Sản phẩm</span>
+              </div>
+              <div class="stat-item">
+                <strong>15k+</strong>
+                <span>Khách hàng</span>
+              </div>
+              <div class="stat-item">
+                <strong>4.9★</strong>
+                <span>Đánh giá</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="hero-image">
+            <img src="https://images.unsplash.com/photo-1542838132-92c53300491e?w=700&q=80" alt="Fresh food">
+            <div class="floating-card">
+              <i class="fas fa-truck"></i>
+              <div>
+                <strong>Giao hàng 2H</strong>
+                <span>Nội thành miễn phí</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CATEGORIES -->
+  <section class="section">
+    <div class="container">
+      <div class="section-header text-center">
+        <span class="section-label">Danh mục</span>
+        <h2 class="section-title">Mua sắm theo danh mục</h2>
+      </div>
+      <div class="row g-4">
+        <div class="col-6 col-md-4 col-lg-2">
+          <a href="products.html" class="category-card">
+            <div class="cat-icon"><i class="fas fa-carrot"></i></div>
+            <h4>Rau củ quả</h4>
+            <span>120+ sản phẩm</span>
+          </a>
+        </div>
+        <div class="col-6 col-md-4 col-lg-2">
+          <a href="products.html" class="category-card">
+            <div class="cat-icon"><i class="fas fa-drumstick-bite"></i></div>
+            <h4>Thịt & Hải sản</h4>
+            <span>85+ sản phẩm</span>
+          </a>
+        </div>
+        <div class="col-6 col-md-4 col-lg-2">
+          <a href="products.html" class="category-card">
+            <div class="cat-icon"><i class="fas fa-cheese"></i></div>
+            <h4>Sữa & Trứng</h4>
+            <span>60+ sản phẩm</span>
+          </a>
+        </div>
+        <div class="col-6 col-md-4 col-lg-2">
+          <a href="products.html" class="category-card">
+            <div class="cat-icon"><i class="fas fa-bread-slice"></i></div>
+            <h4>Gạo & Ngũ cốc</h4>
+            <span>45+ sản phẩm</span>
+          </a>
+        </div>
+        <div class="col-6 col-md-4 col-lg-2">
+          <a href="products.html" class="category-card">
+            <div class="cat-icon"><i class="fas fa-pepper-hot"></i></div>
+            <h4>Đồ khô & Gia vị</h4>
+            <span>90+ sản phẩm</span>
+          </a>
+        </div>
+        <div class="col-6 col-md-4 col-lg-2">
+          <a href="products.html" class="category-card">
+            <div class="cat-icon"><i class="fas fa-wine-bottle"></i></div>
+            <h4>Đồ uống</h4>
+            <span>70+ sản phẩm</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURED PRODUCTS -->
+  <section class="section bg-light">
+    <div class="container">
+      <div class="section-header d-flex justify-content-between align-items-end">
+        <div>
+          <span class="section-label">Sản phẩm nổi bật</span>
+          <h2 class="section-title">Được yêu thích nhất</h2>
+        </div>
+        <a href="products.html" class="btn btn-outline d-none d-md-inline-flex">
+          Xem tất cả <i class="fas fa-arrow-right ms-2"></i>
+        </a>
+      </div>
+      <div class="row g-4">
+        <!-- Product 1 -->
+        <div class="col-6 col-md-4 col-lg-3">
+          <div class="product-card">
+            <div class="product-badge sale">-20%</div>
+            <div class="product-img">
+              <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSRfj4s2SQyKQopPtmS6DQNohUbu9_hyeSA965uHA5gnliKZiG8EPYLGns&s=10" alt="Cà chua bi">
+              <div class="product-actions">
+                <button class="action-icon"><i class="far fa-heart"></i></button>
+                <a href="product-detail.html" class="action-icon"><i class="far fa-eye"></i></a>
+              </div>
+            </div>
+            <div class="product-body">
+              <span class="product-cat">Rau củ</span>
+              <h3 class="product-name"><a href="product-detail.html">Cà chua bi Đà Lạt</a></h3>
+              <div class="product-rating">
+                <i class="fas fa-star"></i><i class="fas fa-star"></i>
+                <i class="fas fa-star"></i><i class="fas fa-star"></i>
+                <i class="fas fa-star-half-alt"></i>
+                <span>(48)</span>
+              </div>
+              <div class="product-price">
+                <span class="price-new">32.000đ</span>
+                <span class="price-old">40.000đ</span>
+              </div>
+              <button class="btn btn-primary btn-sm w-100 add-to-cart">
+                <i class="fas fa-shopping-basket me-1"></i> Thêm vào giỏ
+              </button>
+            </div>
+          </div>
+        </div>
+        <!-- Product 2 -->
+        <div class="col-6 col-md-4 col-lg-3">
+          <div class="product-card">
+            <div class="product-badge new">Mới</div>
+            <div class="product-img">
+              <img src="https://images.unsplash.com/photo-1571771894821-ce9b6c11b08e?w=400&q=80" alt="Chuối">
+              <div class="product-actions">
+                <button class="action-icon"><i class="far fa-heart"></i></button>
+                <a href="product-detail.html" class="action-icon"><i class="far fa-eye"></i></a>
+              </div>
+            </div>
+            <div class="product-body">
+              <span class="product-cat">Trái cây</span>
+              <h3 class="product-name"><a href="product-detail.html">Chuối sứ chín tự nhiên</a></h3>
+              <div class="product-rating">
+                <i class="fas fa-star"></i><i class="fas fa-star"></i>
+                <i class="fas fa-star"></i><i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <span>(102)</span>
+              </div>
+              <div class="product-price">
+                <span class="price-new">25.000đ</span>
+              </div>
+              <button class="btn btn-primary btn-sm w-100 add-to-cart">
+                <i class="fas fa-shopping-basket me-1"></i> Thêm vào giỏ
+              </button>
+            </div>
+          </div>
+        </div>
+        <!-- Product 3 -->
+        <div class="col-6 col-md-4 col-lg-3">
+          <div class="product-card">
+            <div class="product-img">
+              <img src="https://images.unsplash.com/photo-1607623814075-e51df1bdc82f?w=400&q=80" alt="Thịt bò">
+              <div class="product-actions">
+                <button class="action-icon"><i class="far fa-heart"></i></button>
+                <a href="product-detail.html" class="action-icon"><i class="far fa-eye"></i></a>
+              </div>
+            </div>
+            <div class="product-body">
+              <span class="product-cat">Thịt</span>
+              <h3 class="product-name"><a href="product-detail.html">Thịt bò Úc thăn</a></h3>
+              <div class="product-rating">
+                <i class="fas fa-star"></i><i class="fas fa-star"></i>
+                <i class="fas fa-star"></i><i class="fas fa-star"></i>
+                <i class="far fa-star"></i>
+                <span>(36)</span>
+              </div>
+              <div class="product-price">
+                <span class="price-new">189.000đ</span>
+              </div>
+              <button class="btn btn-primary btn-sm w-100 add-to-cart">
+                <i class="fas fa-shopping-basket me-1"></i> Thêm vào giỏ
+              </button>
+            </div>
+          </div>
+        </div>
+        <!-- Product 4 -->
+        <div class="col-6 col-md-4 col-lg-3">
+          <div class="product-card">
+            <div class="product-badge sale">-15%</div>
+            <div class="product-img">
+              <img src="https://images.unsplash.com/photo-1550583724-b2692b85b150?w=400&q=80" alt="Sữa">
+              <div class="product-actions">
+                <button class="action-icon"><i class="far fa-heart"></i></button>
+                <a href="product-detail.html" class="action-icon"><i class="far fa-eye"></i></a>
+              </div>
+            </div>
+            <div class="product-body">
+              <span class="product-cat">Sữa</span>
+              <h3 class="product-name"><a href="product-detail.html">Sữa tươi TH True Milk</a></h3>
+              <div class="product-rating">
+                <i class="fas fa-star"></i><i class="fas fa-star"></i>
+                <i class="fas fa-star"></i><i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <span>(215)</span>
+              </div>
+              <div class="product-price">
+                <span class="price-new">34.000đ</span>
+                <span class="price-old">40.000đ</span>
+              </div>
+              <button class="btn btn-primary btn-sm w-100 add-to-cart">
+                <i class="fas fa-shopping-basket me-1"></i> Thêm vào giỏ
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BENEFITS -->
+  <section class="section">
+    <div class="container">
+      <div class="row g-4">
+        <div class="col-md-3 col-6">
+          <div class="benefit-card">
+            <div class="benefit-icon"><i class="fas fa-shipping-fast"></i></div>
+            <h4>Giao hàng 2H</h4>
+            <p>Nội thành miễn phí đơn từ 200k</p>
+          </div>
+        </div>
+        <div class="col-md-3 col-6">
+          <div class="benefit-card">
+            <div class="benefit-icon"><i class="fas fa-leaf"></i></div>
+            <h4>100% Tươi sạch</h4>
+            <p>Nguồn gốc rõ ràng, kiểm định</p>
+          </div>
+        </div>
+        <div class="col-md-3 col-6">
+          <div class="benefit-card">
+            <div class="benefit-icon"><i class="fas fa-undo"></i></div>
+            <h4>Đổi trả dễ dàng</h4>
+            <p>Trong 24h nếu không hài lòng</p>
+          </div>
+        </div>
+        <div class="col-md-3 col-6">
+          <div class="benefit-card">
+            <div class="benefit-icon"><i class="fas fa-headset"></i></div>
+            <h4>Hỗ trợ 24/7</h4>
+            <p>Hotline luôn sẵn sàng phục vụ</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROMO BANNER -->
+  <section class="promo-banner">
+    <div class="container">
+      <div class="promo-inner">
+        <div class="row align-items-center">
+          <div class="col-lg-7">
+            <span class="promo-label">Ưu đãi đặc biệt</span>
+            <h2>Giảm 30% cho đơn hàng đầu tiên</h2>
+            <p>Đăng ký thành viên ngay hôm nay để nhận mã giảm giá và ưu đãi độc quyền.</p>
+            <a href="login.html" class="btn btn-white btn-lg">Đăng ký ngay</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- NEWSLETTER -->
+  <section class="newsletter">
+    <div class="container">
+      <div class="newsletter-inner text-center">
+        <h2>Đăng ký nhận tin</h2>
+        <p>Nhận thông tin khuyến mãi và sản phẩm mới mỗi tuần</p>
+        <form class="newsletter-form">
+          <input type="email" placeholder="Nhập email của bạn...">
+          <button type="submit" class="btn btn-primary">Đăng ký</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <div class="row g-4">
+        <div class="col-lg-4">
+          <a href="index.html" class="footer-logo">
+            <i class="fas fa-leaf logo-icon"></i>
+            <span>Fresh<span class="logo-accent">Mart</span></span>
+          </a>
+          <p class="footer-about">
+            FreshMart mang đến thực phẩm tươi sạch, an toàn từ nông trại đến bàn ăn. Cam kết chất lượng và dịch vụ tốt nhất.
+          </p>
+          <div class="footer-social">
+            <a href="#"><i class="fab fa-facebook-f"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-tiktok"></i></a>
+            <a href="#"><i class="fab fa-youtube"></i></a>
+          </div>
+        </div>
+        <div class="col-6 col-md-3 col-lg-2">
+          <h5 class="footer-title">Cửa hàng</h5>
+          <ul class="footer-links">
+            <li><a href="index.html">Trang chủ</a></li>
+            <li><a href="products.html">Sản phẩm</a></li>
+            <li><a href="about.html">Về chúng tôi</a></li>
+            <li><a href="contact.html">Liên hệ</a></li>
+          </ul>
+        </div>
+        <div class="col-6 col-md-3 col-lg-2">
+          <h5 class="footer-title">Hỗ trợ</h5>
+          <ul class="footer-links">
+            <li><a href="#">Theo dõi đơn</a></li>
+            <li><a href="#">Đổi trả</a></li>
+            <li><a href="#">Vận chuyển</a></li>
+            <li><a href="#">FAQ</a></li>
+          </ul>
+        </div>
+        <div class="col-md-6 col-lg-4">
+          <h5 class="footer-title">Liên hệ</h5>
+          <ul class="footer-contact">
+            <li><i class="fas fa-map-marker-alt"></i> 123 Nguyễn Văn Linh, Q.7, TP.HCM</li>
+            <li><i class="fas fa-phone-alt"></i> 1900 1234</li>
+            <li><i class="fas fa-envelope"></i> support@freshmart.vn</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2026 FreshMart. All rights reserved.</p>
+        <div class="payment-icons">
+          <i class="fab fa-cc-visa"></i>
+          <i class="fab fa-cc-mastercard"></i>
+          <i class="fab fa-cc-paypal"></i>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <button class="back-to-top" id="backToTop">
+    <i class="fas fa-chevron-up"></i>
+  </button>
+
+  <script src="../js/bootstrap.bundle.min.js"></script>
+  <script src="../js/main.js"></script>
+</body>
+</html>

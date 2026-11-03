@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Về chúng tôi | FreshMart</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/all.min.css">
+  <link href="../css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .page-banner {
+      background: linear-gradient(135deg, var(--bg-soft) 0%, #fff 100%);
+      padding: 40px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .breadcrumb { background: none; padding: 0; margin: 0 0 8px; font-size: 0.85rem; }
+    .breadcrumb-item a { color: var(--primary); }
+    .breadcrumb-item.active { color: var(--text-muted); }
+    .page-banner h1 {
+      font-family: var(--font-display);
+      font-size: 2rem;
+      font-weight: 700;
+      margin: 0;
+    }
+    .about-hero { padding: 70px 0; }
+    .about-hero img {
+      border-radius: 20px;
+      box-shadow: var(--shadow-lg);
+      width: 100%;
+      object-fit: cover;
+      max-height: 440px;
+    }
+    .about-hero h2 {
+      font-family: var(--font-display);
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 20px;
+      line-height: 1.3;
+    }
+    .about-hero p {
+      color: var(--text-muted);
+      line-height: 1.85;
+      margin-bottom: 16px;
+      font-size: 0.98rem;
+    }
+    .stats-bar {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+      color: #fff;
+      padding: 50px 0;
+      border-radius: 20px;
+      margin: 20px 0 0;
+    }
+    .stat-box { text-align: center; }
+    .stat-box strong {
+      display: block;
+      font-size: 2.4rem;
+      font-weight: 800;
+      margin-bottom: 4px;
+    }
+    .stat-box span { font-size: 0.9rem; opacity: 0.85; }
+    .value-card {
+      text-align: center;
+      padding: 36px 24px;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      height: 100%;
+      transition: var(--transition);
+    }
+    .value-card:hover {
+      box-shadow: var(--shadow);
+      transform: translateY(-6px);
+      border-color: var(--primary-light);
+    }
+    .value-card .icon {
+      width: 72px;
+      height: 72px;
+      background: var(--bg-soft);
+      color: var(--primary);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.6rem;
+      margin: 0 auto 18px;
+      transition: var(--transition);
+    }
+    .value-card:hover .icon {
+      background: var(--primary);
+      color: #fff;
+    }
+    .value-card h4 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+    .value-card p {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin: 0;
+      line-height: 1.7;
+    }
+    .journey-item {
+      display: flex;
+      gap: 24px;
+      margin-bottom: 36px;
+      position: relative;
+    }
+    .journey-item:last-child { margin-bottom: 0; }
+    .journey-year {
+      min-width: 80px;
+      height: 80px;
+      background: var(--bg-soft);
+      color: var(--primary);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 1.1rem;
+      flex-shrink: 0;
+      border: 3px solid var(--primary);
+    }
+    .journey-content h4 {
+      font-size: 1.15rem;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+    .journey-content p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      line-height: 1.7;
+      margin: 0;
+    }
+    .team-card {
+      text-align: center;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      transition: var(--transition);
+      height: 100%;
+    }
+    .team-card:hover {
+      box-shadow: var(--shadow-lg);
+      transform: translateY(-6px);
+    }
+    .team-card img {
+      width: 100%;
+      aspect-ratio: 1;
+      object-fit: cover;
+    }
+    .team-card .team-info { padding: 20px 16px; }
+    .team-card h4 {
+      font-size: 1.05rem;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+    .team-card .role {
+      font-size: 0.85rem;
+      color: var(--primary);
+      font-weight: 500;
+      margin-bottom: 10px;
+    }
+    .team-card p {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin: 0;
+      line-height: 1.6;
+    }
+    .mission-box {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 32px 28px;
+      height: 100%;
+      transition: var(--transition);
+    }
+    .mission-box:hover {
+      box-shadow: var(--shadow);
+      border-color: var(--primary-light);
+    }
+    .mission-box .icon {
+      width: 56px;
+      height: 56px;
+      background: var(--bg-soft);
+      color: var(--primary);
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      margin-bottom: 18px;
+    }
+    .mission-box h4 {
+      font-size: 1.15rem;
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+    .mission-box p {
+      font-size: 0.92rem;
+      color: var(--text-muted);
+      margin: 0;
+      line-height: 1.7;
+    }
+    @media (max-width: 767px) {
+      .about-hero h2 { font-size: 1.5rem; }
+      .stat-box strong { font-size: 1.8rem; }
+      .journey-item { flex-direction: column; gap: 12px; }
+      .journey-year { width: 64px; height: 64px; min-width: 64px; font-size: 0.95rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- TOP BAR -->
+  <div class="top-bar">
+    <div class="container">
+      <div class="d-flex justify-content-between align-items-center">
+        <div class="top-bar-left">
+          <span><i class="fas fa-phone-alt me-1"></i> Hotline: 1900 1234</span>
+          <span class="ms-3 d-none d-md-inline"><i class="fas fa-envelope me-1"></i> support@freshmart.vn</span>
+        </div>
+        <div class="top-bar-right">
+          <a href="#">Theo dõi đơn hàng</a>
+          <a href="#">Hỗ trợ</a>
+          <a href="login.html">Đăng nhập</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HEADER -->
+  <header class="header sticky-top">
+    <div class="container">
+      <div class="header-inner">
+        <a href="index.html" class="logo">
+          <i class="fas fa-leaf logo-icon"></i>
+          <span>Fresh<span class="logo-accent">Mart</span></span>
+        </a>
+        <nav class="main-nav d-none d-lg-block">
+          <ul class="nav-list">
+            <li><a href="index.html" class="nav-link">Trang chủ</a></li>
+            <li class="has-dropdown">
+              <a href="products.html" class="nav-link">Sản phẩm <i class="fas fa-chevron-down ms-1"></i></a>
+              <ul class="dropdown-menu">
+                <li><a href="products.html">Rau củ quả</a></li>
+                <li><a href="products.html">Thịt & Hải sản</a></li>
+                <li><a href="products.html">Sữa & Trứng</a></li>
+                <li><a href="products.html">Gạo & Ngũ cốc</a></li>
+                <li><a href="products.html">Đồ khô & Gia vị</a></li>
+                <li><a href="products.html">Đồ uống</a></li>
+              </ul>
+            </li>
+            <li><a href="about.html" class="nav-link active">Về chúng tôi</a></li>
+            <li><a href="contact.html" class="nav-link">Liên hệ</a></li>
+          </ul>
+        </nav>
+        <div class="header-actions">
+          <button class="action-btn search-btn" id="searchToggle"><i class="fas fa-search"></i></button>
+          <a href="#" class="action-btn"><i class="far fa-heart"></i><span class="badge-count">0</span></a>
+          <a href="cart.html" class="action-btn cart-btn"><i class="fas fa-shopping-basket"></i><span class="badge-count">3</span></a>
+          <button class="action-btn mobile-menu-btn d-lg-none" id="mobileMenuBtn"><i class="fas fa-bars"></i></button>
+        </div>
+      </div>
+    </div>
+    <div class="search-overlay" id="searchOverlay">
+      <div class="container">
+        <form class="search-form" action="products.html" method="get">
+          <input type="text" name="q" placeholder="Tìm kiếm rau củ, thịt, sữa..." class="search-input">
+          <button type="submit" class="search-submit"><i class="fas fa-search"></i></button>
+          <button type="button" class="search-close" id="searchClose"><i class="fas fa-times"></i></button>
+        </form>
+      </div>
+    </div>
+  </header>
+
+  <!-- MOBILE MENU -->
+  <div class="mobile-menu" id="mobileMenu">
+    <div class="mobile-menu-header">
+      <a href="index.html" class="logo">
+        <i class="fas fa-leaf logo-icon"></i>
+        <span>Fresh<span class="logo-accent">Mart</span></span>
+      </a>
+      <button class="mobile-menu-close" id="mobileMenuClose"><i class="fas fa-times"></i></button>
+    </div>
+    <ul class="mobile-nav">
+      <li><a href="index.html">Trang chủ</a></li>
+      <li><a href="products.html">Sản phẩm</a></li>
+      <li><a href="about.html">Về chúng tôi</a></li>
+      <li><a href="contact.html">Liên hệ</a></li>
+      <li><a href="login.html">Đăng nhập</a></li>
+    </ul>
+  </div>
+  <div class="overlay" id="overlay"></div>
+
+  <!-- PAGE BANNER -->
+  <div class="page-banner">
+    <div class="container">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="index.html">Trang chủ</a></li>
+          <li class="breadcrumb-item active">Về chúng tôi</li>
+        </ol>
+      </nav>
+      <h1>Về FreshMart</h1>
+    </div>
+  </div>
+
+  <!-- ABOUT HERO -->
+  <section class="about-hero">
+    <div class="container">
+      <div class="row align-items-center g-5">
+        <div class="col-lg-6">
+          <img src="https://images.unsplash.com/photo-1542838132-92c53300491e?w=700&q=80" alt="FreshMart - Thực phẩm tươi sạch">
+        </div>
+        <div class="col-lg-6">
+          <span class="section-label">Câu chuyện của chúng tôi</span>
+          <h2>Thực phẩm tươi sạch cho mọi gia đình Việt</h2>
+          <p>
+            FreshMart được thành lập với sứ mệnh mang những sản phẩm thực phẩm tươi ngon, an toàn và chất lượng cao đến tận tay người tiêu dùng Việt Nam.
+          </p>
+          <p>
+            Chúng tôi hợp tác trực tiếp với các nông trại, nhà cung cấp uy tín trên toàn quốc, đảm bảo mọi sản phẩm đều có nguồn gốc rõ ràng, được kiểm soát chất lượng nghiêm ngặt trước khi đến tay khách hàng.
+          </p>
+          <p>
+            Với hệ thống giao hàng nhanh chóng và đội ngũ chăm sóc khách hàng tận tâm, FreshMart cam kết mang đến trải nghiệm mua sắm thực phẩm tuyệt vời nhất cho mọi gia đình.
+          </p>
+        </div>
+      </div>
+
+      <div class="stats-bar mt-5">
+        <div class="row">
+          <div class="col-6 col-md-3">
+            <div class="stat-box"><strong>2.500+</strong><span>Sản phẩm</span></div>
+          </div>
+          <div class="col-6 col-md-3">
+            <div class="stat-box"><strong>15.000+</strong><span>Khách hàng</span></div>
+          </div>
+          <div class="col-6 col-md-3">
+            <div class="stat-box"><strong>50+</strong><span>Nông trại đối tác</span></div>
+          </div>
+          <div class="col-6 col-md-3">
+            <div class="stat-box"><strong>4.9★</strong><span>Đánh giá trung bình</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MISSION & VISION -->
+  <section class="section bg-light">
+    <div class="container">
+      <div class="section-header text-center">
+        <span class="section-label">Định hướng</span>
+        <h2 class="section-title">Sứ mệnh & Tầm nhìn</h2>
+      </div>
+      <div class="row g-4">
+        <div class="col-md-4">
+          <div class="mission-box">
+            <div class="icon"><i class="fas fa-bullseye"></i></div>
+            <h4>Sứ mệnh</h4>
+            <p>Mang thực phẩm tươi sạch, an toàn từ nông trại đến bàn ăn, giúp mọi gia đình Việt có cuộc sống lành mạnh hơn mỗi ngày.</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="mission-box">
+            <div class="icon"><i class="fas fa-eye"></i></div>
+            <h4>Tầm nhìn</h4>
+            <p>Trở thành nền tảng thực phẩm tươi hàng đầu Việt Nam, kết nối nông dân và người tiêu dùng một cách minh bạch, bền vững.</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="mission-box">
+            <div class="icon"><i class="fas fa-heart"></i></div>
+            <h4>Giá trị cốt lõi</h4>
+            <p>Chất lượng – Minh bạch – Tận tâm. Mỗi sản phẩm đều được chọn lọc kỹ lưỡng vì sức khỏe của khách hàng.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CORE VALUES -->
+  <section class="section">
+    <div class="container">
+      <div class="section-header text-center">
+        <span class="section-label">Cam kết</span>
+        <h2 class="section-title">Điều chúng tôi cam kết</h2>
+      </div>
+      <div class="row g-4">
+        <div class="col-md-4">
+          <div class="value-card">
+            <div class="icon"><i class="fas fa-leaf"></i></div>
+            <h4>Tươi sạch 100%</h4>
+            <p>Mọi sản phẩm đều được kiểm định chất lượng, nguồn gốc rõ ràng từ nông trại đến bàn ăn của bạn.</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="value-card">
+            <div class="icon"><i class="fas fa-shipping-fast"></i></div>
+            <h4>Giao hàng nhanh</h4>
+            <p>Giao trong 2 giờ tại nội thành. Đóng gói cẩn thận để giữ độ tươi ngon tối đa.</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="value-card">
+            <div class="icon"><i class="fas fa-headset"></i></div>
+            <h4>Khách hàng là trung tâm</h4>
+            <p>Lắng nghe và phục vụ tận tâm. Đổi trả dễ dàng nếu sản phẩm không đạt yêu cầu.</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="value-card">
+            <div class="icon"><i class="fas fa-shield-alt"></i></div>
+            <h4>An toàn thực phẩm</h4>
+            <p>Tuân thủ nghiêm ngặt tiêu chuẩn VietGAP, Organic. Kiểm soát chuỗi cung ứng chặt chẽ.</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="value-card">
+            <div class="icon"><i class="fas fa-hand-holding-usd"></i></div>
+            <h4>Giá cả hợp lý</h4>
+            <p>Mua trực tiếp từ nông trại giúp giá tốt hơn mà vẫn đảm bảo chất lượng cao.</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="value-card">
+            <div class="icon"><i class="fas fa-recycle"></i></div>
+            <h4>Thân thiện môi trường</h4>
+            <p>Sử dụng bao bì thân thiện, hỗ trợ nông nghiệp bền vững và giảm lãng phí thực phẩm.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- JOURNEY -->
+  <section class="section bg-light">
+    <div class="container">
+      <div class="section-header text-center">
+        <span class="section-label">Hành trình</span>
+        <h2 class="section-title">Chặng đường phát triển</h2>
+      </div>
+      <div class="row justify-content-center">
+        <div class="col-lg-8">
+          <div class="journey-item">
+            <div class="journey-year">2020</div>
+            <div class="journey-content">
+              <h4>Khởi đầu từ đam mê</h4>
+              <p>FreshMart được thành lập với mong muốn mang thực phẩm sạch đến gần hơn với người tiêu dùng. Bắt đầu từ một cửa hàng nhỏ tại Quận 7, TP.HCM.</p>
+            </div>
+          </div>
+          <div class="journey-item">
+            <div class="journey-year">2022</div>
+            <div class="journey-content">
+              <h4>Mở rộng mạng lưới</h4>
+              <p>Hợp tác với hơn 30 nông trại tại Đà Lạt, Mộc Châu, Cần Thơ. Ra mắt nền tảng đặt hàng online và dịch vụ giao hàng trong ngày.</p>
+            </div>
+          </div>
+          <div class="journey-item">
+            <div class="journey-year">2024</div>
+            <div class="journey-content">
+              <h4>Vươn tầm toàn quốc</h4>
+              <p>Mở rộng phủ sóng giao hàng tại Hà Nội, Đà Nẵng và các tỉnh thành lớn. Đạt mốc 10.000 khách hàng thân thiết.</p>
+            </div>
+          </div>
+          <div class="journey-item">
+            <div class="journey-year">2026</div>
+            <div class="journey-content">
+              <h4>Hiện tại & Tương lai</h4>
+              <p>Hơn 2.500 sản phẩm, 50+ nông trại đối tác. Tiếp tục đầu tư công nghệ và mở rộng hệ sinh thái thực phẩm sạch bền vững.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="promo-banner">
+    <div class="container">
+      <div class="promo-inner">
+        <div class="row align-items-center">
+          <div class="col-lg-8">
+            <span class="promo-label">Tham gia cùng chúng tôi</span>
+            <h2 class="promo-title">Bắt đầu mua sắm thực phẩm tươi sạch ngay hôm nay</h2>
+            <p class="promo-desc">Hàng ngàn sản phẩm chất lượng đang chờ bạn. Giao hàng nhanh, giá tốt, cam kết tươi ngon.</p>
+            <a href="products.html" class="btn btn-white btn-lg">
+              Khám phá sản phẩm <i class="fas fa-arrow-right ms-2"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <div class="row g-4">
+        <div class="col-lg-4">
+          <a href="index.html" class="footer-logo">
+            <i class="fas fa-leaf logo-icon"></i>
+            <span>Fresh<span class="logo-accent">Mart</span></span>
+          </a>
+          <p class="footer-about">FreshMart mang đến thực phẩm tươi sạch, an toàn từ nông trại đến bàn ăn. Cam kết chất lượng và dịch vụ tốt nhất.</p>
+          <div class="footer-social">
+            <a href="#"><i class="fab fa-facebook-f"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-tiktok"></i></a>
+            <a href="#"><i class="fab fa-youtube"></i></a>
+          </div>
+        </div>
+        <div class="col-6 col-md-3 col-lg-2">
+          <h5 class="footer-title">Cửa hàng</h5>
+          <ul class="footer-links">
+            <li><a href="index.html">Trang chủ</a></li>
+            <li><a href="products.html">Sản phẩm</a></li>
+            <li><a href="about.html">Về chúng tôi</a></li>
+            <li><a href="contact.html">Liên hệ</a></li>
+          </ul>
+        </div>
+        <div class="col-6 col-md-3 col-lg-2">
+          <h5 class="footer-title">Hỗ trợ</h5>
+          <ul class="footer-links">
+            <li><a href="#">Theo dõi đơn</a></li>
+            <li><a href="#">Đổi trả</a></li>
+            <li><a href="#">Vận chuyển</a></li>
+            <li><a href="#">FAQ</a></li>
+          </ul>
+        </div>
+        <div class="col-md-6 col-lg-4">
+          <h5 class="footer-title">Liên hệ</h5>
+          <ul class="footer-contact">
+            <li><i class="fas fa-map-marker-alt"></i> 123 Nguyễn Văn Linh, Q.7, TP.HCM</li>
+            <li><i class="fas fa-phone-alt"></i> 1900 1234</li>
+            <li><i class="fas fa-envelope"></i> support@freshmart.vn</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2026 FreshMart. All rights reserved.</p>
+        <div class="payment-icons">
+          <i class="fab fa-cc-visa"></i>
+          <i class="fab fa-cc-mastercard"></i>
+          <i class="fab fa-cc-paypal"></i>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <button class="back-to-top" id="backToTop"><i class="fas fa-chevron-up"></i></button>
+
+  <script src="../js/bootstrap.bundle.min.js"></script>
+  <script src="../js/main.js"></script>
+</body>
+</html>
