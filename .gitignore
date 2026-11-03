@@ -11,3 +11,9 @@ Desktop.ini
 
 # Logs and databases
 *.log
+
+# Sensitive security and database credentials (NEVER commit to Git)
+config/db.php
+includes/security.php
+.env
+.env.*
