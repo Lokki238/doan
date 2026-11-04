@@ -77,9 +77,16 @@ try {
     //   "when": "2026-10-21 10:30:00"
     // }
     // -----------------------------------------------------
-    $orderId   = $input['description'] ?? $input['orderId'] ?? $input['content'] ?? $input['addInfo'] ?? '';
-    $amount    = (int)($input['amount'] ?? $input['so_tien'] ?? 0);
-    $transId   = $input['tid'] ?? $input['transaction_id'] ?? $input['refNo'] ?? '';
+    // Bỏ qua nếu là giao dịch tiền ra (tiền chi) từ SePay
+    if (isset($input['transferType']) && strtolower($input['transferType']) === 'out') {
+        http_response_code(200);
+        echo json_encode(['success' => true, 'message' => 'Bỏ qua giao dịch tiền ra']);
+        exit;
+    }
+
+    $orderId   = $input['code'] ?? $input['content'] ?? $input['description'] ?? $input['orderId'] ?? $input['addInfo'] ?? '';
+    $amount    = (int)($input['transferAmount'] ?? $input['amount'] ?? $input['so_tien'] ?? 0);
+    $transId   = $input['referenceCode'] ?? (string)($input['id'] ?? '') ?: ($input['tid'] ?? $input['transaction_id'] ?? $input['refNo'] ?? '');
     $status    = strtoupper($input['status'] ?? 'SUCCESS'); // SUCCESS / FAILED
 
     // Làm sạch mã đơn hàng (chỉ lấy phần mã đơn)
