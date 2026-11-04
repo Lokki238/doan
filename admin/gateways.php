@@ -175,12 +175,21 @@ $user = getCurrentUser();
       const json = await res.json();
 
       if (json.success) {
+        const formQR = document.getElementById('formVietQR');
+        const selectedBankText = formQR.bank_code.options[formQR.bank_code.selectedIndex].text;
+        const info = json.data.adapter_info || {};
+
         document.getElementById('qrResult').classList.remove('d-none');
         document.getElementById('qrInfo').innerHTML = `
-          <strong>Mã GD:</strong> ${json.data.giao_dich_id}<br>
-          <strong>Mã đơn:</strong> ${json.data.ma_don_hang}<br>
-          <strong>Số tiền:</strong> ${Number(json.data.so_tien).toLocaleString()} ₫<br>
-          <strong>Trạng thái:</strong> <span class="badge bg-warning">PENDING</span>
+          <div class="alert alert-info py-2 mb-2">
+            <div><strong>Ngân hàng nhận:</strong> <span class="text-primary fw-bold">${selectedBankText}</span></div>
+            <div><strong>Chủ tài khoản:</strong> <b>${info.account_name || formQR.account_name.value}</b></div>
+            <div><strong>Số tài khoản:</strong> <code>${info.account_no || formQR.ma_nguoi_ban.value}</code></div>
+            <div><strong>Mã đơn hàng:</strong> <code>${json.data.ma_don_hang}</code></div>
+            <div><strong>Số tiền:</strong> ${Number(json.data.so_tien).toLocaleString()} ₫</div>
+            <div><strong>Cổng:</strong> VietQR (NAPAS)</div>
+            <div><strong>Trạng thái:</strong> <span class="badge bg-warning text-dark">PENDING (Chờ thanh toán)</span></div>
+          </div>
         `;
         // Vẽ QR
         document.getElementById('qrcode').innerHTML = '';
@@ -201,6 +210,29 @@ $user = getCurrentUser();
         showAlert(false, json.message);
       }
     });
+
+    // ===== Tự động tải cấu hình cổng đã lưu khi mở trang =====
+    async function loadCurrentGateway() {
+      try {
+        const res = await fetch('../api/gateways.php');
+        const json = await res.json();
+        if (json.success && json.data && json.data.length > 0) {
+          const vietqr = json.data.find(g => g.LoaiCongThanhToan === 'VIETQR');
+          if (vietqr) {
+            const form = document.getElementById('formVietQR');
+            if (vietqr.MaNguoiBan) form.ma_nguoi_ban.value = vietqr.MaNguoiBan;
+            if (vietqr.TrangThaiHoatDong !== undefined) form.trang_thai.value = String(vietqr.TrangThaiHoatDong);
+            if (vietqr.CauHinhThem) {
+              if (vietqr.CauHinhThem.bank_code) form.bank_code.value = vietqr.CauHinhThem.bank_code;
+              if (vietqr.CauHinhThem.account_name) form.account_name.value = vietqr.CauHinhThem.account_name;
+            }
+          }
+        }
+      } catch (err) {
+        console.error('Lỗi tải cấu hình cổng:', err);
+      }
+    }
+    loadCurrentGateway();
 
     function showAlert(success, message) {
       const box = document.getElementById('alertBox');
