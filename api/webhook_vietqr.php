@@ -133,19 +133,24 @@ try {
     $transId   = $input['referenceCode'] ?? (string)($input['id'] ?? '') ?: ($input['tid'] ?? $input['transaction_id'] ?? $input['refNo'] ?? '');
     $status    = strtoupper($input['status'] ?? 'SUCCESS'); // SUCCESS / FAILED
 
-    // Làm sạch mã đơn hàng (chỉ lấy phần mã đơn)
-    $orderId = trim($orderId);
-    // Nếu nội dung dài, cố gắng lấy mã đơn (thường đứng đầu)
-    if (preg_match('/(DH\d{10,}|ORD\d+)/i', $orderId, $m)) {
-        $orderId = $m[1];
+    // Làm sạch mã đơn hàng (ưu tiên trường 'code' của SePay, hoặc tìm trong nội dung chuyển khoản)
+    if (!empty($input['code'])) {
+        $orderId = trim($input['code']);
+    } else {
+        $orderId = trim($orderId);
+        // Nhận diện mã DH..., ORD..., FM...
+        if (preg_match('/(DH\d+|ORD\d+|FM\d+)/i', $orderId, $m)) {
+            $orderId = $m[1];
+        }
     }
 
     if (empty($orderId) && $amount <= 0) {
         // Cập nhật log: không đủ dữ liệu
         $pdo->prepare("UPDATE NhatKyWebhook SET DaXuLy = 1 WHERE ID = ?")->execute([$logId]);
         
-        http_response_code(200); // Vẫn trả 200 để không bị gửi lại liên tục
-        echo json_encode(['success' => false, 'message' => 'Thiếu orderId hoặc amount']);
+        // SePay bắt buộc body phản hồi phải có {"success": true}
+        http_response_code(200);
+        echo json_encode(['success' => true, 'message' => 'Thiếu orderId hoặc amount', 'matched' => false], JSON_UNESCAPED_UNICODE);
         exit;
     }
 
@@ -182,11 +187,16 @@ try {
     }
 
     if (!$giaoDich) {
-        // Không tìm thấy giao dịch phù hợp
+        // Không tìm thấy giao dịch phù hợp (thường xảy ra khi SePay chạy công cụ Test mô phỏng)
         $pdo->prepare("UPDATE NhatKyWebhook SET DaXuLy = 1 WHERE ID = ?")->execute([$logId]);
         
+        // SePay bắt buộc response phải có {"success": true} để ghi nhận webhook thành công
         http_response_code(200);
-        echo json_encode(['success' => false, 'message' => 'Không tìm thấy giao dịch PENDING phù hợp']);
+        echo json_encode([
+            'success' => true,
+            'message' => 'Đã nhận webhook thành công (Không tìm thấy giao dịch PENDING trùng khớp hoặc giao dịch test SePay)',
+            'matched' => false
+        ], JSON_UNESCAPED_UNICODE);
         exit;
     }
 
@@ -233,11 +243,10 @@ try {
     ], JSON_UNESCAPED_UNICODE);
 
 } catch (Exception $e) {
-    // Ngay cả khi lỗi vẫn cố gắng trả 200 để bên gửi không retry liên tục
-    // (và đã ghi log ở trên)
+    // Ngay cả khi lỗi vẫn trả 200 kèm success: true để SePay không retry liên tục
     http_response_code(200);
     echo json_encode([
-        'success' => false,
+        'success' => true,
         'message' => 'Lỗi xử lý webhook: ' . $e->getMessage()
     ], JSON_UNESCAPED_UNICODE);
 }
