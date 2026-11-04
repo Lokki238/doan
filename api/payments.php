@@ -61,6 +61,13 @@ try {
         $where[] = "DATE(ThoiGianTao) <= ?";
         $params[] = $denNgay;
     }
+    $search = trim($_GET['search'] ?? '');
+    if ($search !== '') {
+        $where[] = "(MaDonHang LIKE ? OR MoTa LIKE ? OR MaGiaoDichCongThanhToan LIKE ?)";
+        $params[] = "%$search%";
+        $params[] = "%$search%";
+        $params[] = "%$search%";
+    }
 
     $whereSql = implode(' AND ', $where);
 
