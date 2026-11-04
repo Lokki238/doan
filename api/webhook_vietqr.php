@@ -31,11 +31,54 @@ require_once __DIR__ . '/../config/db.php';
 require_once __DIR__ . '/../includes/security.php';
 
 // -----------------------------------------------------
-// 1. NHẬN DỮ LIỆU WEBHOOK
-// Hỗ trợ cả JSON và form-urlencoded
+// 1. NHẬN DỮ LIỆU WEBHOOK VÀ HEADERS
 // -----------------------------------------------------
 $rawBody = file_get_contents('php://input');
-$headers = getallheaders();
+$headers = function_exists('getallheaders') ? getallheaders() : [];
+
+$signatureHeader = '';
+$timestampHeader = 0;
+foreach ($headers as $k => $v) {
+    if (strcasecmp($k, 'X-SePay-Signature') === 0) {
+        $signatureHeader = $v;
+    }
+    if (strcasecmp($k, 'X-SePay-Timestamp') === 0) {
+        $timestampHeader = (int)$v;
+    }
+}
+if (empty($signatureHeader) && isset($_SERVER['HTTP_X_SEPAY_SIGNATURE'])) {
+    $signatureHeader = $_SERVER['HTTP_X_SEPAY_SIGNATURE'];
+}
+if (empty($timestampHeader) && isset($_SERVER['HTTP_X_SEPAY_TIMESTAMP'])) {
+    $timestampHeader = (int)$_SERVER['HTTP_X_SEPAY_TIMESTAMP'];
+}
+
+// -----------------------------------------------------
+// 2. XÁC THỰC CHỮ KÝ HMAC-SHA256 CỦA SEPAY (NẾU CÓ CHỮ KÝ)
+// -----------------------------------------------------
+$sepaySecret = getenv('SEPAY_WEBHOOK_SECRET') ?: 'whsec_3SGl9TsZs2I0aeisxrRyS8Cb26isRk2u';
+$daXacThuc = 0;
+
+if (!empty($signatureHeader) && !empty($sepaySecret)) {
+    // Chống Replay Attack (lệch thời gian tối đa 300 giây = 5 phút)
+    if ($timestampHeader > 0 && abs(time() - $timestampHeader) > 300) {
+        http_response_code(401);
+        echo json_encode(['success' => false, 'message' => 'Yêu cầu hết hạn (Timestamp expired)']);
+        exit;
+    }
+
+    $signedPayload = $timestampHeader . '.' . $rawBody;
+    $rawHash = hash_hmac('sha256', $signedPayload, $sepaySecret);
+    $prefixedHash = 'sha256=' . $rawHash;
+
+    if (!hash_equals($prefixedHash, $signatureHeader) && !hash_equals($rawHash, $signatureHeader)) {
+        http_response_code(401);
+        echo json_encode(['success' => false, 'message' => 'Chữ ký HMAC-SHA256 không hợp lệ']);
+        exit;
+    }
+
+    $daXacThuc = 1;
+}
 
 $input = json_decode($rawBody, true);
 if (!$input) {
@@ -49,7 +92,7 @@ try {
     $pdo = getDB();
 
     // -----------------------------------------------------
-    // 2. GHI LOG WEBHOOK NGAY LẬP TỨC (dù xử lý thành công hay không)
+    // 3. GHI LOG WEBHOOK NGAY LẬP TỨC (dù xử lý thành công hay không)
     // Đây là best practice: luôn lưu lại để đối soát sau này
     // -----------------------------------------------------
     $logId = generateUUID();
@@ -59,12 +102,13 @@ try {
             ID, GiaoDich_id, LoaiCongThanhToan, 
             DuLieuGuiDen, ThongTinHeader, 
             DaXacThuc, DaXuLy
-        ) VALUES (?, NULL, 'VIETQR', ?, ?, 0, 0)
+        ) VALUES (?, NULL, 'VIETQR', ?, ?, ?, 0)
     ");
     $stmt->execute([
         $logId,
         json_encode($input ?: ['raw' => $rawBody], JSON_UNESCAPED_UNICODE),
-        json_encode($headers ?: [], JSON_UNESCAPED_UNICODE)
+        json_encode($headers ?: [], JSON_UNESCAPED_UNICODE),
+        $daXacThuc
     ]);
 
     // -----------------------------------------------------
