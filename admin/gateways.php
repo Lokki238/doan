@@ -104,8 +104,8 @@ $user = getCurrentUser();
               <input type="number" name="so_tien" class="form-control" value="50000" min="1000" required>
             </div>
             <div class="col-md-4">
-              <label class="form-label">Mã đơn hàng</label>
-              <input type="text" name="ma_don_hang" class="form-control" value="DH<?= date('YmdHis') ?>" required>
+              <label class="form-label">Mã đơn hàng (Tiền tố FM theo SePay)</label>
+              <input type="text" name="ma_don_hang" id="maDonHangInput" class="form-control" value="FM<?= date('dHis') . rand(10, 99) ?>" required>
             </div>
             <div class="col-md-4">
               <label class="form-label">Mô tả</label>
@@ -189,6 +189,13 @@ $user = getCurrentUser();
           width: 220,
           height: 220
         });
+        // Tự động sinh mã mới cho lần tạo kế tiếp để tránh trùng lặp
+        const now = new Date();
+        const pad = (n) => String(n).padStart(2, '0');
+        const dHis = pad(now.getDate()) + pad(now.getHours()) + pad(now.getMinutes()) + pad(now.getSeconds());
+        const rand = Math.floor(10 + Math.random() * 90);
+        form.ma_don_hang.value = 'FM' + dHis + rand;
+
         showAlert(true, 'Tạo mã QR thành công!');
       } else {
         showAlert(false, json.message);

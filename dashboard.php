@@ -179,7 +179,7 @@ $user = getCurrentUser();
       <p class="text-muted small">Dùng khi muốn test cập nhật trạng thái mà không cần webhook thật từ ngân hàng.</p>
       <div class="row g-2">
         <div class="col-md-4">
-          <input type="text" id="simOrderId" class="form-control form-control-sm" placeholder="Mã đơn hàng (DH...)">
+          <input type="text" id="simOrderId" class="form-control form-control-sm" placeholder="Mã đơn hàng (FM...)">
         </div>
         <div class="col-md-3">
           <input type="number" id="simAmount" class="form-control form-control-sm" placeholder="Số tiền">

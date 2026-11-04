@@ -138,9 +138,9 @@ try {
         $orderId = trim($input['code']);
     } else {
         $orderId = trim($orderId);
-        // Nhận diện mã DH..., ORD..., FM...
-        if (preg_match('/(DH\d+|ORD\d+|FM\d+)/i', $orderId, $m)) {
-            $orderId = $m[1];
+        // Ưu tiên nhận diện mã SePay FM (3-10 số), hoặc mã DH..., ORD...
+        if (preg_match('/(FM\d{3,10}|DH\d+|ORD\d+)/i', $orderId, $m)) {
+            $orderId = strtoupper($m[1]);
         }
     }
 
