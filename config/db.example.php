@@ -22,8 +22,18 @@ function getDB() {
                 PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
                 PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
                 PDO::ATTR_EMULATE_PREPARES   => false,
-                PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT => false, // Hỗ trợ Cloud MySQL SSL (TiDB Cloud)
             ];
+
+            // Tự động kích hoạt SSL/TLS khi kết nối Cloud DB (TiDB Cloud, Aiven...)
+            if (DB_HOST !== 'localhost' && DB_HOST !== '127.0.0.1') {
+                $caFile = __DIR__ . '/isrgrootx1.pem';
+                if (file_exists($caFile)) {
+                    $options[PDO::MYSQL_ATTR_SSL_CA] = $caFile;
+                } elseif (file_exists('/etc/ssl/certs/ca-certificates.crt')) {
+                    $options[PDO::MYSQL_ATTR_SSL_CA] = '/etc/ssl/certs/ca-certificates.crt';
+                }
+                $options[PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT] = false;
+            }
             $pdo = new PDO($dsn, DB_USER, DB_PASS, $options);
         } catch (PDOException $e) {
             http_response_code(500);

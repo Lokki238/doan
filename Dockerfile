@@ -1,6 +1,7 @@
 FROM php:8.2-apache
 
-# Cài đặt extension PDO MySQL
+# Cài đặt ca-certificates và extension PDO MySQL
+RUN apt-get update && apt-get install -y ca-certificates && rm -rf /var/lib/apt/lists/*
 RUN docker-php-ext-install pdo pdo_mysql
 
 # Bật Apache rewrite
