@@ -57,14 +57,15 @@ $soDienThoai = trim($input['so_dien_thoai'] ?? '');
 $tenCuaHang  = trim($input['ten_cua_hang'] ?? '');
 $vaiTroInput = strtoupper(trim($input['vai_tro'] ?? ''));
 
-// Xác định vai trò: USER (người dùng thông thường) hoặc OWNER (chủ cửa hàng / quản trị)
+// Mặc định mọi tài khoản đăng ký mới luôn là USER (Khách hàng bình thường)
+$vaiTro = 'USER';
 if ($vaiTroInput === 'OWNER' || $vaiTroInput === 'ADMIN') {
     $vaiTro = 'OWNER';
-} elseif ($vaiTroInput === 'USER' || $vaiTroInput === 'CUSTOMER') {
-    $vaiTro = 'USER';
-} else {
-    // Nếu có nhập tên cửa hàng rõ ràng thì là OWNER, ngược lại mặc định là USER
-    $vaiTro = (!empty($tenCuaHang) && $tenCuaHang !== 'Cửa hàng của ' . $hoTen) ? 'OWNER' : 'USER';
+}
+
+// Nếu không nhập tên cửa hàng / hồ sơ → tự tạo tên mặc định
+if (empty($tenCuaHang)) {
+    $tenCuaHang = 'Tài khoản của ' . $hoTen;
 }
 
 // -----------------------------------------------------
@@ -82,11 +83,6 @@ if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
 
 if (strlen($matKhau) < 6) {
     $errors[] = 'Mật khẩu phải có ít nhất 6 ký tự';
-}
-
-// Nếu không nhập tên cửa hàng → tự tạo tên mặc định
-if (empty($tenCuaHang)) {
-    $tenCuaHang = 'Cửa hàng của ' . $hoTen;
 }
 
 if (!empty($errors)) {
