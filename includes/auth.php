@@ -54,10 +54,36 @@ function getCurrentUser(): ?array {
         'id'       => $_SESSION['user_id'],
         'email'    => $_SESSION['email'] ?? '',
         'ho_ten'   => $_SESSION['ho_ten'] ?? '',
-        'vai_tro'  => $_SESSION['vai_tro'] ?? 'OWNER',
+        'vai_tro'  => $_SESSION['vai_tro'] ?? 'USER',
         'shop_id'  => $_SESSION['shop_id'] ?? null,
         'ten_ch'   => $_SESSION['ten_ch'] ?? '',
     ];
+}
+
+/**
+ * Kiểm tra xem người dùng hiện tại có vai trò quản trị không
+ * (OWNER, STAFF, ADMIN, QUAN_TRI)
+ *
+ * @return bool
+ */
+function isPrivileged(): bool {
+    if (!isLoggedIn()) {
+        return false;
+    }
+    $role = strtoupper($_SESSION['vai_tro'] ?? '');
+    return in_array($role, ['OWNER', 'STAFF', 'ADMIN', 'QUAN_TRI']);
+}
+
+/**
+ * Bắt buộc người dùng phải có quyền quản trị
+ * Nếu không có quyền → chuyển hướng về trang tài khoản người dùng cá nhân
+ */
+function requirePrivileged(string $redirect = 'html/account.html'): void {
+    requireLogin('html/login.html');
+    if (!isPrivileged()) {
+        header('Location: ' . $redirect);
+        exit;
+    }
 }
 
 /**

@@ -7,6 +7,10 @@
  */
 require_once __DIR__ . '/includes/auth.php';
 requireLogin('html/login.html');
+if (!isPrivileged()) {
+    header('Location: html/account.html');
+    exit;
+}
 
 $user = getCurrentUser();
 ?>

@@ -129,4 +129,104 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     });
   }
+
+  // ---------- User Authentication & Dynamic Top-Bar ----------
+  function initUserAuth() {
+    const isInsideHtml = window.location.pathname.includes('/html/') || window.location.pathname.endsWith('.html');
+    const apiMeUrl = isInsideHtml ? '../api/me.php' : 'api/me.php';
+    const dashboardUrl = isInsideHtml ? '../dashboard.php' : 'dashboard.php';
+    const accountUrl = isInsideHtml ? 'account.html' : 'html/account.html';
+    const logoutUrl = isInsideHtml ? '../api/logout.php' : 'api/logout.php';
+
+    fetch(apiMeUrl, { credentials: 'same-origin' })
+      .then(res => res.json())
+      .then(res => {
+        if (!res || !res.success || !res.data || !res.data.logged_in) {
+          return;
+        }
+
+        const user = res.data;
+        const privilegedRoles = ['OWNER', 'STAFF', 'ADMIN', 'QUAN_TRI'];
+        const isPrivileged = privilegedRoles.includes((user.vai_tro || '').toUpperCase());
+        const targetUrl = isPrivileged ? dashboardUrl : accountUrl;
+        const displayName = user.ho_ten || (user.email ? user.email.split('@')[0] : 'Tài khoản');
+
+        // 1. Cập nhật Top-Bar trên máy tính (Desktop)
+        const topBarRight = document.querySelector('.top-bar-right');
+        if (topBarRight) {
+          const links = Array.from(topBarRight.querySelectorAll('a'));
+          const loginLink = links.find(a => {
+            const href = a.getAttribute('href') || '';
+            const text = a.textContent.trim().toLowerCase();
+            return href.includes('login.html') || text.includes('đăng nhập');
+          });
+
+          if (loginLink) {
+            loginLink.setAttribute('href', targetUrl);
+            loginLink.setAttribute('title', isPrivileged ? 'Đến Bảng điều khiển Quản trị (Dashboard)' : 'Trang thông tin tài khoản');
+            loginLink.classList.add('fw-semibold', 'user-nav-link');
+
+            if (isPrivileged) {
+              loginLink.innerHTML = `<i class="fas fa-user-shield text-warning me-1"></i><span class="user-name">${escapeHtml(displayName)}</span> <span class="badge bg-warning text-dark ms-1" style="font-size:0.65rem;padding:2px 5px;vertical-align:middle;">Admin</span>`;
+            } else {
+              loginLink.innerHTML = `<i class="fas fa-user-circle text-success me-1"></i><span class="user-name">${escapeHtml(displayName)}</span>`;
+            }
+
+            // Nút đăng xuất nhanh trên Top Bar
+            if (!topBarRight.querySelector('.topbar-logout-btn')) {
+              const logoutA = document.createElement('a');
+              logoutA.href = logoutUrl;
+              logoutA.className = 'topbar-logout-btn ms-3 text-white-50';
+              logoutA.title = 'Đăng xuất tài khoản';
+              logoutA.innerHTML = '<i class="fas fa-sign-out-alt me-1"></i>Thoát';
+              logoutA.style.textDecoration = 'none';
+              logoutA.addEventListener('mouseenter', () => logoutA.classList.replace('text-white-50', 'text-warning'));
+              logoutA.addEventListener('mouseleave', () => logoutA.classList.replace('text-warning', 'text-white-50'));
+              loginLink.after(logoutA);
+            }
+          }
+        }
+
+        // 2. Cập nhật Menu trên thiết bị di động (Mobile Menu)
+        const mobileNav = document.querySelector('.mobile-nav');
+        if (mobileNav) {
+          const links = Array.from(mobileNav.querySelectorAll('a'));
+          const mobileLoginLink = links.find(a => {
+            const href = a.getAttribute('href') || '';
+            const text = a.textContent.trim().toLowerCase();
+            return href.includes('login.html') || text.includes('đăng nhập');
+          });
+
+          if (mobileLoginLink) {
+            mobileLoginLink.setAttribute('href', targetUrl);
+            if (isPrivileged) {
+              mobileLoginLink.innerHTML = `<i class="fas fa-user-shield text-warning me-2"></i>${escapeHtml(displayName)} <span class="badge bg-warning text-dark ms-1">Quản trị</span>`;
+            } else {
+              mobileLoginLink.innerHTML = `<i class="fas fa-user-circle text-success me-2"></i>${escapeHtml(displayName)}`;
+            }
+
+            const parentLi = mobileLoginLink.closest('li');
+            if (parentLi && !mobileNav.querySelector('.mobile-logout-li')) {
+              const logoutLi = document.createElement('li');
+              logoutLi.className = 'mobile-logout-li';
+              logoutLi.innerHTML = `<a href="${logoutUrl}" class="text-danger"><i class="fas fa-sign-out-alt me-2"></i>Đăng xuất</a>`;
+              parentLi.after(logoutLi);
+            }
+          }
+        }
+      })
+      .catch(() => {
+        // Bỏ qua lỗi kết nối
+      });
+  }
+
+  function escapeHtml(text) {
+    if (!text) return '';
+    return String(text).replace(/[&<>"']/g, function (m) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m];
+    });
+  }
+
+  // Khởi động kiểm tra trạng thái người dùng
+  initUserAuth();
 });

@@ -55,6 +55,17 @@ $email       = trim($input['email'] ?? '');
 $matKhau     = $input['mat_khau'] ?? '';
 $soDienThoai = trim($input['so_dien_thoai'] ?? '');
 $tenCuaHang  = trim($input['ten_cua_hang'] ?? '');
+$vaiTroInput = strtoupper(trim($input['vai_tro'] ?? ''));
+
+// Xác định vai trò: USER (người dùng thông thường) hoặc OWNER (chủ cửa hàng / quản trị)
+if ($vaiTroInput === 'OWNER' || $vaiTroInput === 'ADMIN') {
+    $vaiTro = 'OWNER';
+} elseif ($vaiTroInput === 'USER' || $vaiTroInput === 'CUSTOMER') {
+    $vaiTro = 'USER';
+} else {
+    // Nếu có nhập tên cửa hàng rõ ràng thì là OWNER, ngược lại mặc định là USER
+    $vaiTro = (!empty($tenCuaHang) && $tenCuaHang !== 'Cửa hàng của ' . $hoTen) ? 'OWNER' : 'USER';
+}
 
 // -----------------------------------------------------
 // 2. VALIDATE DỮ LIỆU
@@ -111,19 +122,19 @@ try {
     // (tránh trường hợp tạo được User nhưng không tạo được Shop)
     $pdo->beginTransaction();
 
-    // 3.5. Thêm vào bảng NguoiDung (mặc định vai trò = OWNER)
+    // 3.5. Thêm vào bảng NguoiDung (USER hoặc OWNER)
     $stmt = $pdo->prepare("
         INSERT INTO NguoiDung (ID, Email, MatKhauMaHoa, HoTen, VaiTro)
-        VALUES (?, ?, ?, ?, 'OWNER')
+        VALUES (?, ?, ?, ?, ?)
     ");
-    $stmt->execute([$userId, $email, $matKhauMaHoa, $hoTen]);
+    $stmt->execute([$userId, $email, $matKhauMaHoa, $hoTen, $vaiTro]);
 
     // 3.6. Thêm vào bảng CuaHang (quan hệ 1-1 với User)
     $stmt = $pdo->prepare("
         INSERT INTO CuaHang (ID, NguoiDung_id, TenCH, MoTaCH)
         VALUES (?, ?, ?, ?)
     ");
-    $moTa = 'Cửa hàng được tạo tự động khi đăng ký tài khoản';
+    $moTa = ($vaiTro === 'OWNER') ? 'Cửa hàng tạo tự động' : 'Hồ sơ người dùng cá nhân';
     $stmt->execute([$shopId, $userId, $tenCuaHang, $moTa]);
 
     // 3.7. Commit Transaction → lưu thật vào database
@@ -134,16 +145,17 @@ try {
     $_SESSION['user_id']  = $userId;
     $_SESSION['email']    = $email;
     $_SESSION['ho_ten']   = $hoTen;
-    $_SESSION['vai_tro']  = 'OWNER';
+    $_SESSION['vai_tro']  = $vaiTro;
     $_SESSION['shop_id']  = $shopId;
     $_SESSION['ten_ch']   = $tenCuaHang;
 
     // 3.9. Trả về kết quả thành công
-    jsonResponse(true, 'Đăng ký thành công! Chào mừng bạn đến với FreshMart Payment.', [
+    jsonResponse(true, 'Đăng ký thành công! Chào mừng bạn đến với FreshMart.', [
         'user_id' => $userId,
         'shop_id' => $shopId,
         'ho_ten'  => $hoTen,
-        'email'   => $email
+        'email'   => $email,
+        'vai_tro' => $vaiTro
     ]);
 
 } catch (Exception $e) {

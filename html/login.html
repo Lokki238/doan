@@ -443,7 +443,9 @@
           alertBox.textContent = data.message;
           alertBox.classList.remove('d-none');
           setTimeout(() => {
-            window.location.href = '../dashboard.php';
+            const role = (data.data && data.data.vai_tro) || '';
+            const isPrivileged = ['OWNER', 'STAFF', 'ADMIN', 'QUAN_TRI'].includes(role.toUpperCase());
+            window.location.href = isPrivileged ? '../dashboard.php' : 'account.html';
           }, 800);
         } else {
           alertBox.className = 'alert alert-danger mb-3';

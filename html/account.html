@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tài khoản của tôi | FreshMart</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/all.min.css">
+  <link href="../css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .account-section {
+      padding: 50px 0 80px;
+      background: #f8fafc;
+      min-height: 70vh;
+    }
+    .profile-header-card {
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      color: #fff;
+      border-radius: 16px;
+      padding: 28px;
+      box-shadow: 0 10px 25px rgba(16, 185, 129, 0.18);
+      margin-bottom: 30px;
+    }
+    .profile-avatar-circle {
+      width: 76px;
+      height: 76px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.25);
+      backdrop-filter: blur(5px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.2rem;
+      border: 3px solid rgba(255, 255, 255, 0.4);
+    }
+    .account-sidebar-card {
+      background: #fff;
+      border-radius: 16px;
+      border: 1px solid #e2e8f0;
+      overflow: hidden;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+    }
+    .account-nav-btn {
+      display: flex;
+      align-items: center;
+      padding: 14px 20px;
+      color: #475569;
+      font-weight: 500;
+      text-decoration: none;
+      border-bottom: 1px solid #f1f5f9;
+      transition: all .2s ease;
+      cursor: pointer;
+    }
+    .account-nav-btn:hover {
+      background: #f8fafc;
+      color: #10b981;
+      padding-left: 24px;
+    }
+    .account-nav-btn.active {
+      background: #ecfdf5;
+      color: #059669;
+      font-weight: 600;
+      border-left: 4px solid #10b981;
+    }
+    .account-nav-btn i {
+      width: 24px;
+      font-size: 1.1rem;
+      margin-right: 12px;
+    }
+    .account-content-card {
+      background: #fff;
+      border-radius: 16px;
+      border: 1px solid #e2e8f0;
+      padding: 30px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+    }
+    .section-title-line {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 2px solid #f1f5f9;
+      padding-bottom: 15px;
+      margin-bottom: 25px;
+    }
+    .table-tx-badge-success {
+      background: #d1fae5;
+      color: #065f46;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 6px;
+    }
+    .table-tx-badge-pending {
+      background: #fef3c7;
+      color: #92400e;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 6px;
+    }
+    .table-tx-badge-failed {
+      background: #fee2e2;
+      color: #991b1b;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 6px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- TOP BAR -->
+  <div class="top-bar">
+    <div class="container">
+      <div class="d-flex justify-content-between align-items-center">
+        <div class="top-bar-left">
+          <span><i class="fas fa-phone-alt me-1"></i> Hotline: 1900 1234</span>
+          <span class="ms-3 d-none d-md-inline"><i class="fas fa-envelope me-1"></i> support@freshmart.vn</span>
+        </div>
+        <div class="top-bar-right">
+          <a href="#">Theo dõi đơn hàng</a>
+          <a href="#">Hỗ trợ</a>
+          <a href="login.html">Đăng nhập</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HEADER -->
+  <header class="header sticky-top">
+    <div class="container">
+      <div class="header-inner">
+        <a href="index.html" class="logo">
+          <i class="fas fa-leaf logo-icon"></i>
+          <span>Fresh<span class="logo-accent">Mart</span></span>
+        </a>
+
+        <nav class="main-nav d-none d-lg-block">
+          <ul class="nav-list">
+            <li><a href="index.html" class="nav-link">Trang chủ</a></li>
+            <li class="has-dropdown">
+              <a href="products.html" class="nav-link">Sản phẩm <i class="fas fa-chevron-down ms-1"></i></a>
+              <ul class="dropdown-menu">
+                <li><a href="products.html">Rau củ quả</a></li>
+                <li><a href="products.html">Thịt & Hải sản</a></li>
+                <li><a href="products.html">Sữa & Trứng</a></li>
+                <li><a href="products.html">Gạo & Ngũ cốc</a></li>
+                <li><a href="products.html">Đồ khô & Gia vị</a></li>
+                <li><a href="products.html">Đồ uống</a></li>
+              </ul>
+            </li>
+            <li><a href="about.html" class="nav-link">Về chúng tôi</a></li>
+            <li><a href="contact.html" class="nav-link">Liên hệ</a></li>
+          </ul>
+        </nav>
+
+        <div class="header-actions">
+          <button class="action-btn search-btn" id="searchToggle">
+            <i class="fas fa-search"></i>
+          </button>
+          <a href="cart.html" class="action-btn cart-btn">
+            <i class="fas fa-shopping-basket"></i>
+            <span class="badge-count">0</span>
+          </a>
+          <button class="action-btn mobile-menu-btn d-lg-none" id="mobileMenuBtn">
+            <i class="fas fa-bars"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- MOBILE MENU -->
+  <div class="mobile-menu" id="mobileMenu">
+    <div class="mobile-menu-header">
+      <a href="index.html" class="logo">
+        <i class="fas fa-leaf logo-icon"></i>
+        <span>Fresh<span class="logo-accent">Mart</span></span>
+      </a>
+      <button class="mobile-menu-close" id="mobileMenuClose">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    <ul class="mobile-nav">
+      <li><a href="index.html">Trang chủ</a></li>
+      <li><a href="products.html">Sản phẩm</a></li>
+      <li><a href="about.html">Về chúng tôi</a></li>
+      <li><a href="contact.html">Liên hệ</a></li>
+      <li><a href="login.html">Đăng nhập</a></li>
+    </ul>
+  </div>
+  <div class="overlay" id="overlay"></div>
+
+  <!-- BREADCRUMB -->
+  <div class="bg-light py-3 border-bottom">
+    <div class="container">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb mb-0">
+          <li class="breadcrumb-item"><a href="index.html" class="text-success text-decoration-none">Trang chủ</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Tài khoản của tôi</li>
+        </ol>
+      </nav>
+    </div>
+  </div>
+
+  <!-- ACCOUNT SECTION -->
+  <section class="account-section">
+    <div class="container">
+
+      <!-- Admin Notice Banner (nếu tài khoản có quyền) -->
+      <div id="adminNoticeBanner" class="alert alert-warning border-0 shadow-sm d-none mb-4 d-flex justify-content-between align-items-center rounded-3 p-3">
+        <div class="d-flex align-items-center">
+          <i class="fas fa-user-shield text-warning fs-3 me-3"></i>
+          <div>
+            <h6 class="mb-0 fw-bold">Tài khoản Quản trị / Chủ cửa hàng</h6>
+            <small class="text-dark">Bạn có đầy đủ quyền quản lý cổng thanh toán, xem giao dịch và báo cáo doanh thu.</small>
+          </div>
+        </div>
+        <a href="../dashboard.php" class="btn btn-dark btn-sm px-3 py-2 fw-semibold shadow-sm">
+          <i class="fas fa-tachometer-alt me-1"></i> Đến Dashboard <i class="fas fa-arrow-right ms-1"></i>
+        </a>
+      </div>
+
+      <!-- User Header Card -->
+      <div class="profile-header-card">
+        <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
+          <div class="d-flex align-items-center gap-3">
+            <div class="profile-avatar-circle" id="userAvatar">
+              <i class="fas fa-user"></i>
+            </div>
+            <div>
+              <h3 class="mb-1 fw-bold" id="userHeaderName">Đang tải...</h3>
+              <div class="d-flex flex-wrap align-items-center gap-2 text-white-50 small">
+                <span id="userHeaderEmail"><i class="fas fa-envelope me-1"></i> ...</span>
+                <span>•</span>
+                <span id="userHeaderRole" class="badge bg-white text-dark fw-bold">Thành viên</span>
+                <span>•</span>
+                <span id="userHeaderCreated"><i class="far fa-calendar-alt me-1"></i> Tham gia: ...</span>
+              </div>
+            </div>
+          </div>
+          <div>
+            <a href="../api/logout.php" class="btn btn-outline-light btn-sm px-3">
+              <i class="fas fa-sign-out-alt me-1"></i> Đăng xuất
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="row g-4">
+        <!-- Sidebar Navigation -->
+        <div class="col-lg-3">
+          <div class="account-sidebar-card">
+            <div class="account-nav-btn active" data-tab="profileTab">
+              <i class="fas fa-user-circle"></i>
+              <span>Thông tin cá nhân</span>
+            </div>
+            <div class="account-nav-btn" data-tab="ordersTab">
+              <i class="fas fa-receipt"></i>
+              <span>Lịch sử giao dịch</span>
+            </div>
+            <div class="account-nav-btn" data-tab="passwordTab">
+              <i class="fas fa-key"></i>
+              <span>Đổi mật khẩu</span>
+            </div>
+            <a href="../api/logout.php" class="account-nav-btn text-danger">
+              <i class="fas fa-sign-out-alt"></i>
+              <span>Đăng xuất</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Main Tab Content -->
+        <div class="col-lg-9">
+          
+          <!-- TAB 1: THÔNG TIN CÁ NHÂN -->
+          <div class="account-content-card tab-content-panel" id="profileTab">
+            <div class="section-title-line">
+              <h5 class="mb-0 fw-bold"><i class="fas fa-id-card text-success me-2"></i> Hồ sơ của tôi</h5>
+              <small class="text-muted">Quản lý thông tin tài khoản cá nhân</small>
+            </div>
+
+            <div id="profileAlert" class="alert d-none mb-3" role="alert"></div>
+
+            <form id="profileForm">
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label class="form-label fw-semibold">Họ và tên *</label>
+                  <input type="text" class="form-control" name="ho_ten" id="inputHoTen" required>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label fw-semibold">Địa chỉ Email</label>
+                  <input type="email" class="form-control bg-light" id="inputEmail" readonly>
+                  <small class="text-muted">Email đăng nhập không thể thay đổi</small>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label fw-semibold">Vai trò tài khoản</label>
+                  <input type="text" class="form-control bg-light" id="inputVaiTro" readonly>
+                </div>
+                <div class="col-md-6" id="shopNameFieldGroup">
+                  <label class="form-label fw-semibold">Tên cửa hàng</label>
+                  <input type="text" class="form-control" name="ten_ch" id="inputTenCH">
+                </div>
+                <div class="col-12 mt-4">
+                  <button type="submit" class="btn btn-primary px-4" id="btnSaveProfile">
+                    <i class="fas fa-save me-1"></i> Lưu thay đổi
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+
+          <!-- TAB 2: LỊCH SỬ GIAO DỊCH -->
+          <div class="account-content-card tab-content-panel d-none" id="ordersTab">
+            <div class="section-title-line">
+              <h5 class="mb-0 fw-bold"><i class="fas fa-history text-success me-2"></i> Lịch sử giao dịch & Đơn hàng</h5>
+              <button class="btn btn-outline-success btn-sm" onclick="loadAccountData()">
+                <i class="fas fa-sync-alt me-1"></i> Làm mới
+              </button>
+            </div>
+
+            <div class="table-responsive">
+              <table class="table table-hover align-middle mb-0">
+                <thead class="table-light">
+                  <tr>
+                    <th>Mã đơn</th>
+                    <th>Số tiền</th>
+                    <th>Cổng thanh toán</th>
+                    <th>Trạng thái</th>
+                    <th>Thời gian</th>
+                  </tr>
+                </thead>
+                <tbody id="transactionTableBody">
+                  <tr>
+                    <td colspan="5" class="text-center py-4 text-muted">
+                      <i class="fas fa-spinner fa-spin me-2"></i> Đang tải danh sách giao dịch...
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- TAB 3: ĐỔI MẬT KHẨU -->
+          <div class="account-content-card tab-content-panel d-none" id="passwordTab">
+            <div class="section-title-line">
+              <h5 class="mb-0 fw-bold"><i class="fas fa-shield-alt text-success me-2"></i> Đổi mật khẩu</h5>
+              <small class="text-muted">Bảo vệ an toàn cho tài khoản của bạn</small>
+            </div>
+
+            <div id="passwordAlert" class="alert d-none mb-3" role="alert"></div>
+
+            <form id="passwordForm" style="max-width: 500px;">
+              <div class="mb-3">
+                <label class="form-label fw-semibold">Mật khẩu hiện tại *</label>
+                <div class="input-group">
+                  <input type="password" class="form-control" name="current_password" id="currentPass" required>
+                  <button class="btn btn-outline-secondary" type="button" onclick="togglePassVisibility('currentPass')">
+                    <i class="fas fa-eye"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="mb-3">
+                <label class="form-label fw-semibold">Mật khẩu mới *</label>
+                <div class="input-group">
+                  <input type="password" class="form-control" name="new_password" id="newPass" required minlength="6">
+                  <button class="btn btn-outline-secondary" type="button" onclick="togglePassVisibility('newPass')">
+                    <i class="fas fa-eye"></i>
+                  </button>
+                </div>
+                <small class="text-muted">Tối thiểu 6 ký tự</small>
+              </div>
+              <div class="mb-4">
+                <label class="form-label fw-semibold">Xác nhận mật khẩu mới *</label>
+                <div class="input-group">
+                  <input type="password" class="form-control" name="confirm_password" id="confirmPass" required minlength="6">
+                  <button class="btn btn-outline-secondary" type="button" onclick="togglePassVisibility('confirmPass')">
+                    <i class="fas fa-eye"></i>
+                  </button>
+                </div>
+              </div>
+              <button type="submit" class="btn btn-primary px-4" id="btnChangePassword">
+                <i class="fas fa-key me-1"></i> Đổi mật khẩu
+              </button>
+            </form>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <div class="row g-4">
+        <div class="col-lg-4">
+          <div class="footer-brand">
+            <a href="index.html" class="logo">
+              <i class="fas fa-leaf logo-icon"></i>
+              <span>Fresh<span class="logo-accent">Mart</span></span>
+            </a>
+            <p class="footer-desc">
+              FreshMart cung cấp thực phẩm tươi sạch đạt chuẩn an toàn vệ sinh, kết nối trực tiếp từ nông trại đến người tiêu dùng.
+            </p>
+          </div>
+        </div>
+        <div class="col-6 col-md-3 col-lg-2">
+          <h5 class="footer-title">Cửa hàng</h5>
+          <ul class="footer-links">
+            <li><a href="index.html">Trang chủ</a></li>
+            <li><a href="products.html">Sản phẩm</a></li>
+            <li><a href="about.html">Về chúng tôi</a></li>
+            <li><a href="contact.html">Liên hệ</a></li>
+          </ul>
+        </div>
+        <div class="col-6 col-md-3 col-lg-2">
+          <h5 class="footer-title">Hỗ trợ</h5>
+          <ul class="footer-links">
+            <li><a href="#">Theo dõi đơn</a></li>
+            <li><a href="#">Đổi trả</a></li>
+            <li><a href="#">Vận chuyển</a></li>
+            <li><a href="#">FAQ</a></li>
+          </ul>
+        </div>
+        <div class="col-md-6 col-lg-4">
+          <h5 class="footer-title">Liên hệ</h5>
+          <ul class="footer-contact">
+            <li><i class="fas fa-map-marker-alt"></i> 123 Nguyễn Văn Linh, Q.7, TP.HCM</li>
+            <li><i class="fas fa-phone-alt"></i> 1900 1234</li>
+            <li><i class="fas fa-envelope"></i> support@freshmart.vn</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2026 FreshMart. All rights reserved.</p>
+        <div class="payment-icons">
+          <i class="fab fa-cc-visa"></i>
+          <i class="fab fa-cc-mastercard"></i>
+          <i class="fab fa-cc-paypal"></i>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../js/bootstrap.bundle.min.js"></script>
+  <script src="../js/main.js"></script>
+  <script>
+    // Tab Switching
+    document.querySelectorAll('.account-nav-btn[data-tab]').forEach(btn => {
+      btn.addEventListener('click', function() {
+        document.querySelectorAll('.account-nav-btn[data-tab]').forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+
+        const targetId = this.getAttribute('data-tab');
+        document.querySelectorAll('.tab-content-panel').forEach(panel => panel.classList.add('d-none'));
+        const targetPanel = document.getElementById(targetId);
+        if (targetPanel) targetPanel.classList.remove('d-none');
+      });
+    });
+
+    // Password Toggle
+    function togglePassVisibility(id) {
+      const input = document.getElementById(id);
+      if (!input) return;
+      input.type = input.type === 'password' ? 'text' : 'password';
+    }
+
+    // Load Account Data
+    async function loadAccountData() {
+      try {
+        const res = await fetch('../api/profile.php');
+        if (res.status === 401) {
+          window.location.href = 'login.html';
+          return;
+        }
+        const data = await res.json();
+        if (!data.success) {
+          window.location.href = 'login.html';
+          return;
+        }
+
+        const user = data.data.user;
+        const txList = data.data.transactions || [];
+
+        // Header info
+        document.getElementById('userHeaderName').textContent = user.ho_ten || user.email;
+        document.getElementById('userHeaderEmail').innerHTML = `<i class="fas fa-envelope me-1"></i> ${user.email}`;
+        
+        const roleLabel = (user.vai_tro === 'OWNER' || user.vai_tro === 'STAFF') ? 'Chủ cửa hàng (Quản trị)' : 'Khách hàng';
+        document.getElementById('userHeaderRole').textContent = roleLabel;
+        
+        if (user.created_at) {
+          const dateStr = new Date(user.created_at).toLocaleDateString('vi-VN');
+          document.getElementById('userHeaderCreated').innerHTML = `<i class="far fa-calendar-alt me-1"></i> Tham gia: ${dateStr}`;
+        }
+
+        // Show admin banner if privileged
+        if (user.is_privileged) {
+          document.getElementById('adminNoticeBanner').classList.remove('d-none');
+        }
+
+        // Form Fields
+        document.getElementById('inputHoTen').value = user.ho_ten || '';
+        document.getElementById('inputEmail').value = user.email || '';
+        document.getElementById('inputVaiTro').value = roleLabel;
+        if (document.getElementById('inputTenCH')) {
+          document.getElementById('inputTenCH').value = user.ten_ch || '';
+        }
+
+        // Transactions
+        const tbody = document.getElementById('transactionTableBody');
+        if (txList.length === 0) {
+          tbody.innerHTML = `
+            <tr>
+              <td colspan="5" class="text-center py-5">
+                <i class="fas fa-shopping-bag text-muted fs-1 mb-3 d-block"></i>
+                <h6 class="text-muted fw-bold">Chưa có giao dịch nào</h6>
+                <p class="small text-muted mb-3">Bạn chưa thực hiện thanh toán đơn hàng nào tại FreshMart.</p>
+                <a href="products.html" class="btn btn-outline-success btn-sm">Mua sắm ngay</a>
+              </td>
+            </tr>
+          `;
+        } else {
+          tbody.innerHTML = txList.map(tx => {
+            let statusBadge = '<span class="table-tx-badge-pending">Chờ xử lý</span>';
+            if (tx.TrangThai === 'SUCCESS') statusBadge = '<span class="table-tx-badge-success"><i class="fas fa-check-circle me-1"></i> Thành công</span>';
+            else if (tx.TrangThai === 'FAILED') statusBadge = '<span class="table-tx-badge-failed"><i class="fas fa-times-circle me-1"></i> Thất bại</span>';
+
+            const amount = Number(tx.SoTien).toLocaleString('vi-VN') + ' đ';
+            return `
+              <tr>
+                <td class="fw-bold text-success">${escapeText(tx.MaDonHang)}</td>
+                <td class="fw-bold">${amount}</td>
+                <td><span class="badge bg-light text-dark border">${escapeText(tx.LoaiCong || 'VIETQR')}</span></td>
+                <td>${statusBadge}</td>
+                <td class="text-muted small">${escapeText(tx.ThoiGianTao)}</td>
+              </tr>
+            `;
+          }).join('');
+        }
+
+      } catch (err) {
+        console.error('Lỗi khi tải dữ liệu tài khoản:', err);
+      }
+    }
+
+    // Save Profile Form
+    document.getElementById('profileForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const alertBox = document.getElementById('profileAlert');
+      const btn = document.getElementById('btnSaveProfile');
+      
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i> Đang lưu...';
+      alertBox.classList.add('d-none');
+
+      try {
+        const hoTen = document.getElementById('inputHoTen').value;
+        const tenCH = document.getElementById('inputTenCH') ? document.getElementById('inputTenCH').value : '';
+
+        const res = await fetch('../api/profile.php', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            action: 'update_profile',
+            ho_ten: hoTen,
+            ten_ch: tenCH
+          })
+        });
+        const data = await res.json();
+
+        alertBox.className = data.success ? 'alert alert-success mb-3' : 'alert alert-danger mb-3';
+        alertBox.textContent = data.message;
+        alertBox.classList.remove('d-none');
+
+        if (data.success) {
+          document.getElementById('userHeaderName').textContent = hoTen;
+          // Refresh topbar name
+          const topbarName = document.querySelector('.user-name');
+          if (topbarName) topbarName.textContent = hoTen;
+        }
+      } catch (err) {
+        alertBox.className = 'alert alert-danger mb-3';
+        alertBox.textContent = 'Lỗi kết nối khi cập nhật thông tin.';
+        alertBox.classList.remove('d-none');
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fas fa-save me-1"></i> Lưu thay đổi';
+      }
+    });
+
+    // Change Password Form
+    document.getElementById('passwordForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const alertBox = document.getElementById('passwordAlert');
+      const btn = document.getElementById('btnChangePassword');
+
+      const currentPass = document.getElementById('currentPass').value;
+      const newPass = document.getElementById('newPass').value;
+      const confirmPass = document.getElementById('confirmPass').value;
+
+      if (newPass !== confirmPass) {
+        alertBox.className = 'alert alert-danger mb-3';
+        alertBox.textContent = 'Mật khẩu xác nhận không khớp!';
+        alertBox.classList.remove('d-none');
+        return;
+      }
+
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i> Đang xử lý...';
+      alertBox.classList.add('d-none');
+
+      try {
+        const res = await fetch('../api/profile.php', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            action: 'change_password',
+            current_password: currentPass,
+            new_password: newPass,
+            confirm_password: confirmPass
+          })
+        });
+        const data = await res.json();
+
+        alertBox.className = data.success ? 'alert alert-success mb-3' : 'alert alert-danger mb-3';
+        alertBox.textContent = data.message;
+        alertBox.classList.remove('d-none');
+
+        if (data.success) {
+          document.getElementById('passwordForm').reset();
+        }
+      } catch (err) {
+        alertBox.className = 'alert alert-danger mb-3';
+        alertBox.textContent = 'Lỗi kết nối khi đổi mật khẩu.';
+        alertBox.classList.remove('d-none');
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fas fa-key me-1"></i> Đổi mật khẩu';
+      }
+    });
+
+    function escapeText(str) {
+      if (!str) return '';
+      return String(str).replace(/[&<>"']/g, m => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;' })[m]);
+    }
+
+    loadAccountData();
+  </script>
+</body>
+</html>
