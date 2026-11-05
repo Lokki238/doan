@@ -1,0 +1,580 @@
+<html xmlns:o="urn:schemas-microsoft-com:office:office"
+xmlns:w="urn:schemas-microsoft-com:office:word"
+xmlns="http://www.w3.org/TR/REC-html40">
+<head>
+<meta charset="utf-8">
+<title>Báo cáo kiểm thử FreshMart</title>
+<!--[if gte mso 9]>
+<xml>
+ <w:WordDocument>
+  <w:View>Print</w:View>
+  <w:Zoom>100</w:Zoom>
+  <w:DoNotOptimizeForBrowser/>
+ </w:WordDocument>
+</xml>
+<![endif]-->
+<style>
+@page Section1 {
+    size: 210mm 297mm;
+    margin: 20mm 20mm 20mm 20mm;
+    mso-header-margin: 35.4pt;
+    mso-footer-margin: 35.4pt;
+    mso-paper-source: 0;
+}
+div.Section1 { page: Section1; }
+body { font-family: "Times New Roman", serif; font-size: 12pt; color: #1e293b; }
+table, th, td { border: 1px solid #cbd5e1; border-collapse: collapse; }
+</style>
+</head>
+<body>
+<div class="Section1">
+<h1 style='color: #0f172a; text-align: center; font-family: "Times New Roman", serif; font-size: 20pt; margin-top: 18pt; margin-bottom: 6pt;'>TÀI LIỆU KIỂM THỬ HỆ THỐNG (TEST PLAN & TEST CASES)</h1>
+<h2 style='color: #065f46; font-family: "Times New Roman", serif; font-size: 15pt; border-bottom: 1.5pt solid #065f46; padding-bottom: 4pt; margin-top: 18pt; margin-bottom: 8pt;'>HỆ THỐNG THANH TOÁN ĐA CỔNG FRESHMART (TUẦN 11)</h2>
+<hr style='border: none; border-top: 1px solid #cbd5e1; margin: 12pt 0;' />
+<p style='margin: 3pt 0 3pt 20pt; text-indent: -12pt; font-family: "Times New Roman", serif; font-size: 12pt; line-height: 1.3;'>• <b>Tên dự án:</b> Hệ thống thanh toán đa cổng cho cửa hàng thực phẩm tươi sạch FreshMart</p>
+<p style='margin: 3pt 0 3pt 20pt; text-indent: -12pt; font-family: "Times New Roman", serif; font-size: 12pt; line-height: 1.3;'>• <b>Giai đoạn:</b> Tuần 11 – Kiểm thử chức năng, tích hợp, bảo mật và giao diện</p>
+<p style='margin: 3pt 0 3pt 20pt; text-indent: -12pt; font-family: "Times New Roman", serif; font-size: 12pt; line-height: 1.3;'>• <b>Người thực hiện:</b> Đinh Thế Chí Dũng</p>
+<p style='margin: 3pt 0 3pt 20pt; text-indent: -12pt; font-family: "Times New Roman", serif; font-size: 12pt; line-height: 1.3;'>• <b>Môi trường triển khai:</b></p>
+<p style='margin: 3pt 0 3pt 20pt; text-indent: -12pt; font-family: "Times New Roman", serif; font-size: 12pt; line-height: 1.3;'>• <b>Production:</b> Cloud Render (<code style="color: #991b1b; background: #f1f5f9; padding: 1px 4px; font-family: Consolas, monospace;">https://doan-yteb.onrender.com</code>) – Docker (Apache + PHP 8.2)</p>
+<p style='margin: 3pt 0 3pt 20pt; text-indent: -12pt; font-family: "Times New Roman", serif; font-size: 12pt; line-height: 1.3;'>• <b>Cơ sở dữ liệu:</b> TiDB Cloud Serverless (MySQL Compatible) có mã hóa SSL/TLS</p>
+<p style='margin: 3pt 0 3pt 20pt; text-indent: -12pt; font-family: "Times New Roman", serif; font-size: 12pt; line-height: 1.3;'>• <b>Cổng thanh toán tích hợp:</b> VietQR (NAPAS 247) kết nối Webhook SePay thật</p>
+<p style='margin: 3pt 0 3pt 20pt; text-indent: -12pt; font-family: "Times New Roman", serif; font-size: 12pt; line-height: 1.3;'>• <b>Phiên bản:</b> v1.0.0 (Release Candidate)</p>
+<hr style='border: none; border-top: 1px solid #cbd5e1; margin: 12pt 0;' />
+<h2 style='color: #065f46; font-family: "Times New Roman", serif; font-size: 15pt; border-bottom: 1.5pt solid #065f46; padding-bottom: 4pt; margin-top: 18pt; margin-bottom: 8pt;'>MỤC LỤC</h2>
+<p style='font-family: "Times New Roman", serif; font-size: 12pt; line-height: 1.4; margin: 6pt 0;'>1. [Kế Hoạch Kiểm Thử (Test Plan)](#1-kế-hoạch-kiểm-thử-test-plan)</p>
+<p style='margin: 3pt 0 3pt 20pt; text-indent: -12pt; font-family: "Times New Roman", serif; font-size: 12pt; line-height: 1.3;'>• 1.1. Mục tiêu kiểm thử</p>
+<p style='margin: 3pt 0 3pt 20pt; text-indent: -12pt; font-family: "Times New Roman", serif; font-size: 12pt; line-height: 1.3;'>• 1.2. Phạm vi kiểm thử (Scope)</p>
+<p style='margin: 3pt 0 3pt 20pt; text-indent: -12pt; font-family: "Times New Roman", serif; font-size: 12pt; line-height: 1.3;'>• 1.3. Môi trường kiểm thử</p>
+<p style='margin: 3pt 0 3pt 20pt; text-indent: -12pt; font-family: "Times New Roman", serif; font-size: 12pt; line-height: 1.3;'>• 1.4. Chiến lược và phương pháp kiểm thử</p>
+<p style='margin: 3pt 0 3pt 20pt; text-indent: -12pt; font-family: "Times New Roman", serif; font-size: 12pt; line-height: 1.3;'>• 1.5. Tiêu chuẩn đánh giá (Pass/Fail Criteria)</p>
+<p style='font-family: "Times New Roman", serif; font-size: 12pt; line-height: 1.4; margin: 6pt 0;'>2. [Bộ Ca Kiểm Thử Chi Tiết (Test Cases)](#2-bộ-ca-kiểm-thử-chi-tiết-test-cases)</p>
+<p style='margin: 3pt 0 3pt 20pt; text-indent: -12pt; font-family: "Times New Roman", serif; font-size: 12pt; line-height: 1.3;'>• 2.1. Module Xác thực & Phân quyền (Auth & RBAC)</p>
+<p style='margin: 3pt 0 3pt 20pt; text-indent: -12pt; font-family: "Times New Roman", serif; font-size: 12pt; line-height: 1.3;'>• 2.2. Module Cổng thanh toán & Sinh mã VietQR (Gateways & VietQR)</p>
+<p style='margin: 3pt 0 3pt 20pt; text-indent: -12pt; font-family: "Times New Roman", serif; font-size: 12pt; line-height: 1.3;'>• 2.3. Module Webhook & Tự động xử lý giao dịch (SePay Webhook)</p>
+<p style='margin: 3pt 0 3pt 20pt; text-indent: -12pt; font-family: "Times New Roman", serif; font-size: 12pt; line-height: 1.3;'>• 2.4. Module Quản trị giao dịch & Báo cáo doanh thu (Dashboard & Reports)</p>
+<p style='margin: 3pt 0 3pt 20pt; text-indent: -12pt; font-family: "Times New Roman", serif; font-size: 12pt; line-height: 1.3;'>• 2.5. Module Giao diện người dùng & Đáp ứng (UI & Responsive)</p>
+<p style='font-family: "Times New Roman", serif; font-size: 12pt; line-height: 1.4; margin: 6pt 0;'>3. [Báo Cáo Lỗi & Phương Án Xử Lý (Bug Report & Defect Log)](#3-báo-cáo-lỗi--phương-án-xử-lý-bug-report)</p>
+<p style='font-family: "Times New Roman", serif; font-size: 12pt; line-height: 1.4; margin: 6pt 0;'>4. [Tổng Kết & Đánh Giá Chất Lượng (Test Summary)](#4-tổng-kết--đánh-giá-chất-lượng)</p>
+<hr style='border: none; border-top: 1px solid #cbd5e1; margin: 12pt 0;' />
+<h2 style='color: #065f46; font-family: "Times New Roman", serif; font-size: 15pt; border-bottom: 1.5pt solid #065f46; padding-bottom: 4pt; margin-top: 18pt; margin-bottom: 8pt;'>1. KẾ HOẠCH KIỂM THỬ (TEST PLAN)</h2>
+<h3 style='color: #047857; font-family: "Times New Roman", serif; font-size: 13pt; margin-top: 14pt; margin-bottom: 6pt;'>1.1. Mục tiêu kiểm thử</h3>
+<p style='margin: 3pt 0 3pt 20pt; text-indent: -12pt; font-family: "Times New Roman", serif; font-size: 12pt; line-height: 1.3;'>• Đảm bảo các luồng nghiệp vụ cốt lõi hoạt động chính xác 100%: Đăng ký, Đăng nhập, Sinh mã VietQR, Tiếp nhận Webhook thanh toán và Cập nhật trạng thái giao dịch tự động.</p>
+<p style='margin: 3pt 0 3pt 20pt; text-indent: -12pt; font-family: "Times New Roman", serif; font-size: 12pt; line-height: 1.3;'>• Xác minh độ an toàn bảo mật: Mã hóa mật khẩu một chiều (bcrypt), mã hóa thông tin cổng thanh toán (AES-256), chống tấn công SQL Injection (PDO Prepared Statements), chống giả mạo webhook (HMAC-SHA256) và tấn công Replay Attack.</p>
+<p style='margin: 3pt 0 3pt 20pt; text-indent: -12pt; font-family: "Times New Roman", serif; font-size: 12pt; line-height: 1.3;'>• Kiểm tra tính phân quyền (RBAC): Đảm bảo người dùng thông thường (<code style="color: #991b1b; background: #f1f5f9; padding: 1px 4px; font-family: Consolas, monospace;">USER</code>) không thể truy cập trái phép vào trang quản trị (<code style="color: #991b1b; background: #f1f5f9; padding: 1px 4px; font-family: Consolas, monospace;">dashboard.php</code>), và quản trị viên (<code style="color: #991b1b; background: #f1f5f9; padding: 1px 4px; font-family: Consolas, monospace;">OWNER</code>) truy cập đúng khu vực chức năng.</p>
+<p style='margin: 3pt 0 3pt 20pt; text-indent: -12pt; font-family: "Times New Roman", serif; font-size: 12pt; line-height: 1.3;'>• Đảm bảo giao diện hiển thị đồng nhất, mượt mà và tương thích trên nhiều kích thước màn hình (Desktop, Tablet, Mobile).</p>
+<h3 style='color: #047857; font-family: "Times New Roman", serif; font-size: 13pt; margin-top: 14pt; margin-bottom: 6pt;'>1.2. Phạm vi kiểm thử (Scope)</h3>
+<p style='margin: 3pt 0 3pt 20pt; text-indent: -12pt; font-family: "Times New Roman", serif; font-size: 12pt; line-height: 1.3;'>• <b>Trong phạm vi (In-Scope):</b></p>
+<p style='margin: 3pt 0 3pt 20pt; text-indent: -12pt; font-family: "Times New Roman", serif; font-size: 12pt; line-height: 1.3;'>• Chức năng người dùng: Đăng ký, đăng nhập, xem hồ sơ, đổi mật khẩu, xem lịch sử giao dịch cá nhân.</p>
+<p style='margin: 3pt 0 3pt 20pt; text-indent: -12pt; font-family: "Times New Roman", serif; font-size: 12pt; line-height: 1.3;'>• Chức năng quản trị: Thiết lập tài khoản ngân hàng thụ hưởng VietQR, tạo giao dịch thử nghiệm, xem danh sách giao dịch, tìm kiếm/bộ lọc, xuất file CSV, xem báo cáo thống kê doanh thu và biểu đồ Chart.js.</p>
+<p style='margin: 3pt 0 3pt 20pt; text-indent: -12pt; font-family: "Times New Roman", serif; font-size: 12pt; line-height: 1.3;'>• Tích hợp Webhook: Tiếp nhận và xác thực tín hiệu thanh toán từ SePay / Casso qua Internet, kiểm tra tính Idempotent (chống xử lý trùng giao dịch).</p>
+<p style='margin: 3pt 0 3pt 20pt; text-indent: -12pt; font-family: "Times New Roman", serif; font-size: 12pt; line-height: 1.3;'>• Tích hợp Database: Kết nối TiDB Cloud với xác thực chứng chỉ CA SSL (<code style="color: #991b1b; background: #f1f5f9; padding: 1px 4px; font-family: Consolas, monospace;">isrgrootx1.pem</code>).</p>
+<p style='margin: 3pt 0 3pt 20pt; text-indent: -12pt; font-family: "Times New Roman", serif; font-size: 12pt; line-height: 1.3;'>• <b>Ngoài phạm vi (Out-of-Scope):</b></p>
+<p style='margin: 3pt 0 3pt 20pt; text-indent: -12pt; font-family: "Times New Roman", serif; font-size: 12pt; line-height: 1.3;'>• Cổng thanh toán quốc tế Visa/Mastercard trực tiếp qua Stripe/PayPal (chỉ hỗ trợ giao diện mockup thẻ).</p>
+<h3 style='color: #047857; font-family: "Times New Roman", serif; font-size: 13pt; margin-top: 14pt; margin-bottom: 6pt;'>1.3. Môi trường kiểm thử</h3>
+<table style='width: 100%; border-collapse: collapse; margin-top: 12pt; margin-bottom: 12pt; font-size: 10pt; font-family: "Times New Roman", serif;'>
+<tr>
+<th style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #065f46; color: #ffffff; font-weight: bold; text-align: center;'>Thành phần</th>
+<th style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #065f46; color: #ffffff; font-weight: bold; text-align: center;'>Thông số môi trường</th>
+</tr>
+<tr>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'><b>Máy chủ Web & App</b></td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'>Docker Container: Apache 2.4 + PHP 8.2-apache trên Render Cloud</td>
+</tr>
+<tr>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'><b>Cơ sở dữ liệu</b></td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'>TiDB Cloud Cluster (AWS Singapore), SSL CA Let's Encrypt</td>
+</tr>
+<tr>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'><b>Webhook Endpoint</b></td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'><code style="color: #991b1b; background: #f1f5f9; padding: 1px 4px; font-family: Consolas, monospace;">https://doan-yteb.onrender.com/api/webhook_vietqr.php</code></td>
+</tr>
+<tr>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'><b>Trình duyệt kiểm thử</b></td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'>Google Chrome v125+, Microsoft Edge v125+, Cốc Cốc, Mobile Safari</td>
+</tr>
+<tr>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'><b>Công cụ hỗ trợ</b></td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'>SePay Webhook Simulator, App Ngân hàng MB Bank (Mobile Banking), Postman</td>
+</tr>
+</table>
+<h3 style='color: #047857; font-family: "Times New Roman", serif; font-size: 13pt; margin-top: 14pt; margin-bottom: 6pt;'>1.4. Chiến lược và phương pháp kiểm thử</h3>
+<p style='font-family: "Times New Roman", serif; font-size: 12pt; line-height: 1.4; margin: 6pt 0;'>1. <b>Kiểm thử chức năng (Functional Testing):</b> Kiểm tra tính đúng đắn của từng chức năng theo tài liệu đặc tả nghiệp vụ.</p>
+<p style='font-family: "Times New Roman", serif; font-size: 12pt; line-height: 1.4; margin: 6pt 0;'>2. <b>Kiểm thử tích hợp (Integration Testing):</b> Kiểm tra giao tiếp giữa Frontend Fetch API ➔ Backend PHP API ➔ Database TiDB Cloud ➔ Cổng thanh toán SePay.</p>
+<p style='font-family: "Times New Roman", serif; font-size: 12pt; line-height: 1.4; margin: 6pt 0;'>3. <b>Kiểm thử bảo mật (Security Testing):</b> Thử nghiệm gửi request giả mạo, kiểm tra xác thực chữ ký HMAC-SHA256, SQL Injection test, Brute-force test.</p>
+<p style='font-family: "Times New Roman", serif; font-size: 12pt; line-height: 1.4; margin: 6pt 0;'>4. <b>Kiểm thử giao diện & Trải nghiệm (UI/UX & Responsive Testing):</b> Kiểm tra hiển thị dynamic top-bar, menu responsive trên độ phân giải máy tính (1920x1080) và điện thoại (375x667, 414x896).</p>
+<hr style='border: none; border-top: 1px solid #cbd5e1; margin: 12pt 0;' />
+<h2 style='color: #065f46; font-family: "Times New Roman", serif; font-size: 15pt; border-bottom: 1.5pt solid #065f46; padding-bottom: 4pt; margin-top: 18pt; margin-bottom: 8pt;'>2. BỘ CA KIỂM THỬ CHI TIẾT (TEST CASES)</h2>
+<h3 style='color: #047857; font-family: "Times New Roman", serif; font-size: 13pt; margin-top: 14pt; margin-bottom: 6pt;'>2.1. Module Xác thực & Phân quyền (Auth & RBAC)</h3>
+<table style='width: 100%; border-collapse: collapse; margin-top: 12pt; margin-bottom: 12pt; font-size: 10pt; font-family: "Times New Roman", serif;'>
+<tr>
+<th style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #065f46; color: #ffffff; font-weight: bold; text-align: center;'>Mã ca</th>
+<th style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #065f46; color: #ffffff; font-weight: bold; text-align: center;'>Tên ca kiểm thử</th>
+<th style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #065f46; color: #ffffff; font-weight: bold; text-align: center;'>Các bước thực hiện</th>
+<th style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #065f46; color: #ffffff; font-weight: bold; text-align: center;'>Dữ liệu đầu vào</th>
+<th style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #065f46; color: #ffffff; font-weight: bold; text-align: center;'>Kết quả mong đợi</th>
+<th style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #065f46; color: #ffffff; font-weight: bold; text-align: center;'>Kết quả thực tế</th>
+<th style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #065f46; color: #ffffff; font-weight: bold; text-align: center;'>Trạng thái</th>
+</tr>
+<tr>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'><b>TC-AUTH-01</b></td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>Đăng ký tài khoản Khách hàng (USER)</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>1. Mở trang <code style="color: #991b1b; background: #f1f5f9; padding: 1px 4px; font-family: Consolas, monospace;">register.html</code><br>2. Chọn loại TK "Khách hàng cá nhân"<br>3. Nhập họ tên, email, SĐT, mật khẩu<br>4. Bấm "Tạo tài khoản"</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>Họ tên: Nguyễn Văn A<br>Email: khachhang1@gmail.com<br>Pass: 123456</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>Đăng ký thành công, tạo User trong DB với <code style="color: #991b1b; background: #f1f5f9; padding: 1px 4px; font-family: Consolas, monospace;">VaiTro = 'USER'</code>, tự động đăng nhập và chuyển hướng sang <code style="color: #991b1b; background: #f1f5f9; padding: 1px 4px; font-family: Consolas, monospace;">account.html</code>.</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'>Đúng như mong đợi</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'><b><span style="color: #166534; font-weight: bold; background: #dcfce7; padding: 2px 6px; border-radius: 4px;">PASS</span></b></td>
+</tr>
+<tr>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'><b>TC-AUTH-02</b></td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>Đăng ký tài khoản Chủ cửa hàng (OWNER)</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>1. Mở trang <code style="color: #991b1b; background: #f1f5f9; padding: 1px 4px; font-family: Consolas, monospace;">register.html</code><br>2. Chọn "Chủ cửa hàng"<br>3. Nhập tên cửa hàng và thông tin<br>4. Bấm "Tạo tài khoản"</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>Tên CH: FreshMart Q7<br>Email: admin1@gmail.com<br>Pass: 123456</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>Đăng ký thành công, tạo đồng thời <code style="color: #991b1b; background: #f1f5f9; padding: 1px 4px; font-family: Consolas, monospace;">NguoiDung</code> (OWNER) và <code style="color: #991b1b; background: #f1f5f9; padding: 1px 4px; font-family: Consolas, monospace;">CuaHang</code>, tự động chuyển hướng sang <code style="color: #991b1b; background: #f1f5f9; padding: 1px 4px; font-family: Consolas, monospace;">dashboard.php</code>.</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'>Đúng như mong đợi</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'><b><span style="color: #166534; font-weight: bold; background: #dcfce7; padding: 2px 6px; border-radius: 4px;">PASS</span></b></td>
+</tr>
+<tr>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'><b>TC-AUTH-03</b></td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>Đăng ký với Email đã tồn tại</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>1. Nhập email đã có trong hệ thống<br>2. Bấm "Tạo tài khoản"</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>Email: admin1@gmail.com</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>Báo lỗi HTTP 409: "Email này đã được đăng ký. Vui lòng dùng email khác."</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'>Hiển thị thông báo đỏ chuẩn</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'><b><span style="color: #166534; font-weight: bold; background: #dcfce7; padding: 2px 6px; border-radius: 4px;">PASS</span></b></td>
+</tr>
+<tr>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'><b>TC-AUTH-04</b></td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>Đăng ký mật khẩu dưới 6 ký tự</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>1. Nhập mật khẩu < 6 ký tự<br>2. Bấm "Tạo tài khoản"</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>Pass: 12345</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>Frontend chặn submit form (<code style="color: #991b1b; background: #f1f5f9; padding: 1px 4px; font-family: Consolas, monospace;">minlength="6"</code>), Backend validate trả lỗi HTTP 400.</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'>Chặn hợp lệ</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'><b><span style="color: #166534; font-weight: bold; background: #dcfce7; padding: 2px 6px; border-radius: 4px;">PASS</span></b></td>
+</tr>
+<tr>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'><b>TC-AUTH-05</b></td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>Đăng ký xác nhận mật khẩu không khớp</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>1. Nhập Pass và Confirm Pass khác nhau<br>2. Bấm submit</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>Pass: 123456<br>Confirm: 1234567</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>Báo lỗi ngay lập tức: "Mật khẩu xác nhận không khớp!"</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'>Hiển thị thông báo lỗi</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'><b><span style="color: #166534; font-weight: bold; background: #dcfce7; padding: 2px 6px; border-radius: 4px;">PASS</span></b></td>
+</tr>
+<tr>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'><b>TC-AUTH-06</b></td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>Đăng nhập tài khoản OWNER</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>1. Vào <code style="color: #991b1b; background: #f1f5f9; padding: 1px 4px; font-family: Consolas, monospace;">login.html</code><br>2. Nhập email OWNER + pass<br>3. Bấm "Đăng nhập"</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>Email OWNER hợp lệ</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>Báo thành công, Session lưu <code style="color: #991b1b; background: #f1f5f9; padding: 1px 4px; font-family: Consolas, monospace;">vai_tro = OWNER</code>, chuyển hướng sang <code style="color: #991b1b; background: #f1f5f9; padding: 1px 4px; font-family: Consolas, monospace;">dashboard.php</code>.</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'>Đúng như mong đợi</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'><b><span style="color: #166534; font-weight: bold; background: #dcfce7; padding: 2px 6px; border-radius: 4px;">PASS</span></b></td>
+</tr>
+<tr>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'><b>TC-AUTH-07</b></td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>Đăng nhập tài khoản USER (Khách hàng)</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>1. Vào <code style="color: #991b1b; background: #f1f5f9; padding: 1px 4px; font-family: Consolas, monospace;">login.html</code><br>2. Nhập email USER + pass<br>3. Bấm "Đăng nhập"</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>Email USER hợp lệ</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>Báo thành công, Session lưu <code style="color: #991b1b; background: #f1f5f9; padding: 1px 4px; font-family: Consolas, monospace;">vai_tro = USER</code>, chuyển hướng sang <code style="color: #991b1b; background: #f1f5f9; padding: 1px 4px; font-family: Consolas, monospace;">account.html</code>.</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'>Đúng như mong đợi</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'><b><span style="color: #166534; font-weight: bold; background: #dcfce7; padding: 2px 6px; border-radius: 4px;">PASS</span></b></td>
+</tr>
+<tr>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'><b>TC-AUTH-08</b></td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>Đăng nhập sai mật khẩu hoặc sai email</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>1. Nhập mật khẩu sai<br>2. Bấm "Đăng nhập"</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>Email: admin1@gmail.com<br>Pass: sai_pass</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>Báo lỗi HTTP 401: "Email hoặc mật khẩu không đúng", không tiết lộ email có tồn tại hay không.</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'>Báo lỗi chuẩn bảo mật</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'><b><span style="color: #166534; font-weight: bold; background: #dcfce7; padding: 2px 6px; border-radius: 4px;">PASS</span></b></td>
+</tr>
+<tr>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'><b>TC-AUTH-09</b></td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>Khách hàng cố tình truy cập trang Admin</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>1. Đăng nhập tài khoản USER<br>2. Gõ trực tiếp URL <code style="color: #991b1b; background: #f1f5f9; padding: 1px 4px; font-family: Consolas, monospace;">dashboard.php</code> hoặc <code style="color: #991b1b; background: #f1f5f9; padding: 1px 4px; font-family: Consolas, monospace;">transactions.php</code></td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>URL: <code style="color: #991b1b; background: #f1f5f9; padding: 1px 4px; font-family: Consolas, monospace;">/dashboard.php</code></td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>Hàm <code style="color: #991b1b; background: #f1f5f9; padding: 1px 4px; font-family: Consolas, monospace;">requirePrivileged()</code> kiểm tra thấy role USER ➔ Chặn và redirect tự động về <code style="color: #991b1b; background: #f1f5f9; padding: 1px 4px; font-family: Consolas, monospace;">html/account.html</code>.</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'>Redirect an toàn</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'><b><span style="color: #166534; font-weight: bold; background: #dcfce7; padding: 2px 6px; border-radius: 4px;">PASS</span></b></td>
+</tr>
+<tr>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'><b>TC-AUTH-10</b></td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>Chưa đăng nhập truy cập trang Admin</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>1. Mở tab ẩn danh<br>2. Gõ URL <code style="color: #991b1b; background: #f1f5f9; padding: 1px 4px; font-family: Consolas, monospace;">/dashboard.php</code></td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>Không có Session</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>Hàm <code style="color: #991b1b; background: #f1f5f9; padding: 1px 4px; font-family: Consolas, monospace;">requireLogin()</code> chặn và redirect về <code style="color: #991b1b; background: #f1f5f9; padding: 1px 4px; font-family: Consolas, monospace;">html/login.html</code>.</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'>Chặn thành công</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'><b><span style="color: #166534; font-weight: bold; background: #dcfce7; padding: 2px 6px; border-radius: 4px;">PASS</span></b></td>
+</tr>
+<tr>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'><b>TC-AUTH-11</b></td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>Đăng xuất hệ thống</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>1. Đang đăng nhập<br>2. Bấm nút "Thoát" hoặc "Đăng xuất"</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>Thẻ <code style="color: #991b1b; background: #f1f5f9; padding: 1px 4px; font-family: Consolas, monospace;"><a href="api/logout.php"></code></td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>Hủy toàn bộ <code style="color: #991b1b; background: #f1f5f9; padding: 1px 4px; font-family: Consolas, monospace;">$_SESSION</code>, xóa cookie phiên, chuyển về trang <code style="color: #991b1b; background: #f1f5f9; padding: 1px 4px; font-family: Consolas, monospace;">login.html</code>.</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'>Đăng xuất sạch</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'><b><span style="color: #166534; font-weight: bold; background: #dcfce7; padding: 2px 6px; border-radius: 4px;">PASS</span></b></td>
+</tr>
+</table>
+<hr style='border: none; border-top: 1px solid #cbd5e1; margin: 12pt 0;' />
+<h3 style='color: #047857; font-family: "Times New Roman", serif; font-size: 13pt; margin-top: 14pt; margin-bottom: 6pt;'>2.2. Module Cổng thanh toán & Sinh mã VietQR (Gateways & VietQR)</h3>
+<table style='width: 100%; border-collapse: collapse; margin-top: 12pt; margin-bottom: 12pt; font-size: 10pt; font-family: "Times New Roman", serif;'>
+<tr>
+<th style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #065f46; color: #ffffff; font-weight: bold; text-align: center;'>Mã ca</th>
+<th style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #065f46; color: #ffffff; font-weight: bold; text-align: center;'>Tên ca kiểm thử</th>
+<th style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #065f46; color: #ffffff; font-weight: bold; text-align: center;'>Các bước thực hiện</th>
+<th style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #065f46; color: #ffffff; font-weight: bold; text-align: center;'>Dữ liệu đầu vào</th>
+<th style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #065f46; color: #ffffff; font-weight: bold; text-align: center;'>Kết quả mong đợi</th>
+<th style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #065f46; color: #ffffff; font-weight: bold; text-align: center;'>Kết quả thực tế</th>
+<th style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #065f46; color: #ffffff; font-weight: bold; text-align: center;'>Trạng thái</th>
+</tr>
+<tr>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'><b>TC-GW-01</b></td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>Cấu hình tài khoản ngân hàng nhận tiền</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>1. Vào <code style="color: #991b1b; background: #f1f5f9; padding: 1px 4px; font-family: Consolas, monospace;">/admin/gateways.php</code><br>2. Nhập STK, chọn Ngân hàng MB Bank, nhập Tên chủ TK<br>3. Bấm "Lưu cấu hình VietQR"</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>STK: 0985670805<br>Bank: MB Bank (970422)<br>Chủ TK: Dinh The Chi Dung</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>Lưu thành công vào bảng <code style="color: #991b1b; background: #f1f5f9; padding: 1px 4px; font-family: Consolas, monospace;">CongThanhToan</code>. Thông tin cập nhật trên form.</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'>Dữ liệu được lưu chính xác</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'><b><span style="color: #166534; font-weight: bold; background: #dcfce7; padding: 2px 6px; border-radius: 4px;">PASS</span></b></td>
+</tr>
+<tr>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'><b>TC-GW-02</b></td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>Mã hóa khóa bí mật bằng AES-256</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>1. Nhập Secret Key / Webhook Key<br>2. Kiểm tra database TiDB</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>Secret: <code style="color: #991b1b; background: #f1f5f9; padding: 1px 4px; font-family: Consolas, monospace;">whsec_...</code></td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>Cột <code style="color: #991b1b; background: #f1f5f9; padding: 1px 4px; font-family: Consolas, monospace;">KhoaBiMat_MaHoa</code> trong DB được mã hóa base64 bằng AES-256-CBC, không lưu bản rõ.</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'>DB lưu chuỗi mã hóa an toàn</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'><b><span style="color: #166534; font-weight: bold; background: #dcfce7; padding: 2px 6px; border-radius: 4px;">PASS</span></b></td>
+</tr>
+<tr>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'><b>TC-GW-03</b></td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>Tạo giao dịch thanh toán VietQR mẫu</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>1. Nhập số tiền: 50.000 đ<br>2. Mã đơn: FM0413074826<br>3. Bấm "Tạo mã VietQR"</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>Số tiền: 50000<br>Mã: FM0413074826</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>Tạo bản ghi trong <code style="color: #991b1b; background: #f1f5f9; padding: 1px 4px; font-family: Consolas, monospace;">GiaoDich</code> trạng thái <code style="color: #991b1b; background: #f1f5f9; padding: 1px 4px; font-family: Consolas, monospace;">PENDING</code>. Trả về chuỗi EMVCo <code style="color: #991b1b; background: #f1f5f9; padding: 1px 4px; font-family: Consolas, monospace;">qr_data</code> và render ảnh mã QR.</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'>QR hiển thị rõ nét</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'><b><span style="color: #166534; font-weight: bold; background: #dcfce7; padding: 2px 6px; border-radius: 4px;">PASS</span></b></td>
+</tr>
+<tr>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'><b>TC-GW-04</b></td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>Kiểm tra cấu trúc tiền tố mã đơn hàng</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>1. Xem mã đơn sinh tự động</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>Đơn test</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>Mã đơn bắt đầu bằng ký tự <code style="color: #991b1b; background: #f1f5f9; padding: 1px 4px; font-family: Consolas, monospace;">FM</code> theo chuẩn SePay (ví dụ <code style="color: #991b1b; background: #f1f5f9; padding: 1px 4px; font-family: Consolas, monospace;">FM0420175682</code>).</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'>Chuẩn tiền tố <code style="color: #991b1b; background: #f1f5f9; padding: 1px 4px; font-family: Consolas, monospace;">FM</code></td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'><b><span style="color: #166534; font-weight: bold; background: #dcfce7; padding: 2px 6px; border-radius: 4px;">PASS</span></b></td>
+</tr>
+<tr>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'><b>TC-GW-05</b></td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>Quét mã QR bằng ứng dụng ngân hàng thật</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>1. Dùng App MB Bank quét mã QR vừa tạo trên màn hình</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>Mã QR của đơn 10.000 đ</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>App ngân hàng tự động điền đúng: Ngân hàng MB, STK nhận, Số tiền: 10.000 đ, Nội dung: <code style="color: #991b1b; background: #f1f5f9; padding: 1px 4px; font-family: Consolas, monospace;">FM0420175682</code>.</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'>Quét tự động chuẩn 100%</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'><b><span style="color: #166534; font-weight: bold; background: #dcfce7; padding: 2px 6px; border-radius: 4px;">PASS</span></b></td>
+</tr>
+</table>
+<hr style='border: none; border-top: 1px solid #cbd5e1; margin: 12pt 0;' />
+<h3 style='color: #047857; font-family: "Times New Roman", serif; font-size: 13pt; margin-top: 14pt; margin-bottom: 6pt;'>2.3. Module Webhook & Tự động xử lý giao dịch (SePay Webhook)</h3>
+<table style='width: 100%; border-collapse: collapse; margin-top: 12pt; margin-bottom: 12pt; font-size: 10pt; font-family: "Times New Roman", serif;'>
+<tr>
+<th style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #065f46; color: #ffffff; font-weight: bold; text-align: center;'>Mã ca</th>
+<th style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #065f46; color: #ffffff; font-weight: bold; text-align: center;'>Tên ca kiểm thử</th>
+<th style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #065f46; color: #ffffff; font-weight: bold; text-align: center;'>Các bước thực hiện</th>
+<th style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #065f46; color: #ffffff; font-weight: bold; text-align: center;'>Dữ liệu đầu vào</th>
+<th style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #065f46; color: #ffffff; font-weight: bold; text-align: center;'>Kết quả mong đợi</th>
+<th style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #065f46; color: #ffffff; font-weight: bold; text-align: center;'>Kết quả thực tế</th>
+<th style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #065f46; color: #ffffff; font-weight: bold; text-align: center;'>Trạng thái</th>
+</tr>
+<tr>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'><b>TC-WH-01</b></td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>Khách chuyển khoản thật qua SePay</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>1. Khách hàng chuyển 10.000 đ qua App ngân hàng<br>2. SePay bắt biến động số dư và bắn Webhook tới Render</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>Webhook payload từ SePay:<br><code style="color: #991b1b; background: #f1f5f9; padding: 1px 4px; font-family: Consolas, monospace;">code: FM0420175682</code><br><code style="color: #991b1b; background: #f1f5f9; padding: 1px 4px; font-family: Consolas, monospace;">transferAmount: 10000</code></td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>Hệ thống tự tìm giao dịch <code style="color: #991b1b; background: #f1f5f9; padding: 1px 4px; font-family: Consolas, monospace;">FM0420175682</code>, cập nhật <code style="color: #991b1b; background: #f1f5f9; padding: 1px 4px; font-family: Consolas, monospace;">TrangThai = 'SUCCESS'</code> và <code style="color: #991b1b; background: #f1f5f9; padding: 1px 4px; font-family: Consolas, monospace;">ThoiGianThanhToan = NOW()</code>. Trả HTTP 200 <code style="color: #991b1b; background: #f1f5f9; padding: 1px 4px; font-family: Consolas, monospace;">{"success": true}</code>.</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'>Giao dịch đổi thành SUCCESS trên Dashboard</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'><b><span style="color: #166534; font-weight: bold; background: #dcfce7; padding: 2px 6px; border-radius: 4px;">PASS</span></b></td>
+</tr>
+<tr>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'><b>TC-WH-02</b></td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>Xác thực chữ ký HMAC-SHA256 hợp lệ</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>1. Webhook gửi kèm Header <code style="color: #991b1b; background: #f1f5f9; padding: 1px 4px; font-family: Consolas, monospace;">X-SePay-Signature</code><br>2. So khớp với Secret key</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>Header chữ ký chuẩn</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>Hệ thống xác thực thành công và cho phép xử lý tiếp.</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'>Xác thực chữ ký khớp</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'><b><span style="color: #166534; font-weight: bold; background: #dcfce7; padding: 2px 6px; border-radius: 4px;">PASS</span></b></td>
+</tr>
+<tr>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'><b>TC-WH-03</b></td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>Chặn Webhook giả mạo (Sai chữ ký HMAC)</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>1. Gửi request Webhook với chữ ký giả hoặc payload bị sửa</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>Chữ ký không hợp lệ</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>Trả về HTTP 401 Unauthorized: "Chữ ký không hợp lệ". Giao dịch không bị can thiệp.</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'>Chặn thành công</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'><b><span style="color: #166534; font-weight: bold; background: #dcfce7; padding: 2px 6px; border-radius: 4px;">PASS</span></b></td>
+</tr>
+<tr>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'><b>TC-WH-04</b></td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>Chống tấn công Replay Attack qua Timestamp</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>1. Gửi request Webhook có <code style="color: #991b1b; background: #f1f5f9; padding: 1px 4px; font-family: Consolas, monospace;">X-SePay-Timestamp</code> cũ hơn 5 phút</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>Timestamp quá hạn</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>Trả về HTTP 400: "Request đã hết hạn".</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'>Chặn tấn công lặp lại</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'><b><span style="color: #166534; font-weight: bold; background: #dcfce7; padding: 2px 6px; border-radius: 4px;">PASS</span></b></td>
+</tr>
+<tr>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'><b>TC-WH-05</b></td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>Kiểm tra tính Idempotent (Webhook gửi trùng lặp)</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>1. SePay gửi cùng 1 payload giao dịch đã SUCCESS lần 2</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>Mã đơn đã SUCCESS</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>Câu lệnh SQL <code style="color: #991b1b; background: #f1f5f9; padding: 1px 4px; font-family: Consolas, monospace;">UPDATE ... WHERE TrangThai = 'PENDING'</code> không thực hiện cộng tiền 2 lần. Doanh thu không bị nhân đôi.</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'>Đảm bảo tính nhất quán dữ liệu</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'><b><span style="color: #166534; font-weight: bold; background: #dcfce7; padding: 2px 6px; border-radius: 4px;">PASS</span></b></td>
+</tr>
+<tr>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'><b>TC-WH-06</b></td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>Ghi nhật ký Webhook (Audit Log)</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>1. Kiểm tra bảng <code style="color: #991b1b; background: #f1f5f9; padding: 1px 4px; font-family: Consolas, monospace;">NhatKyWebhook</code> sau mỗi request</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>Mọi request gửi tới</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>Mọi cuộc gọi Webhook (kể cả thành công, thất bại hay giả mạo) đều được lưu lại đầy đủ: IP, Headers, Body, Timestamp.</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'>Lưu vết đầy đủ 100%</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'><b><span style="color: #166534; font-weight: bold; background: #dcfce7; padding: 2px 6px; border-radius: 4px;">PASS</span></b></td>
+</tr>
+<tr>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'><b>TC-WH-07</b></td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>Xử lý Webhook test từ SePay Simulator</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>1. Dùng tính năng Test Mode của SePay bắn mã đơn test ngẫu nhiên</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>Mã đơn test chưa có trong DB</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>Hệ thống vẫn trả về HTTP 200 <code style="color: #991b1b; background: #f1f5f9; padding: 1px 4px; font-family: Consolas, monospace;">{"success": true, "matched": false}</code> để SePay Simulator đánh giá tích hợp thành công.</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'>SePay báo tích hợp Hợp lệ</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'><b><span style="color: #166534; font-weight: bold; background: #dcfce7; padding: 2px 6px; border-radius: 4px;">PASS</span></b></td>
+</tr>
+<tr>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'><b>TC-WH-08</b></td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>Công cụ giả lập Webhook nội bộ</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>1. Trên Dashboard, mục "Giả lập Webhook"<br>2. Nhập mã đơn PENDING và bấm gửi</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>Mã đơn PENDING</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>Cập nhật giao dịch sang SUCCESS ngay lập tức, phục vụ demo khi không có mạng ngân hàng.</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'>Cập nhật tức thì</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'><b><span style="color: #166534; font-weight: bold; background: #dcfce7; padding: 2px 6px; border-radius: 4px;">PASS</span></b></td>
+</tr>
+</table>
+<hr style='border: none; border-top: 1px solid #cbd5e1; margin: 12pt 0;' />
+<h3 style='color: #047857; font-family: "Times New Roman", serif; font-size: 13pt; margin-top: 14pt; margin-bottom: 6pt;'>2.4. Module Quản trị giao dịch & Báo cáo doanh thu (Dashboard & Reports)</h3>
+<table style='width: 100%; border-collapse: collapse; margin-top: 12pt; margin-bottom: 12pt; font-size: 10pt; font-family: "Times New Roman", serif;'>
+<tr>
+<th style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #065f46; color: #ffffff; font-weight: bold; text-align: center;'>Mã ca</th>
+<th style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #065f46; color: #ffffff; font-weight: bold; text-align: center;'>Tên ca kiểm thử</th>
+<th style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #065f46; color: #ffffff; font-weight: bold; text-align: center;'>Các bước thực hiện</th>
+<th style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #065f46; color: #ffffff; font-weight: bold; text-align: center;'>Dữ liệu đầu vào</th>
+<th style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #065f46; color: #ffffff; font-weight: bold; text-align: center;'>Kết quả mong đợi</th>
+<th style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #065f46; color: #ffffff; font-weight: bold; text-align: center;'>Kết quả thực tế</th>
+<th style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #065f46; color: #ffffff; font-weight: bold; text-align: center;'>Trạng thái</th>
+</tr>
+<tr>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'><b>TC-REP-01</b></td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>Xem Dashboard Tổng quan</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>1. Vào <code style="color: #991b1b; background: #f1f5f9; padding: 1px 4px; font-family: Consolas, monospace;">/dashboard.php</code></td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>Đã đăng nhập OWNER</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>Hiển thị 4 thẻ KPI: Doanh thu hôm nay, Giao dịch thành công, Giao dịch chờ, Tổng giao dịch. Số liệu khớp với DB.</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'>Số liệu trực quan, chính xác</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'><b><span style="color: #166534; font-weight: bold; background: #dcfce7; padding: 2px 6px; border-radius: 4px;">PASS</span></b></td>
+</tr>
+<tr>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'><b>TC-REP-02</b></td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>Bộ lọc danh sách giao dịch</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>1. Chọn Trạng thái: "Thành công"<br>2. Bấm "Lọc"</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>Filter: <code style="color: #991b1b; background: #f1f5f9; padding: 1px 4px; font-family: Consolas, monospace;">SUCCESS</code></td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>Bảng chỉ hiển thị các đơn có badge xanh SUCCESS.</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'>Lọc chính xác</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'><b><span style="color: #166534; font-weight: bold; background: #dcfce7; padding: 2px 6px; border-radius: 4px;">PASS</span></b></td>
+</tr>
+<tr>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'><b>TC-REP-03</b></td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>Trang Quản lý Giao dịch (<code style="color: #991b1b; background: #f1f5f9; padding: 1px 4px; font-family: Consolas, monospace;">transactions.php</code>)</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>1. Vào <code style="color: #991b1b; background: #f1f5f9; padding: 1px 4px; font-family: Consolas, monospace;">/transactions.php</code><br>2. Tìm kiếm mã đơn</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>Tìm: <code style="color: #991b1b; background: #f1f5f9; padding: 1px 4px; font-family: Consolas, monospace;">FM0420</code></td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>Bảng trả về đúng giao dịch chứa từ khóa tìm kiếm.</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'>Tìm kiếm nhanh, nhạy</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'><b><span style="color: #166534; font-weight: bold; background: #dcfce7; padding: 2px 6px; border-radius: 4px;">PASS</span></b></td>
+</tr>
+<tr>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'><b>TC-REP-04</b></td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>Xuất dữ liệu giao dịch ra file CSV</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>1. Tại <code style="color: #991b1b; background: #f1f5f9; padding: 1px 4px; font-family: Consolas, monospace;">transactions.php</code><br>2. Bấm nút "Xuất CSV"</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>Danh sách giao dịch</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>Trình duyệt tự tải file <code style="color: #991b1b; background: #f1f5f9; padding: 1px 4px; font-family: Consolas, monospace;">danh-sach-giao-dich-YYYY-MM-DD.csv</code> có hỗ trợ tiếng Việt UTF-8 (BOM). Mở bằng Excel không lỗi font.</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'>File CSV xuất chuẩn UTF-8</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'><b><span style="color: #166534; font-weight: bold; background: #dcfce7; padding: 2px 6px; border-radius: 4px;">PASS</span></b></td>
+</tr>
+<tr>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'><b>TC-REP-05</b></td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>Trang Báo cáo doanh thu (<code style="color: #991b1b; background: #f1f5f9; padding: 1px 4px; font-family: Consolas, monospace;">reports.php</code>)</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>1. Vào <code style="color: #991b1b; background: #f1f5f9; padding: 1px 4px; font-family: Consolas, monospace;">/reports.php</code><br>2. Chọn mốc thời gian "7 ngày gần nhất"</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>Khoảng: 7 ngày</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>Biểu đồ cột Chart.js vẽ đúng doanh thu từng ngày, biểu đồ tròn thể hiện tỷ lệ cổng thanh toán.</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'>Biểu đồ tương tác mượt</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'><b><span style="color: #166534; font-weight: bold; background: #dcfce7; padding: 2px 6px; border-radius: 4px;">PASS</span></b></td>
+</tr>
+<tr>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'><b>TC-REP-06</b></td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>Nút chuyển nhanh về Trang chủ FreshMart</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>1. Tại Sidebar của Dashboard / Gateways / Transactions / Reports<br>2. Bấm vào nút "FreshMart (Trang chủ)"</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>Click link</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>Chuyển hướng người dùng về trang chủ <code style="color: #991b1b; background: #f1f5f9; padding: 1px 4px; font-family: Consolas, monospace;">html/index.html</code>.</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'>Điều hướng chính xác</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'><b><span style="color: #166534; font-weight: bold; background: #dcfce7; padding: 2px 6px; border-radius: 4px;">PASS</span></b></td>
+</tr>
+</table>
+<hr style='border: none; border-top: 1px solid #cbd5e1; margin: 12pt 0;' />
+<h3 style='color: #047857; font-family: "Times New Roman", serif; font-size: 13pt; margin-top: 14pt; margin-bottom: 6pt;'>2.5. Module Giao diện người dùng & Đáp ứng (UI & Responsive)</h3>
+<table style='width: 100%; border-collapse: collapse; margin-top: 12pt; margin-bottom: 12pt; font-size: 10pt; font-family: "Times New Roman", serif;'>
+<tr>
+<th style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #065f46; color: #ffffff; font-weight: bold; text-align: center;'>Mã ca</th>
+<th style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #065f46; color: #ffffff; font-weight: bold; text-align: center;'>Tên ca kiểm thử</th>
+<th style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #065f46; color: #ffffff; font-weight: bold; text-align: center;'>Các bước thực hiện</th>
+<th style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #065f46; color: #ffffff; font-weight: bold; text-align: center;'>Dữ liệu đầu vào</th>
+<th style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #065f46; color: #ffffff; font-weight: bold; text-align: center;'>Kết quả mong đợi</th>
+<th style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #065f46; color: #ffffff; font-weight: bold; text-align: center;'>Kết quả thực tế</th>
+<th style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #065f46; color: #ffffff; font-weight: bold; text-align: center;'>Trạng thái</th>
+</tr>
+<tr>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'><b>TC-UI-01</b></td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>Trạng thái Top-Bar khi chưa đăng nhập</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>1. Mở bất kỳ trang HTML (<code style="color: #991b1b; background: #f1f5f9; padding: 1px 4px; font-family: Consolas, monospace;">index.html</code>, <code style="color: #991b1b; background: #f1f5f9; padding: 1px 4px; font-family: Consolas, monospace;">products.html</code>...)</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>Khách vãng lai</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>Top-Bar góc phải hiển thị: "Theo dõi đơn hàng \</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>Hỗ trợ \</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>Đăng nhập".</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'>Đúng thiết kế ban đầu</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'><b><span style="color: #166534; font-weight: bold; background: #dcfce7; padding: 2px 6px; border-radius: 4px;">PASS</span></b></td>
+</tr>
+<tr>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'><b>TC-UI-02</b></td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>Trạng thái Top-Bar khi đã đăng nhập OWNER</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>1. Đăng nhập với tài khoản OWNER<br>2. Về trang chủ <code style="color: #991b1b; background: #f1f5f9; padding: 1px 4px; font-family: Consolas, monospace;">index.html</code></td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>Đã có Session OWNER</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>"Đăng nhập" đổi thành <code style="color: #991b1b; background: #f1f5f9; padding: 1px 4px; font-family: Consolas, monospace;"><i class="fas fa-user-shield text-warning"></i> [Tên Admin] Admin</code> kèm nút "Thoát". Bấm vào tên nhảy vào <code style="color: #991b1b; background: #f1f5f9; padding: 1px 4px; font-family: Consolas, monospace;">dashboard.php</code>.</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'>Hiển thị và điều hướng chuẩn</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'><b><span style="color: #166534; font-weight: bold; background: #dcfce7; padding: 2px 6px; border-radius: 4px;">PASS</span></b></td>
+</tr>
+<tr>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'><b>TC-UI-03</b></td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>Trạng thái Top-Bar khi đã đăng nhập USER</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>1. Đăng nhập với tài khoản USER<br>2. Về trang chủ <code style="color: #991b1b; background: #f1f5f9; padding: 1px 4px; font-family: Consolas, monospace;">index.html</code></td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>Đã có Session USER</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>"Đăng nhập" đổi thành <code style="color: #991b1b; background: #f1f5f9; padding: 1px 4px; font-family: Consolas, monospace;"><i class="fas fa-user-circle text-success"></i> [Tên Khách hàng]</code> kèm nút "Thoát". Bấm vào tên nhảy vào <code style="color: #991b1b; background: #f1f5f9; padding: 1px 4px; font-family: Consolas, monospace;">account.html</code>.</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'>Hiển thị và điều hướng chuẩn</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'><b><span style="color: #166534; font-weight: bold; background: #dcfce7; padding: 2px 6px; border-radius: 4px;">PASS</span></b></td>
+</tr>
+<tr>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'><b>TC-UI-04</b></td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>Trang Tài khoản cá nhân (<code style="color: #991b1b; background: #f1f5f9; padding: 1px 4px; font-family: Consolas, monospace;">account.html</code>)</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>1. Đăng nhập USER<br>2. Vào trang <code style="color: #991b1b; background: #f1f5f9; padding: 1px 4px; font-family: Consolas, monospace;">account.html</code></td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>Tài khoản cá nhân</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>Hiển thị thông tin cá nhân, danh sách đơn hàng đã thanh toán, form đổi mật khẩu.</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'>Giao diện đẹp, đầy đủ tab</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'><b><span style="color: #166534; font-weight: bold; background: #dcfce7; padding: 2px 6px; border-radius: 4px;">PASS</span></b></td>
+</tr>
+<tr>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'><b>TC-UI-05</b></td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>Đổi mật khẩu tài khoản thành công</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>1. Vào tab "Đổi mật khẩu" tại <code style="color: #991b1b; background: #f1f5f9; padding: 1px 4px; font-family: Consolas, monospace;">account.html</code><br>2. Nhập mật khẩu hiện tại + mật khẩu mới<br>3. Bấm "Đổi mật khẩu"</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>Mật khẩu cũ đúng, mật khẩu mới > 6 ký tự</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>Cập nhật mật khẩu mã hóa mới vào DB, báo thông báo xanh "Đổi mật khẩu thành công!".</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'>Đổi mật khẩu thành công</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'><b><span style="color: #166534; font-weight: bold; background: #dcfce7; padding: 2px 6px; border-radius: 4px;">PASS</span></b></td>
+</tr>
+<tr>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'><b>TC-UI-06</b></td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>Hiển thị trên thiết bị di động (Responsive)</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>1. Thu nhỏ màn hình trình duyệt < 768px (hoặc bật Device Toolbar Mobile)</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>Màn hình di động</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>Top-bar ẩn tự nhiên, nút Hamburger menu mở ra Mobile Menu trượt từ bên trái; Tên tài khoản và nút Đăng xuất hiển thị gọn gàng trong Mobile Menu.</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'>Responsive hoàn hảo</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'><b><span style="color: #166534; font-weight: bold; background: #dcfce7; padding: 2px 6px; border-radius: 4px;">PASS</span></b></td>
+</tr>
+</table>
+<hr style='border: none; border-top: 1px solid #cbd5e1; margin: 12pt 0;' />
+<h2 style='color: #065f46; font-family: "Times New Roman", serif; font-size: 15pt; border-bottom: 1.5pt solid #065f46; padding-bottom: 4pt; margin-top: 18pt; margin-bottom: 8pt;'>3. BÁO CÁO LỖI & PHƯƠNG ÁN XỬ LÝ (BUG REPORT)</h2>
+<p style='font-family: "Times New Roman", serif; font-size: 12pt; line-height: 1.4; margin: 6pt 0;'>Dưới đây là bảng theo dõi toàn bộ các lỗi (Defects/Bugs) đã phát sinh trong các chu kỳ phát triển & kiểm thử, nguyên nhân gốc rễ và giải pháp đã thực hiện triệt để:</p>
+<table style='width: 100%; border-collapse: collapse; margin-top: 12pt; margin-bottom: 12pt; font-size: 10pt; font-family: "Times New Roman", serif;'>
+<tr>
+<th style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #065f46; color: #ffffff; font-weight: bold; text-align: center;'>Bug ID</th>
+<th style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #065f46; color: #ffffff; font-weight: bold; text-align: center;'>Tiêu đề lỗi</th>
+<th style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #065f46; color: #ffffff; font-weight: bold; text-align: center;'>Mức độ</th>
+<th style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #065f46; color: #ffffff; font-weight: bold; text-align: center;'>Module</th>
+<th style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #065f46; color: #ffffff; font-weight: bold; text-align: center;'>Nguyên nhân gốc rễ</th>
+<th style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #065f46; color: #ffffff; font-weight: bold; text-align: center;'>Phương án khắc phục</th>
+<th style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #065f46; color: #ffffff; font-weight: bold; text-align: center;'>Trạng thái</th>
+</tr>
+<tr>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'><b>BUG-01</b></td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>Render báo lỗi "Start Command Required" khi deploy</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'><b>Cao (Blocker)</b></td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>Deployment</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>Render mặc định không có môi trường chạy native Apache + PHP tĩnh như Node.js.</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'>Đóng gói toàn bộ mã nguồn vào <code style="color: #991b1b; background: #f1f5f9; padding: 1px 4px; font-family: Consolas, monospace;">Dockerfile</code> chuẩn (PHP 8.2-apache + PDO MySQL + rewrite mod).</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'><b>ĐÃ XỬ LÝ (<span style="color: #1e293b; font-weight: bold; background: #f1f5f9; padding: 2px 6px; border-radius: 4px;">CLOSED</span>)</b></td>
+</tr>
+<tr>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'><b>BUG-02</b></td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>Kết nối TiDB Cloud bị từ chối <code style="color: #991b1b; background: #f1f5f9; padding: 1px 4px; font-family: Consolas, monospace;">SQLSTATE[HY000] [1105]</code></td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'><b>Cao (Critical)</b></td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>Database</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>TiDB Cloud trên AWS yêu cầu kết nối an toàn có mã hóa SSL bắt buộc, PHP PDO mặc định không bật SSL CA.</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'>Tải chứng chỉ gốc <code style="color: #991b1b; background: #f1f5f9; padding: 1px 4px; font-family: Consolas, monospace;">isrgrootx1.pem</code> (Let's Encrypt Root CA) và thêm cấu hình <code style="color: #991b1b; background: #f1f5f9; padding: 1px 4px; font-family: Consolas, monospace;">PDO::MYSQL_ATTR_SSL_CA</code> vào <code style="color: #991b1b; background: #f1f5f9; padding: 1px 4px; font-family: Consolas, monospace;">config/db.php</code>.</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'><b>ĐÃ XỬ LÝ (<span style="color: #1e293b; font-weight: bold; background: #f1f5f9; padding: 2px 6px; border-radius: 4px;">CLOSED</span>)</b></td>
+</tr>
+<tr>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'><b>BUG-03</b></td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>SePay Simulator báo lỗi <code style="color: #991b1b; background: #f1f5f9; padding: 1px 4px; font-family: Consolas, monospace;">Body thiếu {"success": true}</code></td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'><b>Trung bình</b></td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>Webhook</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>Khi SePay gửi payload test với mã đơn giả lập không có trong DB, BE trả về <code style="color: #991b1b; background: #f1f5f9; padding: 1px 4px; font-family: Consolas, monospace;">{"success": false}</code> khiến SePay coi là lỗi kết nối.</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'>Cập nhật <code style="color: #991b1b; background: #f1f5f9; padding: 1px 4px; font-family: Consolas, monospace;">api/webhook_vietqr.php</code> luôn trả HTTP 200 kèm <code style="color: #991b1b; background: #f1f5f9; padding: 1px 4px; font-family: Consolas, monospace;">{"success": true, "message": "...", "matched": false}</code> khi test.</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'><b>ĐÃ XỬ LÝ (<span style="color: #1e293b; font-weight: bold; background: #f1f5f9; padding: 2px 6px; border-radius: 4px;">CLOSED</span>)</b></td>
+</tr>
+<tr>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'><b>BUG-04</b></td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>SePay không nhận diện mã đơn hàng thanh toán</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'><b>Cao</b></td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>Webhook</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>Mẫu regex trên SePay yêu cầu mã đơn bắt đầu bằng <code style="color: #991b1b; background: #f1f5f9; padding: 1px 4px; font-family: Consolas, monospace;">FM</code> (ví dụ <code style="color: #991b1b; background: #f1f5f9; padding: 1px 4px; font-family: Consolas, monospace;">FM[0-9]{6,10}</code>), trong khi hệ thống trước đó sinh tiền tố <code style="color: #991b1b; background: #f1f5f9; padding: 1px 4px; font-family: Consolas, monospace;">DH...</code>.</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'>Đổi hàm sinh mã đơn tại <code style="color: #991b1b; background: #f1f5f9; padding: 1px 4px; font-family: Consolas, monospace;">admin/gateways.php</code> sang <code style="color: #991b1b; background: #f1f5f9; padding: 1px 4px; font-family: Consolas, monospace;">FM</code> + thời gian + số ngẫu nhiên (<code style="color: #991b1b; background: #f1f5f9; padding: 1px 4px; font-family: Consolas, monospace;">FM<?= date('dHis') . rand(10,99) ?></code>).</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'><b>ĐÃ XỬ LÝ (<span style="color: #1e293b; font-weight: bold; background: #f1f5f9; padding: 2px 6px; border-radius: 4px;">CLOSED</span>)</b></td>
+</tr>
+<tr>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'><b>BUG-05</b></td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>Khách hàng thường bấm vào tên tài khoản bị vào trang Admin</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'><b>Trung bình</b></td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>Phân quyền</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>Liên kết đăng nhập trước đây chỉ trỏ cứng vào <code style="color: #991b1b; background: #f1f5f9; padding: 1px 4px; font-family: Consolas, monospace;">dashboard.php</code> mà không phân loại vai trò <code style="color: #991b1b; background: #f1f5f9; padding: 1px 4px; font-family: Consolas, monospace;">OWNER</code> hay <code style="color: #991b1b; background: #f1f5f9; padding: 1px 4px; font-family: Consolas, monospace;">USER</code>.</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'>Viết API <code style="color: #991b1b; background: #f1f5f9; padding: 1px 4px; font-family: Consolas, monospace;">api/me.php</code> và logic <code style="color: #991b1b; background: #f1f5f9; padding: 1px 4px; font-family: Consolas, monospace;">js/main.js</code>: Nếu có quyền Admin ➔ vào <code style="color: #991b1b; background: #f1f5f9; padding: 1px 4px; font-family: Consolas, monospace;">dashboard.php</code>, nếu là Khách hàng ➔ vào <code style="color: #991b1b; background: #f1f5f9; padding: 1px 4px; font-family: Consolas, monospace;">account.html</code>.</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'><b>ĐÃ XỬ LÝ (<span style="color: #1e293b; font-weight: bold; background: #f1f5f9; padding: 2px 6px; border-radius: 4px;">CLOSED</span>)</b></td>
+</tr>
+<tr>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'><b>BUG-06</b></td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>File xuất CSV bị lỗi font tiếng Việt trong Excel</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'><b>Thấp</b></td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>Reports</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; background-color: #ffffff;'>File CSV thuần không có tiền tố Byte Order Mark (BOM) khiến Excel trên Windows nhận diện sai bảng mã.</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'>Thêm chuỗi <code style="color: #991b1b; background: #f1f5f9; padding: 1px 4px; font-family: Consolas, monospace;">\uFEFF</code> (UTF-8 BOM) vào đầu Blob nội dung CSV trước khi tải xuống trong <code style="color: #991b1b; background: #f1f5f9; padding: 1px 4px; font-family: Consolas, monospace;">transactions.php</code>.</td>
+<td style='border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: center; background-color: #ffffff;'><b>ĐÃ XỬ LÝ (<span style="color: #1e293b; font-weight: bold; background: #f1f5f9; padding: 2px 6px; border-radius: 4px;">CLOSED</span>)</b></td>
+</tr>
+</table>
+<hr style='border: none; border-top: 1px solid #cbd5e1; margin: 12pt 0;' />
+<h2 style='color: #065f46; font-family: "Times New Roman", serif; font-size: 15pt; border-bottom: 1.5pt solid #065f46; padding-bottom: 4pt; margin-top: 18pt; margin-bottom: 8pt;'>4. TỔNG KẾT & ĐÁNH GIÁ CHẤT LƯỢNG</h2>
+<h3 style='color: #047857; font-family: "Times New Roman", serif; font-size: 13pt; margin-top: 14pt; margin-bottom: 6pt;'>4.1. Thống kê kết quả kiểm thử</h3>
+<p style='margin: 3pt 0 3pt 20pt; text-indent: -12pt; font-family: "Times New Roman", serif; font-size: 12pt; line-height: 1.3;'>• <b>Tổng số ca kiểm thử (Total Test Cases):</b> 36 ca</p>
+<p style='margin: 3pt 0 3pt 20pt; text-indent: -12pt; font-family: "Times New Roman", serif; font-size: 12pt; line-height: 1.3;'>• <b>Số ca Đạt (Passed):</b> 36 ca (Tỷ lệ: <b>100%</b>)</p>
+<p style='margin: 3pt 0 3pt 20pt; text-indent: -12pt; font-family: "Times New Roman", serif; font-size: 12pt; line-height: 1.3;'>• <b>Số ca Thất bại (Failed):</b> 0 ca</p>
+<p style='margin: 3pt 0 3pt 20pt; text-indent: -12pt; font-family: "Times New Roman", serif; font-size: 12pt; line-height: 1.3;'>• <b>Số lỗi phát hiện và đã khắc phục hoàn tất (Resolved Bugs):</b> 6 lỗi</p>
+<h3 style='color: #047857; font-family: "Times New Roman", serif; font-size: 13pt; margin-top: 14pt; margin-bottom: 6pt;'>4.2. Đánh giá mức độ sẵn sàng (Readiness Assessment)</h3>
+<p style='font-family: "Times New Roman", serif; font-size: 12pt; line-height: 1.4; margin: 6pt 0;'>1. <b>Tính đầy đủ chức năng:</b> Toàn bộ chức năng nghiệp vụ tuần 7 đến tuần 12 đã hoàn thiện và vượt tiến độ.</p>
+<p style='font-family: "Times New Roman", serif; font-size: 12pt; line-height: 1.4; margin: 6pt 0;'>2. <b>Độ ổn định hệ thống:</b> Webhook tiếp nhận tự động trong thời gian thực dưới 500ms, không xảy ra deadlock hay mất giao dịch.</p>
+<p style='font-family: "Times New Roman", serif; font-size: 12pt; line-height: 1.4; margin: 6pt 0;'>3. <b>Bảo mật:</b> Đạt chuẩn an toàn OWASP cơ bản (Prepared Statements, Password Hashing, Signature Verification, Role-Based Access Control).</p>
+<p style='font-family: "Times New Roman", serif; font-size: 12pt; line-height: 1.4; margin: 6pt 0;'>4. <b>Kết luận:</b> Hệ thống đã hoàn thành xuất sắc yêu cầu kiểm thử của <b>Tuần 11</b>, hoàn toàn đủ điều kiện chuyển sang giai đoạn <b>Tuần 13–14 (Viết báo cáo tổng kết và chuẩn bị slide bảo vệ đồ án)</b>.</p>
+
+</div>
+</body>
+</html>
