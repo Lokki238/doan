@@ -471,14 +471,14 @@
     // Load Account Data
     async function loadAccountData() {
       try {
-        const res = await fetch('../api/profile.php');
+        const res = await fetch('../api/profile.php', { credentials: 'same-origin' });
         if (res.status === 401) {
           window.location.href = 'login.html';
           return;
         }
         const data = await res.json();
-        if (!data.success) {
-          window.location.href = 'login.html';
+        if (!data || !data.success || !data.data || !data.data.user) {
+          console.warn('Lưu ý khi tải profile:', data ? data.message : 'Không có dữ liệu');
           return;
         }
 

@@ -96,7 +96,7 @@ try {
     $pdo = getDB(); // Lấy kết nối database
 
     // 3.1. Kiểm tra email đã tồn tại chưa
-    $stmt = $pdo->prepare("SELECT ID FROM NguoiDung WHERE Email = ?");
+    $stmt = $pdo->prepare("SELECT ID FROM nguoidung WHERE Email = ?");
     $stmt->execute([$email]);
     
     if ($stmt->fetch()) {
@@ -118,16 +118,16 @@ try {
     // (tránh trường hợp tạo được User nhưng không tạo được Shop)
     $pdo->beginTransaction();
 
-    // 3.5. Thêm vào bảng NguoiDung (USER hoặc OWNER)
+    // 3.5. Thêm vào bảng nguoidung (USER hoặc OWNER)
     $stmt = $pdo->prepare("
-        INSERT INTO NguoiDung (ID, Email, MatKhauMaHoa, HoTen, VaiTro)
+        INSERT INTO nguoidung (ID, Email, MatKhauMaHoa, HoTen, VaiTro)
         VALUES (?, ?, ?, ?, ?)
     ");
     $stmt->execute([$userId, $email, $matKhauMaHoa, $hoTen, $vaiTro]);
 
-    // 3.6. Thêm vào bảng CuaHang (quan hệ 1-1 với User)
+    // 3.6. Thêm vào bảng cuahang (quan hệ 1-1 với User)
     $stmt = $pdo->prepare("
-        INSERT INTO CuaHang (ID, NguoiDung_id, TenCH, MoTaCH)
+        INSERT INTO cuahang (ID, NguoiDung_id, TenCH, MoTaCH)
         VALUES (?, ?, ?, ?)
     ");
     $moTa = ($vaiTro === 'OWNER') ? 'Cửa hàng tạo tự động' : 'Hồ sơ người dùng cá nhân';

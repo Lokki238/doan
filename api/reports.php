@@ -69,7 +69,7 @@ try {
             COALESCE(SUM(CASE WHEN TrangThai = 'PENDING' THEN 1 ELSE 0 END), 0) AS don_dang_cho,
             COALESCE(SUM(CASE WHEN TrangThai = 'FAILED' THEN 1 ELSE 0 END), 0) AS don_that_bai,
             COALESCE(SUM(CASE WHEN TrangThai = 'SUCCESS' THEN SoTien ELSE 0 END), 0) AS tong_doanh_thu
-        FROM GiaoDich
+        FROM giaodich
         WHERE CuaHang_id = ? 
           AND DATE(ThoiGianTao) >= ? 
           AND DATE(ThoiGianTao) <= ?
@@ -90,7 +90,7 @@ try {
             COUNT(*) AS tong_don,
             SUM(CASE WHEN TrangThai = 'SUCCESS' THEN 1 ELSE 0 END) AS thanh_cong,
             COALESCE(SUM(CASE WHEN TrangThai = 'SUCCESS' THEN SoTien ELSE 0 END), 0) AS doanh_thu
-        FROM GiaoDich
+        FROM giaodich
         WHERE CuaHang_id = ? 
           AND DATE(ThoiGianTao) >= ? 
           AND DATE(ThoiGianTao) <= ?
@@ -130,7 +130,7 @@ try {
             COUNT(*) AS tong_don,
             SUM(CASE WHEN TrangThai = 'SUCCESS' THEN 1 ELSE 0 END) AS thanh_cong,
             COALESCE(SUM(CASE WHEN TrangThai = 'SUCCESS' THEN SoTien ELSE 0 END), 0) AS doanh_thu
-        FROM GiaoDich
+        FROM giaodich
         WHERE CuaHang_id = ? 
           AND DATE(ThoiGianTao) >= ? 
           AND DATE(ThoiGianTao) <= ?

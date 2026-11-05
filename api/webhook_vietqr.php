@@ -98,7 +98,7 @@ try {
     $logId = generateUUID();
     
     $stmt = $pdo->prepare("
-        INSERT INTO NhatKyWebhook (
+        INSERT INTO nhatkywebhook (
             ID, GiaoDich_id, LoaiCongThanhToan, 
             DuLieuGuiDen, ThongTinHeader, 
             DaXacThuc, DaXuLy
@@ -146,7 +146,7 @@ try {
 
     if (empty($orderId) && $amount <= 0) {
         // Cập nhật log: không đủ dữ liệu
-        $pdo->prepare("UPDATE NhatKyWebhook SET DaXuLy = 1 WHERE ID = ?")->execute([$logId]);
+        $pdo->prepare("UPDATE nhatkywebhook SET DaXuLy = 1 WHERE ID = ?")->execute([$logId]);
         
         // SePay bắt buộc body phản hồi phải có {"success": true}
         http_response_code(200);
@@ -160,7 +160,7 @@ try {
     // -----------------------------------------------------
     $stmt = $pdo->prepare("
         SELECT ID, SoTien, TrangThai, CuaHang_id
-        FROM GiaoDich
+        FROM giaodich
         WHERE MaDonHang = ?
           AND LoaiCongThanhToan = 'VIETQR'
           AND TrangThai = 'PENDING'
@@ -174,7 +174,7 @@ try {
     if (!$giaoDich && $amount > 0) {
         $stmt = $pdo->prepare("
             SELECT ID, SoTien, TrangThai, CuaHang_id, MaDonHang
-            FROM GiaoDich
+            FROM giaodich
             WHERE SoTien = ?
               AND LoaiCongThanhToan = 'VIETQR'
               AND TrangThai = 'PENDING'
@@ -188,7 +188,7 @@ try {
 
     if (!$giaoDich) {
         // Không tìm thấy giao dịch phù hợp (thường xảy ra khi SePay chạy công cụ Test mô phỏng)
-        $pdo->prepare("UPDATE NhatKyWebhook SET DaXuLy = 1 WHERE ID = ?")->execute([$logId]);
+        $pdo->prepare("UPDATE nhatkywebhook SET DaXuLy = 1 WHERE ID = ?")->execute([$logId]);
         
         // SePay bắt buộc response phải có {"success": true} để ghi nhận webhook thành công
         http_response_code(200);
@@ -207,7 +207,7 @@ try {
     $newStatus = ($status === 'FAILED' || $status === 'CANCELLED') ? 'FAILED' : 'SUCCESS';
 
     $stmt = $pdo->prepare("
-        UPDATE GiaoDich SET
+        UPDATE giaodich SET
             TrangThai = ?,
             MaGiaoDichCongThanhToan = ?,
             ThoiGianThanhToan = NOW(),
@@ -225,7 +225,7 @@ try {
     // 6. CẬP NHẬT LOG WEBHOOK
     // -----------------------------------------------------
     $pdo->prepare("
-        UPDATE NhatKyWebhook SET
+        UPDATE nhatkywebhook SET
             GiaoDich_id = ?,
             DaXacThuc = 1,
             DaXuLy = 1

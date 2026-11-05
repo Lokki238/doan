@@ -83,7 +83,7 @@ try {
     $pdo = getDB();
 
     // 3.1. Kiểm tra mã đơn hàng đã tồn tại chưa (trong cùng shop)
-    $stmt = $pdo->prepare("SELECT ID FROM GiaoDich WHERE CuaHang_id = ? AND MaDonHang = ?");
+    $stmt = $pdo->prepare("SELECT ID FROM giaodich WHERE CuaHang_id = ? AND MaDonHang = ?");
     $stmt->execute([$shopId, $maDonHang]);
     if ($stmt->fetch()) {
         jsonResponse(false, 'Mã đơn hàng này đã tồn tại. Vui lòng dùng mã khác.', [], 409);
@@ -91,7 +91,7 @@ try {
 
     // 3.2. Lấy cấu hình cổng thanh toán của shop
     $stmt = $pdo->prepare("
-        SELECT * FROM CongThanhToan 
+        SELECT * FROM congthanhtoan 
         WHERE CuaHang_id = ? 
           AND LoaiCongThanhToan = ? 
           AND TrangThaiHoatDong = 1
@@ -135,7 +135,7 @@ try {
     $giaoDichId = generateUUID();
 
     $stmt = $pdo->prepare("
-        INSERT INTO GiaoDich (
+        INSERT INTO giaodich (
             ID, CuaHang_id, CongThanhToan_id, MaDonHang, 
             SoTien, MoTa, LoaiCongThanhToan, TrangThai, 
             DuLieuQR, DuongDanThanhToan

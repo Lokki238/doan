@@ -26,7 +26,7 @@ $user = getCurrentUser();
 // Truy vấn thông tin cập nhật mới nhất từ DB
 try {
     $pdo = getDB();
-    $stmt = $pdo->prepare("SELECT ID, Email, HoTen, VaiTro, ThoiGianTao FROM NguoiDung WHERE ID = ? LIMIT 1");
+    $stmt = $pdo->prepare("SELECT ID, Email, HoTen, VaiTro, ThoiGianTao FROM nguoidung WHERE ID = ? LIMIT 1");
     $stmt->execute([$user['id']]);
     $dbUser = $stmt->fetch(PDO::FETCH_ASSOC);
     if ($dbUser) {

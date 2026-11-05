@@ -44,7 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             ID, LoaiCongThanhToan, MaNguoiBan, 
             CauHinhThem, TrangThaiHoatDong, ThoiGianTao
             -- Không trả KhoaAPI_MaHoa và KhoaBiMat_MaHoa ra ngoài vì bảo mật
-        FROM CongThanhToan
+        FROM congthanhtoan
         WHERE CuaHang_id = ?
         ORDER BY LoaiCongThanhToan
     ");
@@ -106,7 +106,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
         // Kiểm tra đã có cấu hình cổng này chưa
         $stmt = $pdo->prepare("
-            SELECT ID FROM CongThanhToan 
+            SELECT ID FROM congthanhtoan 
             WHERE CuaHang_id = ? AND LoaiCongThanhToan = ?
         ");
         $stmt->execute([$shopId, $loaiCong]);
@@ -115,7 +115,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($existing) {
             // ----- CẬP NHẬT -----
             // Chỉ update key nếu người dùng có nhập key mới
-            $sql = "UPDATE CongThanhToan SET 
+            $sql = "UPDATE congthanhtoan SET 
                         MaNguoiBan = ?, 
                         CauHinhThem = ?, 
                         TrangThaiHoatDong = ?";
@@ -143,7 +143,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // ----- THÊM MỚI -----
             $id = generateUUID();
             $stmt = $pdo->prepare("
-                INSERT INTO CongThanhToan (
+                INSERT INTO congthanhtoan (
                     ID, CuaHang_id, LoaiCongThanhToan, MaNguoiBan,
                     KhoaAPI_MaHoa, KhoaBiMat_MaHoa, CauHinhThem, TrangThaiHoatDong
                 ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)

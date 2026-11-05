@@ -64,8 +64,8 @@ try {
             u.VaiTro,
             c.ID   AS ShopID, 
             c.TenCH
-        FROM NguoiDung u
-        LEFT JOIN CuaHang c ON c.NguoiDung_id = u.ID
+        FROM nguoidung u
+        LEFT JOIN cuahang c ON c.NguoiDung_id = u.ID
         WHERE u.Email = ?
         LIMIT 1
     ");

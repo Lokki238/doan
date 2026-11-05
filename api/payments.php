@@ -72,7 +72,7 @@ try {
     $whereSql = implode(' AND ', $where);
 
     // Đếm tổng
-    $stmt = $pdo->prepare("SELECT COUNT(*) FROM GiaoDich WHERE $whereSql");
+    $stmt = $pdo->prepare("SELECT COUNT(*) FROM giaodich WHERE $whereSql");
     $stmt->execute($params);
     $total = (int)$stmt->fetchColumn();
 
@@ -83,7 +83,7 @@ try {
             TrangThai, DuLieuQR, DuongDanThanhToan,
             MaGiaoDichCongThanhToan, ThoiGianThanhToan,
             ThoiGianTao, ThoiGianCapNhat
-        FROM GiaoDich
+        FROM giaodich
         WHERE $whereSql
         ORDER BY ThoiGianTao DESC
         LIMIT $limit OFFSET $offset
@@ -101,7 +101,7 @@ try {
             SUM(CASE WHEN TrangThai = 'FAILED' THEN 1 ELSE 0 END) AS that_bai,
             COALESCE(SUM(CASE WHEN TrangThai = 'SUCCESS' THEN SoTien ELSE 0 END), 0) AS tong_doanh_thu,
             COALESCE(SUM(CASE WHEN TrangThai = 'SUCCESS' AND DATE(ThoiGianThanhToan) = CURDATE() THEN SoTien ELSE 0 END), 0) AS doanh_thu_hom_nay
-        FROM GiaoDich
+        FROM giaodich
         WHERE CuaHang_id = ?
     ");
     $stmt->execute([$shopId]);
@@ -112,7 +112,7 @@ try {
         SELECT 
             DATE(ThoiGianThanhToan) AS ngay,
             SUM(SoTien) AS doanh_thu
-        FROM GiaoDich
+        FROM giaodich
         WHERE CuaHang_id = ?
           AND TrangThai = 'SUCCESS'
           AND ThoiGianThanhToan >= DATE_SUB(CURDATE(), INTERVAL 6 DAY)

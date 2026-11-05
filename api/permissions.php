@@ -54,8 +54,8 @@ try {
                     u.ThoiGianTao, 
                     u.ThoiGianCapNhat,
                     c.TenCH
-                FROM NguoiDung u
-                LEFT JOIN CuaHang c ON c.NguoiDung_id = u.ID
+                FROM nguoidung u
+                LEFT JOIN cuahang c ON c.NguoiDung_id = u.ID
                 WHERE u.Email LIKE ? OR u.HoTen LIKE ? OR u.ID = ?
                 ORDER BY u.ThoiGianTao DESC
                 LIMIT 50
@@ -73,8 +73,8 @@ try {
                     u.ThoiGianTao, 
                     u.ThoiGianCapNhat,
                     c.TenCH
-                FROM NguoiDung u
-                LEFT JOIN CuaHang c ON c.NguoiDung_id = u.ID
+                FROM nguoidung u
+                LEFT JOIN cuahang c ON c.NguoiDung_id = u.ID
                 ORDER BY u.ThoiGianTao DESC
                 LIMIT 30
             ");
@@ -112,7 +112,7 @@ try {
         }
 
         // Kiểm tra xem user có tồn tại không
-        $checkStmt = $pdo->prepare("SELECT ID, Email, HoTen, VaiTro FROM NguoiDung WHERE ID = ? LIMIT 1");
+        $checkStmt = $pdo->prepare("SELECT ID, Email, HoTen, VaiTro FROM nguoidung WHERE ID = ? LIMIT 1");
         $checkStmt->execute([$targetUserId]);
         $targetUser = $checkStmt->fetch(PDO::FETCH_ASSOC);
 
@@ -122,7 +122,7 @@ try {
 
         // Cập nhật database
         $updateStmt = $pdo->prepare("
-            UPDATE NguoiDung 
+            UPDATE nguoidung 
             SET VaiTro = ?, ThoiGianCapNhat = NOW() 
             WHERE ID = ?
         ");
