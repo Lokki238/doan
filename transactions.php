@@ -49,6 +49,7 @@ $user = getCurrentUser();
         <a href="admin/gateways.php"><i class="fas fa-credit-card me-2"></i> Cổng thanh toán</a>
         <a href="transactions.php" class="active"><i class="fas fa-exchange-alt me-2"></i> Giao dịch</a>
         <a href="reports.php"><i class="fas fa-chart-bar me-2"></i> Báo cáo</a>
+        <a href="permissions.php"><i class="fas fa-user-shield me-2"></i> Cấp quyền</a>
         <hr class="border-secondary mx-3 my-2">
         <!-- Nút về trang chủ FreshMart -->
         <a href="html/index.html" class="freshmart-home">
