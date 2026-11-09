@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Giỏ hàng | FreshMart</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/all.min.css">
+  <link href="../css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .page-banner {
+      background: linear-gradient(135deg, var(--bg-soft) 0%, #fff 100%);
+      padding: 40px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .breadcrumb { background: none; padding: 0; margin: 0 0 8px; font-size: 0.85rem; }
+    .breadcrumb-item a { color: var(--primary); }
+    .breadcrumb-item.active { color: var(--text-muted); }
+    .page-banner h1 { font-family: var(--font-display); font-size: 2rem; font-weight: 700; margin: 0; }
+
+    .cart-section { padding: 48px 0 80px; }
+    .cart-table {
+      width: 100%;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    .cart-table thead { background: var(--bg-light); }
+    .cart-table th {
+      padding: 16px 20px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--text-muted);
+      border-bottom: 1px solid var(--border);
+    }
+    .cart-table td {
+      padding: 20px;
+      vertical-align: middle;
+      border-bottom: 1px solid var(--border);
+    }
+    .cart-table tr:last-child td { border-bottom: none; }
+    .cart-product {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .cart-product img {
+      width: 80px;
+      height: 80px;
+      object-fit: cover;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+    }
+    .cart-product h4 {
+      font-size: 0.95rem;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+    .cart-product span {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+    .cart-qty {
+      display: flex;
+      align-items: center;
+      border: 1px solid var(--border);
+      border-radius: 50px;
+      overflow: hidden;
+      width: fit-content;
+      background: #fff;
+    }
+    .cart-qty button {
+      width: 32px;
+      height: 32px;
+      font-size: 0.9rem;
+      color: var(--text);
+      background: none;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: var(--transition);
+    }
+    .cart-qty button:hover { background: var(--bg-soft); color: var(--primary); }
+    .cart-qty input {
+      width: 44px;
+      text-align: center;
+      border: none;
+      font-weight: 600;
+      font-size: 0.9rem;
+      outline: none;
+      background: transparent;
+    }
+    .cart-price { font-weight: 700; color: var(--primary); font-size: 1rem; }
+    .cart-remove {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .cart-remove:hover { background: #fee2e2; color: #ef4444; }
+
+    .cart-summary {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+      position: sticky;
+      top: 90px;
+    }
+    .cart-summary h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-bottom: 20px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border);
+    }
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 12px;
+      font-size: 0.95rem;
+    }
+    .summary-row.total {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--primary);
+      padding-top: 16px;
+      border-top: 2px solid var(--border);
+      margin-top: 8px;
+    }
+    .coupon-form {
+      display: flex;
+      gap: 8px;
+      margin: 20px 0;
+    }
+    .coupon-form input {
+      flex: 1;
+      padding: 10px 16px;
+      border: 1px solid var(--border);
+      border-radius: 50px;
+      font-size: 0.85rem;
+      outline: none;
+    }
+    .coupon-form input:focus { border-color: var(--primary); }
+
+    .empty-cart-state {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 60px 20px;
+      text-align: center;
+    }
+    .empty-cart-state i {
+      font-size: 4rem;
+      color: #94a3b8;
+      margin-bottom: 20px;
+    }
+    .empty-cart-state h3 {
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+    .empty-cart-state p {
+      color: var(--text-muted);
+      margin-bottom: 24px;
+    }
+
+    @media (max-width: 767px) {
+      .cart-table thead { display: none; }
+      .cart-table tr {
+        display: block;
+        padding: 16px;
+        border-bottom: 1px solid var(--border);
+      }
+      .cart-table td {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 8px 0;
+        border: none;
+      }
+      .cart-table td::before {
+        content: attr(data-label);
+        font-weight: 600;
+        font-size: 0.8rem;
+        color: var(--text-muted);
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- TOP BAR -->
+  <div class="top-bar">
+    <div class="container">
+      <div class="d-flex justify-content-between align-items-center">
+        <div class="top-bar-left">
+          <span><i class="fas fa-phone-alt me-1"></i> Hotline: 1900 1234</span>
+          <span class="ms-3 d-none d-md-inline"><i class="fas fa-envelope me-1"></i> support@freshmart.vn</span>
+        </div>
+        <div class="top-bar-right">
+          <a href="#">Theo dõi đơn hàng</a>
+          <a href="#">Hỗ trợ</a>
+          <a href="login.html">Đăng nhập</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HEADER -->
+  <header class="header sticky-top">
+    <div class="container">
+      <div class="header-inner">
+        <a href="index.html" class="logo">
+          <i class="fas fa-leaf logo-icon"></i>
+          <span>Fresh<span class="logo-accent">Mart</span></span>
+        </a>
+        <nav class="main-nav d-none d-lg-block">
+          <ul class="nav-list">
+            <li><a href="index.html" class="nav-link">Trang chủ</a></li>
+            <li class="has-dropdown">
+              <a href="products.html" class="nav-link">Sản phẩm <i class="fas fa-chevron-down ms-1"></i></a>
+              <ul class="dropdown-menu">
+                <li><a href="products.html">Rau củ quả</a></li>
+                <li><a href="products.html">Thịt & Hải sản</a></li>
+                <li><a href="products.html">Sữa & Trứng</a></li>
+                <li><a href="products.html">Gạo & Ngũ cốc</a></li>
+                <li><a href="products.html">Đồ khô & Gia vị</a></li>
+                <li><a href="products.html">Đồ uống</a></li>
+              </ul>
+            </li>
+            <li><a href="about.html" class="nav-link">Về chúng tôi</a></li>
+            <li><a href="contact.html" class="nav-link">Liên hệ</a></li>
+          </ul>
+        </nav>
+        <div class="header-actions">
+          <button class="action-btn search-btn" id="searchToggle"><i class="fas fa-search"></i></button>
+          <a href="#" class="action-btn"><i class="far fa-heart"></i><span class="badge-count">0</span></a>
+          <a href="cart.html" class="action-btn cart-btn"><i class="fas fa-shopping-basket"></i><span class="badge-count" id="headerCartCount">3</span></a>
+          <button class="action-btn mobile-menu-btn d-lg-none" id="mobileMenuBtn"><i class="fas fa-bars"></i></button>
+        </div>
+      </div>
+    </div>
+    <div class="search-overlay" id="searchOverlay">
+      <div class="container">
+        <form class="search-form" action="products.html" method="get">
+          <input type="text" name="q" placeholder="Tìm kiếm rau củ, thịt, sữa..." class="search-input">
+          <button type="submit" class="search-submit"><i class="fas fa-search"></i></button>
+          <button type="button" class="search-close" id="searchClose"><i class="fas fa-times"></i></button>
+        </form>
+      </div>
+    </div>
+  </header>
+
+  <!-- MOBILE MENU -->
+  <div class="mobile-menu" id="mobileMenu">
+    <div class="mobile-menu-header">
+      <a href="index.html" class="logo">
+        <i class="fas fa-leaf logo-icon"></i>
+        <span>Fresh<span class="logo-accent">Mart</span></span>
+      </a>
+      <button class="mobile-menu-close" id="mobileMenuClose"><i class="fas fa-times"></i></button>
+    </div>
+    <ul class="mobile-nav">
+      <li><a href="index.html">Trang chủ</a></li>
+      <li><a href="products.html">Sản phẩm</a></li>
+      <li><a href="about.html">Về chúng tôi</a></li>
+      <li><a href="contact.html">Liên hệ</a></li>
+      <li><a href="cart.html">Giỏ hàng</a></li>
+      <li><a href="login.html">Đăng nhập</a></li>
+    </ul>
+  </div>
+  <div class="overlay" id="overlay"></div>
+
+  <!-- PAGE BANNER -->
+  <div class="page-banner">
+    <div class="container">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="index.html">Trang chủ</a></li>
+          <li class="breadcrumb-item active">Giỏ hàng</li>
+        </ol>
+      </nav>
+      <h1>Giỏ hàng của bạn</h1>
+    </div>
+  </div>
+
+  <!-- CART -->
+  <section class="cart-section">
+    <div class="container">
+      <div class="row g-4" id="cartContentWrapper">
+        <div class="col-lg-8">
+          <div class="table-responsive">
+            <table class="cart-table">
+              <thead>
+                <tr>
+                  <th style="width:45%">Sản phẩm</th>
+                  <th>Đơn giá</th>
+                  <th>Số lượng</th>
+                  <th>Thành tiền</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody id="cartTableBody">
+                <tr class="cart-item-row" data-id="1" data-price="32000">
+                  <td data-label="Sản phẩm">
+                    <div class="cart-product">
+                      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTlaYUKDTlQ4Ky1dcHpEkLWHA6-PLI7SGyoqW3g0PS1J7W31gJcO2OppTm0&s=10" alt="Cà chua bi Đà Lạt">
+                      <div>
+                        <h4>Cà chua bi Đà Lạt</h4>
+                        <span>500g / hộp</span>
+                      </div>
+                    </div>
+                  </td>
+                  <td data-label="Đơn giá" class="cart-price">32.000đ</td>
+                  <td data-label="Số lượng">
+                    <div class="cart-qty">
+                      <button type="button" class="btn-qty-minus">−</button>
+                      <input type="text" class="input-qty" value="2" readonly>
+                      <button type="button" class="btn-qty-plus">+</button>
+                    </div>
+                  </td>
+                  <td data-label="Thành tiền" class="cart-price item-line-total">64.000đ</td>
+                  <td><button type="button" class="cart-remove" title="Xóa món này"><i class="fas fa-trash-alt"></i></button></td>
+                </tr>
+
+                <tr class="cart-item-row" data-id="2" data-price="34000">
+                  <td data-label="Sản phẩm">
+                    <div class="cart-product">
+                      <img src="https://images.unsplash.com/photo-1550583724-b2692b85b150?w=150&q=80" alt="Sữa tươi TH True Milk">
+                      <div>
+                        <h4>Sữa tươi TH True Milk</h4>
+                        <span>1 lít</span>
+                      </div>
+                    </div>
+                  </td>
+                  <td data-label="Đơn giá" class="cart-price">34.000đ</td>
+                  <td data-label="Số lượng">
+                    <div class="cart-qty">
+                      <button type="button" class="btn-qty-minus">−</button>
+                      <input type="text" class="input-qty" value="1" readonly>
+                      <button type="button" class="btn-qty-plus">+</button>
+                    </div>
+                  </td>
+                  <td data-label="Thành tiền" class="cart-price item-line-total">34.000đ</td>
+                  <td><button type="button" class="cart-remove" title="Xóa món này"><i class="fas fa-trash-alt"></i></button></td>
+                </tr>
+
+                <tr class="cart-item-row" data-id="3" data-price="189000">
+                  <td data-label="Sản phẩm">
+                    <div class="cart-product">
+                      <img src="https://images.unsplash.com/photo-1607623814075-e51df1bdc82f?w=150&q=80" alt="Thịt bò Úc thăn">
+                      <div>
+                        <h4>Thịt bò Úc thăn</h4>
+                        <span>300g</span>
+                      </div>
+                    </div>
+                  </td>
+                  <td data-label="Đơn giá" class="cart-price">189.000đ</td>
+                  <td data-label="Số lượng">
+                    <div class="cart-qty">
+                      <button type="button" class="btn-qty-minus">−</button>
+                      <input type="text" class="input-qty" value="1" readonly>
+                      <button type="button" class="btn-qty-plus">+</button>
+                    </div>
+                  </td>
+                  <td data-label="Thành tiền" class="cart-price item-line-total">189.000đ</td>
+                  <td><button type="button" class="cart-remove" title="Xóa món này"><i class="fas fa-trash-alt"></i></button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="d-flex justify-content-between mt-4 flex-wrap gap-3">
+            <a href="products.html" class="btn btn-outline">
+              <i class="fas fa-arrow-left me-2"></i> Tiếp tục mua sắm
+            </a>
+            <button type="button" class="btn btn-outline" id="btnClearCart" style="border-color:#ef4444;color:#ef4444;">
+              <i class="fas fa-trash me-2"></i> Xóa tất cả
+            </button>
+          </div>
+        </div>
+
+        <div class="col-lg-4">
+          <div class="cart-summary">
+            <h3>Tóm tắt đơn hàng</h3>
+            <div class="summary-row">
+              <span id="labelItemCount">Tạm tính (3 sản phẩm)</span>
+              <span id="summarySubtotal">287.000đ</span>
+            </div>
+            <div class="summary-row">
+              <span>Phí vận chuyển</span>
+              <span id="summaryShipping">30.000đ</span>
+            </div>
+            <div class="summary-row" id="rowDiscount" style="display:flex;">
+              <span>Giảm giá</span>
+              <span id="summaryDiscount" style="color:var(--accent);">-20.000đ</span>
+            </div>
+            <div class="coupon-form">
+              <input type="text" id="couponCode" placeholder="Mã giảm giá (ví dụ: FRESHMART20)" value="FRESHMART20">
+              <button type="button" class="btn btn-primary btn-sm" id="btnApplyCoupon">Áp dụng</button>
+            </div>
+            <div id="couponMessage" class="small mb-2" style="display:block; color:#10b981;">Đã áp dụng mã giảm 20.000đ</div>
+            <div class="summary-row total">
+              <span>Tổng cộng</span>
+              <span id="summaryTotal">297.000đ</span>
+            </div>
+            <a href="checkout.html" class="btn btn-primary w-100 btn-lg mt-3" id="btnGoCheckout">
+              Thanh toán <i class="fas fa-arrow-right ms-2"></i>
+            </a>
+            <p class="text-center mt-3 mb-0" style="font-size:0.8rem;color:var(--text-muted);">
+              <i class="fas fa-lock me-1"></i> Thanh toán an toàn & bảo mật
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Empty State Container (Hidden by default) -->
+      <div id="emptyCartWrapper" style="display:none;">
+        <div class="empty-cart-state">
+          <i class="fas fa-shopping-basket"></i>
+          <h3>Giỏ hàng của bạn đang trống!</h3>
+          <p>Hãy khám phá các sản phẩm thực phẩm tươi sạch và bổ dưỡng tại FreshMart nhé.</p>
+          <a href="products.html" class="btn btn-primary btn-lg">
+            <i class="fas fa-arrow-left me-2"></i> Khám phá sản phẩm ngay
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <div class="row g-4">
+        <div class="col-lg-4">
+          <a href="index.html" class="footer-logo">
+            <i class="fas fa-leaf logo-icon"></i>
+            <span>Fresh<span class="logo-accent">Mart</span></span>
+          </a>
+          <p class="footer-about">FreshMart mang đến thực phẩm tươi sạch, an toàn từ nông trại đến bàn ăn.</p>
+          <div class="footer-social">
+            <a href="#"><i class="fab fa-facebook-f"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-tiktok"></i></a>
+            <a href="#"><i class="fab fa-youtube"></i></a>
+          </div>
+        </div>
+        <div class="col-6 col-md-3 col-lg-2">
+          <h5 class="footer-title">Cửa hàng</h5>
+          <ul class="footer-links">
+            <li><a href="index.html">Trang chủ</a></li>
+            <li><a href="products.html">Sản phẩm</a></li>
+            <li><a href="about.html">Về chúng tôi</a></li>
+            <li><a href="contact.html">Liên hệ</a></li>
+          </ul>
+        </div>
+        <div class="col-6 col-md-3 col-lg-2">
+          <h5 class="footer-title">Hỗ trợ</h5>
+          <ul class="footer-links">
+            <li><a href="#">Theo dõi đơn</a></li>
+            <li><a href="#">Đổi trả</a></li>
+            <li><a href="#">Vận chuyển</a></li>
+            <li><a href="#">FAQ</a></li>
+          </ul>
+        </div>
+        <div class="col-md-6 col-lg-4">
+          <h5 class="footer-title">Liên hệ</h5>
+          <ul class="footer-contact">
+            <li><i class="fas fa-map-marker-alt"></i> 123 Nguyễn Văn Linh, Q.7, TP.HCM</li>
+            <li><i class="fas fa-phone-alt"></i> 1900 1234</li>
+            <li><i class="fas fa-envelope"></i> support@freshmart.vn</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2026 FreshMart. All rights reserved.</p>
+        <div class="payment-icons">
+          <i class="fab fa-cc-visa"></i>
+          <i class="fab fa-cc-mastercard"></i>
+          <i class="fab fa-cc-paypal"></i>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <button class="back-to-top" id="backToTop"><i class="fas fa-chevron-up"></i></button>
+
+  <script src="../js/bootstrap.bundle.min.js"></script>
+  <script src="../js/main.js"></script>
+  <script>
+    (function () {
+      let discountAmount = 20000;
+      const shippingFee = 30000;
+
+      function formatVND(amount) {
+        return amount.toLocaleString('vi-VN') + 'đ';
+      }
+
+      function updateCartTotals() {
+        const rows = document.querySelectorAll('.cart-item-row');
+        let subtotal = 0;
+        let totalItems = 0;
+
+        if (rows.length === 0) {
+          document.getElementById('cartContentWrapper').style.display = 'none';
+          document.getElementById('emptyCartWrapper').style.display = 'block';
+          updateBadges(0);
+          return;
+        }
+
+        document.getElementById('cartContentWrapper').style.display = 'flex';
+        document.getElementById('emptyCartWrapper').style.display = 'none';
+
+        rows.forEach(row => {
+          const price = parseInt(row.getAttribute('data-price')) || 0;
+          const qty = parseInt(row.querySelector('.input-qty').value) || 1;
+          const lineTotal = price * qty;
+          row.querySelector('.item-line-total').textContent = formatVND(lineTotal);
+          subtotal += lineTotal;
+          totalItems += qty;
+        });
+
+        // Cập nhật tóm tắt
+        document.getElementById('labelItemCount').textContent = `Tạm tính (${totalItems} sản phẩm)`;
+        document.getElementById('summarySubtotal').textContent = formatVND(subtotal);
+        document.getElementById('summaryShipping').textContent = formatVND(shippingFee);
+
+        const currentDiscount = subtotal > 0 ? discountAmount : 0;
+        const total = Math.max(0, subtotal + shippingFee - currentDiscount);
+        document.getElementById('summaryTotal').textContent = formatVND(total);
+
+        updateBadges(totalItems);
+      }
+
+      function updateBadges(count) {
+        const badges = document.querySelectorAll('.cart-btn .badge-count');
+        badges.forEach(b => {
+          b.textContent = count;
+        });
+      }
+
+      // Xử lý nút tăng giảm số lượng và xóa món
+      const tbody = document.getElementById('cartTableBody');
+      if (tbody) {
+        tbody.addEventListener('click', function (e) {
+          const row = e.target.closest('.cart-item-row');
+          if (!row) return;
+
+          const inputQty = row.querySelector('.input-qty');
+          let currentQty = parseInt(inputQty.value) || 1;
+
+          if (e.target.closest('.btn-qty-plus')) {
+            inputQty.value = currentQty + 1;
+            updateCartTotals();
+          } else if (e.target.closest('.btn-qty-minus')) {
+            if (currentQty > 1) {
+              inputQty.value = currentQty - 1;
+              updateCartTotals();
+            }
+          } else if (e.target.closest('.cart-remove')) {
+            row.style.transition = 'all 0.3s ease';
+            row.style.opacity = '0';
+            row.style.transform = 'translateX(20px)';
+            setTimeout(() => {
+              row.remove();
+              updateCartTotals();
+            }, 300);
+          }
+        });
+      }
+
+      // Nút Xóa tất cả
+      const btnClearCart = document.getElementById('btnClearCart');
+      if (btnClearCart) {
+        btnClearCart.addEventListener('click', function () {
+          if (confirm('Bạn có chắc muốn xóa tất cả sản phẩm khỏi giỏ hàng?')) {
+            const tbody = document.getElementById('cartTableBody');
+            if (tbody) tbody.innerHTML = '';
+            updateCartTotals();
+          }
+        });
+      }
+
+      // Áp dụng mã giảm giá
+      const btnApplyCoupon = document.getElementById('btnApplyCoupon');
+      const couponInput = document.getElementById('couponCode');
+      const couponMsg = document.getElementById('couponMessage');
+      const discountRow = document.getElementById('rowDiscount');
+
+      if (btnApplyCoupon && couponInput) {
+        btnApplyCoupon.addEventListener('click', function () {
+          const code = couponInput.value.trim().toUpperCase();
+          if (code === 'FRESHMART20' || code === 'FRESH20' || code === 'GIAM20') {
+            discountAmount = 20000;
+            discountRow.style.display = 'flex';
+            document.getElementById('summaryDiscount').textContent = '-20.000đ';
+            couponMsg.style.display = 'block';
+            couponMsg.style.color = '#10b981';
+            couponMsg.textContent = 'Mã hợp lệ! Đã áp dụng giảm 20.000đ';
+            updateCartTotals();
+          } else if (code === 'FRESHMART50' || code === 'FRESH50') {
+            discountAmount = 50000;
+            discountRow.style.display = 'flex';
+            document.getElementById('summaryDiscount').textContent = '-50.000đ';
+            couponMsg.style.display = 'block';
+            couponMsg.style.color = '#10b981';
+            couponMsg.textContent = 'Mã hợp lệ! Đã áp dụng giảm 50.000đ';
+            updateCartTotals();
+          } else if (code === '') {
+            discountAmount = 0;
+            discountRow.style.display = 'none';
+            couponMsg.style.display = 'none';
+            updateCartTotals();
+          } else {
+            couponMsg.style.display = 'block';
+            couponMsg.style.color = '#ef4444';
+            couponMsg.textContent = 'Mã giảm giá không hợp lệ hoặc đã hết hạn!';
+          }
+        });
+      }
+
+      // Khởi tạo tính toán ban đầu
+      updateCartTotals();
+    })();
+  </script>
+</body>
+</html>
