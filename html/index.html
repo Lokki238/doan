@@ -68,7 +68,7 @@
           </a>
           <a href="cart.html" class="action-btn cart-btn">
             <i class="fas fa-shopping-basket"></i>
-            <span class="badge-count">0</span>
+            <span class="badge-count" id="headerCartCount">0</span>
           </a>
           <button class="action-btn mobile-menu-btn d-lg-none" id="mobileMenuBtn">
             <i class="fas fa-bars"></i>
@@ -88,6 +88,19 @@
       </div>
     </div>
   </header>
+
+  <!-- Đồng bộ giỏ hàng ngay khi tải HTML -->
+  <script>
+    (function () {
+      try {
+        var raw = localStorage.getItem('freshmart_cart');
+        var cart = raw ? JSON.parse(raw) : [];
+        var count = Array.isArray(cart) ? cart.reduce(function (s, i) { return s + (parseInt(i.qty) || 1); }, 0) : 0;
+        var b = document.getElementById('headerCartCount') || document.querySelector('.cart-btn .badge-count');
+        if (b) b.textContent = count;
+      } catch (e) {}
+    })();
+  </script>
 
   <!-- MOBILE MENU -->
   <div class="mobile-menu" id="mobileMenu">
@@ -480,6 +493,6 @@
   </button>
 
   <script src="../js/bootstrap.bundle.min.js"></script>
-  <script src="../js/main.js"></script>
+  <script src="../js/main.js?v=20261109_2"></script>
 </body>
 </html>

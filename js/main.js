@@ -77,11 +77,31 @@ window.FreshMartCart = {
 
   updateBadges: function () {
     const count = this.getTotalCount();
-    document.querySelectorAll('.cart-btn .badge-count, #headerCartCount').forEach(b => {
+    const badges = document.querySelectorAll('.cart-btn .badge-count, #headerCartCount, a[href*="cart.html"] .badge-count');
+    badges.forEach(b => {
       b.textContent = count;
     });
   }
 };
+
+// Cập nhật ngay khi file được thực thi
+if (window.FreshMartCart) {
+  window.FreshMartCart.updateBadges();
+}
+
+// Cập nhật khi trang hiển thị lại từ bfcache (quay lại / chuyển trang)
+window.addEventListener('pageshow', function () {
+  if (window.FreshMartCart) {
+    window.FreshMartCart.updateBadges();
+  }
+});
+
+// Đồng bộ tự động giữa các tab
+window.addEventListener('storage', function (e) {
+  if (e.key === 'freshmart_cart' && window.FreshMartCart) {
+    window.FreshMartCart.updateBadges();
+  }
+});
 
 document.addEventListener('DOMContentLoaded', function () {
   // Cập nhật số đếm trên giỏ hàng ban đầu
