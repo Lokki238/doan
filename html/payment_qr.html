@@ -363,7 +363,7 @@
                     <span class="label">Số tiền cần chuyển</span>
                     <span class="value text-success fw-bold" style="font-size:1.15rem;">
                       <span id="amountText">297.000đ</span>
-                      <button type="button" class="copy-btn" onclick="copyRaw('297000', this)"><i class="far fa-copy"></i> Copy</button>
+                      <button type="button" class="copy-btn" id="btnCopyAmount" onclick="copyRaw('297000', this)"><i class="far fa-copy"></i> Copy</button>
                     </span>
                   </div>
                   <div class="info-item" style="background:#fffbeb;">
@@ -467,26 +467,16 @@
     (function () {
       const urlParams = new URLSearchParams(window.location.search);
       const orderId = urlParams.get('order_id') || ('FM' + Math.floor(100000 + Math.random() * 900000));
-      const rawAmount = parseInt(urlParams.get('amount')) || 297000;
-      
-      const bankCode = 'MB';
-      const accountNo = '0389336829';
-      const accountName = 'FRESHMART STORE';
+      let currentAmount = parseInt(urlParams.get('amount')) || 297000;
 
       function formatVND(amt) {
         return Number(amt).toLocaleString('vi-VN') + 'đ';
       }
 
-      // 1. Điền dữ liệu lên giao diện
+      // 1. Điền dữ liệu ban đầu
       document.getElementById('badgeOrderCode').textContent = orderId;
       document.getElementById('memoText').textContent = orderId;
-      document.getElementById('amountText').textContent = formatVND(rawAmount);
-      document.getElementById('accountNoText').textContent = accountNo;
-      document.getElementById('accountNameText').textContent = accountName;
-
-      // Sinh URL ảnh VietQR chuẩn NAPAS
-      const qrUrl = `https://img.vietqr.io/image/${bankCode}-${accountNo}-compact2.png?amount=${rawAmount}&addInfo=${encodeURIComponent(orderId)}&accountName=${encodeURIComponent(accountName)}`;
-      document.getElementById('qrImage').src = qrUrl;
+      document.getElementById('amountText').textContent = formatVND(currentAmount);
 
       // 2. Đồng hồ đếm ngược 15 phút
       let timeLeft = 15 * 60;
@@ -505,26 +495,62 @@
         timerEl.textContent = `${m < 10 ? '0' : ''}${m}:${s < 10 ? '0' : ''}${s}`;
       }, 1000);
 
-      // 3. Cơ chế Lắng nghe / Polling kiểm tra trạng thái Webhook
+      // 3. Cơ chế Lấy cấu hình Cổng thanh toán từ CSDL & Polling Webhook
       let isCompleted = false;
-      let pollInterval = setInterval(checkPaymentStatus, 2000);
+      let isLoadedFromDB = false;
 
       async function checkPaymentStatus() {
         if (isCompleted) return;
         try {
-          const res = await fetch(`../api/check_payment_status.php?order_id=${encodeURIComponent(orderId)}`, {
+          const res = await fetch(`../api/check_payment_status.php?order_id=${encodeURIComponent(orderId)}&amount=${currentAmount}`, {
             cache: 'no-store'
           });
           const json = await res.json();
           if (json && json.success && json.data) {
-            if (json.data.trang_thai === 'SUCCESS' || json.data.is_paid) {
-              onPaymentSuccess(json.data);
+            const d = json.data;
+            
+            // Cập nhật thông tin ngân hàng và mã QR từ CSDL (bảng congthanhtoan)
+            if (d.qr_image) {
+              const img = document.getElementById('qrImage');
+              if (img.src !== d.qr_image) {
+                img.src = d.qr_image;
+              }
+            }
+            if (d.bank_name) {
+              document.getElementById('bankNameText').textContent = d.bank_name;
+            }
+            if (d.account_no) {
+              document.getElementById('accountNoText').textContent = d.account_no;
+            }
+            if (d.account_name) {
+              document.getElementById('accountNameText').textContent = d.account_name;
+            }
+            if (d.so_tien) {
+              currentAmount = d.so_tien;
+              document.getElementById('amountText').textContent = formatVND(d.so_tien);
+              const copyBtn = document.getElementById('btnCopyAmount');
+              if (copyBtn) copyBtn.setAttribute('onclick', `copyRaw('${d.so_tien}', this)`);
+            }
+            if (d.ma_don_hang) {
+              document.getElementById('memoText').textContent = d.ma_don_hang;
+              document.getElementById('badgeOrderCode').textContent = d.ma_don_hang;
+            }
+
+            isLoadedFromDB = true;
+
+            // Kiểm tra trạng thái duyệt Webhook
+            if (d.trang_thai === 'SUCCESS' || d.is_paid) {
+              onPaymentSuccess(d);
             }
           }
         } catch (e) {
           // Bỏ qua lỗi polling mạng tạm thời
         }
       }
+
+      // Gọi ngay lần đầu để tải CSDL lập tức, sau đó poll mỗi 2s
+      checkPaymentStatus();
+      let pollInterval = setInterval(checkPaymentStatus, 2000);
 
       // Xử lý khi thanh toán thành công
       function onPaymentSuccess(data) {
@@ -539,7 +565,7 @@
         succView.style.display = 'block';
 
         document.getElementById('succOrderCode').textContent = data.ma_don_hang || orderId;
-        document.getElementById('succAmount').textContent = formatVND(data.so_tien || rawAmount);
+        document.getElementById('succAmount').textContent = formatVND(data.so_tien || currentAmount);
         document.getElementById('succPaidAt').textContent = data.thoi_gian_thanh_toan || new Date().toLocaleString('vi-VN');
         document.getElementById('succTransId').textContent = data.ma_giao_dich_cong || ('WH-' + Date.now().toString().slice(-8));
 

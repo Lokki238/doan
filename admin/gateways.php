@@ -220,8 +220,9 @@ $user = getCurrentUser();
       try {
         const res = await fetch('../api/gateways.php');
         const json = await res.json();
-        if (json.success && json.data && json.data.length > 0) {
-          const vietqr = json.data.find(g => g.LoaiCongThanhToan === 'VIETQR');
+        const list = (json.data && json.data.gateways) || (Array.isArray(json.data) ? json.data : []);
+        if (json.success && list && list.length > 0) {
+          const vietqr = list.find(g => g.LoaiCongThanhToan === 'VIETQR');
           if (vietqr) {
             const form = document.getElementById('formVietQR');
             if (vietqr.MaNguoiBan) form.ma_nguoi_ban.value = vietqr.MaNguoiBan;

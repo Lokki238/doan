@@ -69,7 +69,7 @@ try {
     $gatewayId   = null;
 
     if ($phuongThuc === 'VIETQR' || $phuongThuc === 'BANK') {
-        $stmtGw = $pdo->prepare("SELECT * FROM congthanhtoan WHERE LoaiCongThanhToan = 'VIETQR' AND TrangThaiHoatDong = 1 LIMIT 1");
+        $stmtGw = $pdo->prepare("SELECT * FROM congthanhtoan WHERE LoaiCongThanhToan = 'VIETQR' AND TrangThaiHoatDong = 1 ORDER BY ThoiGianTao DESC LIMIT 1");
         $stmtGw->execute();
         $gw = $stmtGw->fetch();
 
