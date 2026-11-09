@@ -1,4 +1,25 @@
-# Cache control to prevent browsers from keeping stale HTML/JS
+RewriteEngine On
+
+# Tự động định tuyến các file PHP quản trị từ root vào thư mục php/
+RewriteRule ^dashboard\.php$ php/dashboard.php [L,QSA]
+RewriteRule ^transactions\.php$ php/transactions.php [L,QSA]
+RewriteRule ^reports\.php$ php/reports.php [L,QSA]
+RewriteRule ^permissions\.php$ php/permissions.php [L,QSA]
+RewriteRule ^payment_qr\.php$ php/payment_qr.php [L,QSA]
+
+# Định tuyến API cũ /api/ sang /php/api/
+RewriteRule ^api/(.*)$ php/api/$1 [L,QSA]
+
+# Định tuyến admin/ sang php/admin/
+RewriteRule ^admin/(.*)$ php/admin/$1 [L,QSA]
+
+# Định tuyến webfonts nếu được gọi từ root
+RewriteRule ^webfonts/(.*)$ css/webfonts/$1 [L,QSA]
+
+# Hỗ trợ đường dẫn hmtl (phòng khi gõ nhầm hmtl thay vì html)
+RewriteRule ^hmtl/(.*)$ html/$1 [L,QSA]
+
+# Cache control: Chống lưu cache stale HTML/JS để luôn nạp phiên bản mới nhất
 <IfModule mod_headers.c>
     <FilesMatch "\.(html|htm|php)$">
         Header set Cache-Control "no-cache, no-store, must-revalidate"

@@ -12,7 +12,7 @@ header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: POST');
 header('Access-Control-Allow-Headers: Content-Type');
 
-require_once __DIR__ . '/../config/db.php';
+require_once __DIR__ . '/../../csdl/db.php';
 require_once __DIR__ . '/../includes/auth.php';
 require_once __DIR__ . '/../includes/security.php';
 require_once __DIR__ . '/../includes/adapters/VietQRAdapter.php';

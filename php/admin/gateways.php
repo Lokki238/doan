@@ -17,8 +17,8 @@ $user = getCurrentUser();
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Cấu hình cổng thanh toán | FreshMart</title>
-  <link href="../css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="../css/all.min.css">
+  <link href="../../css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/all.min.css">
   <style>
     body { background: #f5f7fa; }
     .sidebar { width: 250px; min-height: 100vh; background: #1e293b; color: #fff; }
@@ -42,7 +42,7 @@ $user = getCurrentUser();
         <a href="../reports.php"><i class="fas fa-chart-bar me-2"></i> Báo cáo</a>
         <a href="../permissions.php"><i class="fas fa-user-shield me-2"></i> Cấp quyền</a>
         <hr class="border-secondary mx-3 my-2">
-        <a href="../html/index.html" style="background: rgba(16, 185, 129, 0.15); color: #10b981; font-weight: 600; border-radius: 8px; margin: 8px 12px; display: flex; align-items: center; padding: 10px 16px; text-decoration: none;">
+        <a href="../../html/index.html" style="background: rgba(16, 185, 129, 0.15); color: #10b981; font-weight: 600; border-radius: 8px; margin: 8px 12px; display: flex; align-items: center; padding: 10px 16px; text-decoration: none;">
           <i class="fas fa-shopping-basket me-2"></i> FreshMart (Trang chủ)
         </a>
         <a href="../api/logout.php" class="text-danger"><i class="fas fa-sign-out-alt me-2"></i> Đăng xuất</a>

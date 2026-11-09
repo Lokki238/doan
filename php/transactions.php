@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 /**
  * =====================================================
  * FILE: transactions.php
@@ -20,8 +20,8 @@ $user = getCurrentUser();
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Quản lý Giao dịch | FreshMart Pay</title>
-  <link href="css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="css/all.min.css">
+  <link href="../css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../css/all.min.css">
   <style>
     body { background: #f8fafc; font-family: system-ui, -apple-system, sans-serif; }
     .sidebar { width: 250px; min-height: 100vh; background: #0f172a; color: #fff; flex-shrink: 0; }
@@ -52,7 +52,7 @@ $user = getCurrentUser();
         <a href="permissions.php"><i class="fas fa-user-shield me-2"></i> Cấp quyền</a>
         <hr class="border-secondary mx-3 my-2">
         <!-- Nút về trang chủ FreshMart -->
-        <a href="html/index.html" class="freshmart-home">
+        <a href="../html/index.html" class="freshmart-home">
           <i class="fas fa-shopping-basket me-2"></i> FreshMart (Trang chủ)
         </a>
       </nav>
@@ -199,7 +199,7 @@ $user = getCurrentUser();
     </div>
   </div>
 
-  <script src="js/bootstrap.bundle.min.js"></script>
+  <script src="../js/bootstrap.bundle.min.js"></script>
   <script>
     let currentOffset = 0;
     const limit = 20;

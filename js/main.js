@@ -177,10 +177,10 @@ document.addEventListener('DOMContentLoaded', function () {
   // ---------- User Authentication & Dynamic Top-Bar ----------
   function initUserAuth() {
     const isInsideHtml = window.location.pathname.includes('/html/') || window.location.pathname.endsWith('.html');
-    const apiMeUrl = isInsideHtml ? '../api/me.php' : 'api/me.php';
-    const dashboardUrl = isInsideHtml ? '../dashboard.php' : 'dashboard.php';
+    const apiMeUrl = isInsideHtml ? '../php/api/me.php' : 'php/api/me.php';
+    const dashboardUrl = isInsideHtml ? '../php/dashboard.php' : 'php/dashboard.php';
     const accountUrl = isInsideHtml ? 'account.html' : 'html/account.html';
-    const logoutUrl = isInsideHtml ? '../api/logout.php' : 'api/logout.php';
+    const logoutUrl = isInsideHtml ? '../php/api/logout.php' : 'php/api/logout.php';
 
     fetch(apiMeUrl, { credentials: 'same-origin' })
       .then(res => res.json())

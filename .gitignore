@@ -13,6 +13,8 @@ Desktop.ini
 *.log
 
 # Sensitive security and database credentials (NEVER commit to Git)
+csdl/db.php
+php/includes/security.php
 config/db.php
 includes/security.php
 .env

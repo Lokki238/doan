@@ -6,7 +6,10 @@
  * =====================================================
  */
 
-$mdFile = __DIR__ . '/../docs/TEST_PLAN_AND_CASES.md';
+$mdFile = __DIR__ . '/../TEST_PLAN_AND_CASES.md';
+if (!file_exists($mdFile)) {
+    $mdFile = __DIR__ . '/../../doct/TEST_PLAN_AND_CASES.md';
+}
 if (!file_exists($mdFile)) {
     die("Không tìm thấy file $mdFile\n");
 }
@@ -382,8 +385,8 @@ function generateWordDocx($content, $outputPath) {
 }
 
 // Thực hiện sinh cả 2 file Word
-$docxPath = __DIR__ . '/../docs/TEST_PLAN_AND_CASES.docx';
-$docPath = __DIR__ . '/../docs/TEST_PLAN_AND_CASES.doc';
+$docxPath = __DIR__ . '/../TEST_PLAN_AND_CASES.docx';
+$docPath = __DIR__ . '/../TEST_PLAN_AND_CASES.doc';
 
 generateWordDoc($content, $docPath);
 generateWordDocx($content, $docxPath);

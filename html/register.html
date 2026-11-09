@@ -453,7 +453,7 @@
       alertBox.classList.add('d-none');
 
       try {
-        const res = await fetch('../api/register.php', {
+        const res = await fetch('../php/api/register.php', {
           method: 'POST',
           body: formData
         });
@@ -466,7 +466,7 @@
           setTimeout(() => {
             const role = (data.data && data.data.vai_tro) || '';
             const isPrivileged = ['OWNER', 'STAFF', 'ADMIN', 'QUAN_TRI'].includes(role.toUpperCase());
-            window.location.href = isPrivileged ? '../dashboard.php' : 'account.html';
+            window.location.href = isPrivileged ? '../php/dashboard.php' : 'account.html';
           }, 1000);
         } else {
           alertBox.className = 'alert alert-danger mb-3';

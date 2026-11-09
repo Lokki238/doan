@@ -502,7 +502,7 @@
       async function checkPaymentStatus() {
         if (isCompleted) return;
         try {
-          const res = await fetch(`../api/check_payment_status.php?order_id=${encodeURIComponent(orderId)}&amount=${currentAmount}`, {
+          const res = await fetch(`../php/api/check_payment_status.php?order_id=${encodeURIComponent(orderId)}&amount=${currentAmount}`, {
             cache: 'no-store'
           });
           const json = await res.json();
@@ -598,7 +598,7 @@
           btnSim.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i> Đang bắn Webhook...';
 
           try {
-            const res = await fetch('../api/simulate_webhook.php', {
+            const res = await fetch('../php/api/simulate_webhook.php', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({

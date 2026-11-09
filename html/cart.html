@@ -622,7 +622,7 @@
           }
 
           btnGoCheckout.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i> Đang kiểm tra...';
-          fetch('../api/me.php', { credentials: 'same-origin' })
+          fetch('../php/api/me.php', { credentials: 'same-origin' })
             .then(res => res.json())
             .then(res => {
               if (res && res.success && res.data && res.data.logged_in) {

@@ -20,7 +20,11 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 
 // Nạp file kết nối database (vì một số hàm có thể cần dùng)
-require_once __DIR__ . '/../config/db.php';
+if (file_exists(__DIR__ . '/../../csdl/db.php')) {
+    require_once __DIR__ . '/../../csdl/db.php';
+} elseif (file_exists(__DIR__ . '/../config/db.php')) {
+    require_once __DIR__ . '/../config/db.php';
+}
 
 /**
  * Kiểm tra xem người dùng đã đăng nhập chưa
