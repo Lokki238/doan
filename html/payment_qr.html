@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Thanh toán quét mã VietQR | FreshMart</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/all.min.css">
+  <link href="../css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .page-banner {
+      background: linear-gradient(135deg, var(--bg-soft) 0%, #fff 100%);
+      padding: 35px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .breadcrumb { background: none; padding: 0; margin: 0 0 8px; font-size: 0.85rem; }
+    .breadcrumb-item a { color: var(--primary); }
+    .breadcrumb-item.active { color: var(--text-muted); }
+    .page-banner h1 {
+      font-family: var(--font-display);
+      font-size: 1.9rem;
+      font-weight: 700;
+      margin: 0;
+    }
+
+    .qr-section { padding: 40px 0 80px; }
+    
+    .checkout-steps {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 30px;
+      flex-wrap: wrap;
+    }
+    .step {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+    .step .num {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--bg-light);
+      border: 2px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      font-weight: 700;
+    }
+    .step.done .num, .step.active .num {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: #fff;
+    }
+    .step.active { color: var(--primary); font-weight: 600; }
+    .step-line {
+      width: 40px;
+      height: 2px;
+      background: var(--border);
+      align-self: center;
+    }
+    .step-line.done { background: var(--primary); }
+
+    .qr-card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 32px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+      margin-bottom: 24px;
+    }
+
+    .qr-image-wrapper {
+      background: #f8fafc;
+      border: 2px dashed #cbd5e1;
+      border-radius: var(--radius);
+      padding: 20px;
+      text-align: center;
+      position: relative;
+    }
+    .qr-image-wrapper img {
+      max-width: 100%;
+      width: 320px;
+      height: auto;
+      border-radius: var(--radius-sm);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+      background: #fff;
+    }
+
+    .countdown-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #fef2f2;
+      color: #ef4444;
+      font-weight: 700;
+      padding: 6px 16px;
+      border-radius: 50px;
+      font-size: 0.95rem;
+      border: 1px solid #fee2e2;
+      margin-bottom: 16px;
+    }
+
+    .waiting-status {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 12px;
+      background: #ecfdf5;
+      color: #065f46;
+      border-radius: 10px;
+      font-size: 0.92rem;
+      font-weight: 600;
+      margin-top: 16px;
+    }
+
+    .info-list-group {
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      margin-bottom: 20px;
+    }
+    .info-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 18px;
+      border-bottom: 1px solid var(--border);
+      background: #fff;
+    }
+    .info-item:last-child { border-bottom: none; }
+    .info-item .label {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+    .info-item .value {
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .copy-btn {
+      padding: 3px 8px;
+      font-size: 0.75rem;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+      background: var(--bg-light);
+      cursor: pointer;
+      color: var(--primary);
+      transition: var(--transition);
+    }
+    .copy-btn:hover {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+    }
+
+    /* Khung Thanh toán thành công (Webhook trigger) */
+    .success-container {
+      display: none;
+      text-align: center;
+      padding: 40px 20px;
+    }
+    .success-icon-wrap {
+      width: 90px;
+      height: 90px;
+      background: #dcfce7;
+      color: #10b981;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
+      margin: 0 auto 20px;
+      box-shadow: 0 0 0 12px rgba(16, 185, 129, 0.15);
+      animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    @keyframes popIn {
+      0% { transform: scale(0.3); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    .webhook-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #eff6ff;
+      color: #2563eb;
+      font-size: 0.82rem;
+      font-weight: 600;
+      padding: 4px 12px;
+      border-radius: 20px;
+      margin-bottom: 12px;
+    }
+
+    /* Simulation Toolbar */
+    .sim-box {
+      background: #faf5ff;
+      border: 1px dashed #c084fc;
+      border-radius: var(--radius);
+      padding: 20px;
+      margin-top: 24px;
+    }
+    .sim-box h6 {
+      color: #7e22ce;
+      font-weight: 700;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- TOP BAR -->
+  <div class="top-bar">
+    <div class="container">
+      <div class="d-flex justify-content-between align-items-center">
+        <div class="top-bar-left">
+          <span><i class="fas fa-phone-alt me-1"></i> Hotline: 1900 1234</span>
+          <span class="ms-3 d-none d-md-inline"><i class="fas fa-envelope me-1"></i> support@freshmart.vn</span>
+        </div>
+        <div class="top-bar-right">
+          <a href="#">Theo dõi đơn hàng</a>
+          <a href="#">Hỗ trợ</a>
+          <a href="login.html">Đăng nhập</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HEADER -->
+  <header class="header sticky-top">
+    <div class="container">
+      <div class="header-inner">
+        <a href="index.html" class="logo">
+          <i class="fas fa-leaf logo-icon"></i>
+          <span>Fresh<span class="logo-accent">Mart</span></span>
+        </a>
+        <nav class="main-nav d-none d-lg-block">
+          <ul class="nav-list">
+            <li><a href="index.html" class="nav-link">Trang chủ</a></li>
+            <li><a href="products.html" class="nav-link">Sản phẩm</a></li>
+            <li><a href="about.html" class="nav-link">Về chúng tôi</a></li>
+            <li><a href="contact.html" class="nav-link">Liên hệ</a></li>
+          </ul>
+        </nav>
+        <div class="header-actions">
+          <a href="cart.html" class="action-btn cart-btn"><i class="fas fa-shopping-basket"></i><span class="badge-count">3</span></a>
+          <button class="action-btn mobile-menu-btn d-lg-none" id="mobileMenuBtn"><i class="fas fa-bars"></i></button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- PAGE BANNER -->
+  <div class="page-banner">
+    <div class="container">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="index.html">Trang chủ</a></li>
+          <li class="breadcrumb-item"><a href="checkout.html">Thanh toán</a></li>
+          <li class="breadcrumb-item active">Quét mã VietQR</li>
+        </ol>
+      </nav>
+      <h1>Cổng thanh toán tự động VietQR</h1>
+    </div>
+  </div>
+
+  <!-- QR SECTION -->
+  <section class="qr-section">
+    <div class="container">
+
+      <!-- Steps -->
+      <div class="checkout-steps">
+        <div class="step done">
+          <span class="num"><i class="fas fa-check"></i></span>
+          Giỏ hàng
+        </div>
+        <div class="step-line done"></div>
+        <div class="step done">
+          <span class="num"><i class="fas fa-check"></i></span>
+          Thông tin giao hàng
+        </div>
+        <div class="step-line done"></div>
+        <div class="step active">
+          <span class="num">3</span>
+          Quét mã QR & Webhook
+        </div>
+      </div>
+
+      <!-- MAIN PAY CARD -->
+      <div class="row justify-content-center">
+        <div class="col-lg-10">
+
+          <!-- TRẠNG THÁI 1: ĐANG CHỜ THANH TOÁN -->
+          <div class="qr-card" id="waitingPaymentView">
+            <div class="row g-4 align-items-center">
+              
+              <!-- Cột trái: Mã QR -->
+              <div class="col-md-5 text-center">
+                <div class="countdown-badge">
+                  <i class="fas fa-clock"></i> Đơn hàng hết hạn sau: <span id="timerCountdown">14:59</span>
+                </div>
+                
+                <div class="qr-image-wrapper">
+                  <img id="qrImage" src="" alt="Mã QR thanh toán VietQR">
+                  <div class="mt-3">
+                    <span class="badge bg-success" style="font-size:0.78rem;">
+                      <i class="fas fa-bolt me-1"></i> Tự động kích hoạt qua Webhook
+                    </span>
+                  </div>
+                </div>
+
+                <div class="waiting-status">
+                  <div class="spinner-grow spinner-grow-sm text-success" role="status"></div>
+                  <span>Đang đợi nhận tiền từ ngân hàng...</span>
+                </div>
+              </div>
+
+              <!-- Cột phải: Thông tin chuyển khoản -->
+              <div class="col-md-7">
+                <div class="d-flex align-items-center justify-content-between mb-3">
+                  <h3 class="h5 fw-bold mb-0 text-dark">
+                    <i class="fas fa-qrcode text-success me-2"></i>Hướng dẫn thanh toán
+                  </h3>
+                  <span class="badge bg-primary px-3 py-2" id="badgeOrderCode">FM000000</span>
+                </div>
+
+                <p class="text-muted small mb-3">
+                  Mở ứng dụng Ngân hàng (Vietcombank, MB, Techcombank, TPBank...) hoặc ví điện tử để quét mã QR bên cạnh.
+                </p>
+
+                <div class="info-list-group">
+                  <div class="info-item">
+                    <span class="label">Ngân hàng thụ hưởng</span>
+                    <span class="value"><i class="fas fa-university text-primary"></i> <span id="bankNameText">MB Bank (Ngân hàng Quân Đội)</span></span>
+                  </div>
+                  <div class="info-item">
+                    <span class="label">Số tài khoản</span>
+                    <span class="value">
+                      <span id="accountNoText">0389336829</span>
+                      <button type="button" class="copy-btn" onclick="copyText('accountNoText', this)"><i class="far fa-copy"></i> Copy</button>
+                    </span>
+                  </div>
+                  <div class="info-item">
+                    <span class="label">Chủ tài khoản</span>
+                    <span class="value" id="accountNameText">FRESHMART STORE</span>
+                  </div>
+                  <div class="info-item">
+                    <span class="label">Số tiền cần chuyển</span>
+                    <span class="value text-success fw-bold" style="font-size:1.15rem;">
+                      <span id="amountText">297.000đ</span>
+                      <button type="button" class="copy-btn" onclick="copyRaw('297000', this)"><i class="far fa-copy"></i> Copy</button>
+                    </span>
+                  </div>
+                  <div class="info-item" style="background:#fffbeb;">
+                    <span class="label text-danger fw-bold"><i class="fas fa-exclamation-triangle me-1"></i> Nội dung chuyển khoản</span>
+                    <span class="value text-danger fw-bold">
+                      <span id="memoText">FM000000</span>
+                      <button type="button" class="copy-btn" onclick="copyText('memoText', this)"><i class="far fa-copy"></i> Copy</button>
+                    </span>
+                  </div>
+                </div>
+
+                <div class="alert alert-info py-2 px-3 small mb-0">
+                  <i class="fas fa-info-circle me-1"></i> <strong>Lưu ý:</strong> Vui lòng giữ nguyên nội dung chuyển khoản để Webhook nhận diện và tự động duyệt đơn ngay tức thì.
+                </div>
+              </div>
+            </div>
+
+            <!-- THANH CÔNG CỤ DEMO DÀNH CHO BÁO CÁO / GIẢNG VIÊN / TESTER -->
+            <div class="sim-box">
+              <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+                <div>
+                  <h6><i class="fas fa-vial"></i> Kiểm thử mô phỏng Webhook (Dành cho Demo)</h6>
+                  <p class="small text-muted mb-0">
+                    Bấm nút bên cạnh để giả lập việc khách hàng vừa quét mã và chuyển tiền qua App ngân hàng thành công.
+                  </p>
+                </div>
+                <button type="button" class="btn btn-primary" id="btnSimulateWebhook">
+                  <i class="fas fa-bolt me-1"></i> Bắn Webhook thành công ngay
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- TRẠNG THÁI 2: THANH TOÁN THÀNH CÔNG (HIỂN THỊ KHI WEBHOOK XÁC NHẬN) -->
+          <div class="qr-card success-container" id="successPaymentView">
+            <div class="webhook-tag">
+              <i class="fas fa-shield-alt"></i> Webhook Verified (SePay / VietQR)
+            </div>
+            <div class="success-icon-wrap">
+              <i class="fas fa-check"></i>
+            </div>
+            <h2 class="fw-bold text-success mb-2">Thanh toán thành công!</h2>
+            <p class="text-muted mb-4">
+              Hệ thống đã nhận được tiền từ ngân hàng qua Webhook. Đơn hàng của bạn đã được xác nhận tự động.
+            </p>
+
+            <div class="col-md-8 mx-auto text-start">
+              <div class="info-list-group shadow-sm">
+                <div class="info-item">
+                  <span class="label">Mã đơn hàng</span>
+                  <span class="value fw-bold text-primary" id="succOrderCode">FM000000</span>
+                </div>
+                <div class="info-item">
+                  <span class="label">Số tiền thanh toán</span>
+                  <span class="value text-success fw-bold" id="succAmount">297.000đ</span>
+                </div>
+                <div class="info-item">
+                  <span class="label">Phương thức</span>
+                  <span class="value">Chuyển khoản VietQR (24/7 NAPAS)</span>
+                </div>
+                <div class="info-item">
+                  <span class="label">Thời gian xác nhận</span>
+                  <span class="value text-muted" id="succPaidAt">--:--:--</span>
+                </div>
+                <div class="info-item">
+                  <span class="label">Mã giao dịch đối soát</span>
+                  <span class="value font-monospace small" id="succTransId">WH-XXXXXXXX</span>
+                </div>
+                <div class="info-item">
+                  <span class="label">Trạng thái</span>
+                  <span class="value"><span class="badge bg-success"><i class="fas fa-check-circle me-1"></i> ĐÃ THANH TOÁN (SUCCESS)</span></span>
+                </div>
+              </div>
+
+              <div class="d-flex justify-content-center gap-3 mt-4 flex-wrap">
+                <a href="index.html" class="btn btn-outline">
+                  <i class="fas fa-home me-2"></i> Về trang chủ
+                </a>
+                <a href="account.html" class="btn btn-primary">
+                  <i class="fas fa-receipt me-2"></i> Xem lịch sử đơn hàng
+                </a>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container text-center">
+      <p class="mb-0 text-muted">© 2026 FreshMart Payment Gateway System. Tích hợp VietQR & Webhook tự động.</p>
+    </div>
+  </footer>
+
+  <script src="../js/bootstrap.bundle.min.js"></script>
+  <script src="../js/main.js"></script>
+  <script>
+    (function () {
+      const urlParams = new URLSearchParams(window.location.search);
+      const orderId = urlParams.get('order_id') || ('FM' + Math.floor(100000 + Math.random() * 900000));
+      const rawAmount = parseInt(urlParams.get('amount')) || 297000;
+      
+      const bankCode = 'MB';
+      const accountNo = '0389336829';
+      const accountName = 'FRESHMART STORE';
+
+      function formatVND(amt) {
+        return Number(amt).toLocaleString('vi-VN') + 'đ';
+      }
+
+      // 1. Điền dữ liệu lên giao diện
+      document.getElementById('badgeOrderCode').textContent = orderId;
+      document.getElementById('memoText').textContent = orderId;
+      document.getElementById('amountText').textContent = formatVND(rawAmount);
+      document.getElementById('accountNoText').textContent = accountNo;
+      document.getElementById('accountNameText').textContent = accountName;
+
+      // Sinh URL ảnh VietQR chuẩn NAPAS
+      const qrUrl = `https://img.vietqr.io/image/${bankCode}-${accountNo}-compact2.png?amount=${rawAmount}&addInfo=${encodeURIComponent(orderId)}&accountName=${encodeURIComponent(accountName)}`;
+      document.getElementById('qrImage').src = qrUrl;
+
+      // 2. Đồng hồ đếm ngược 15 phút
+      let timeLeft = 15 * 60;
+      const timerEl = document.getElementById('timerCountdown');
+      const timerInterval = setInterval(function () {
+        timeLeft--;
+        if (timeLeft <= 0) {
+          clearInterval(timerInterval);
+          timerEl.textContent = 'Hết hạn';
+          alert('Đơn hàng đã hết hạn thanh toán. Vui lòng đặt lại đơn mới!');
+          window.location.href = 'cart.html';
+          return;
+        }
+        const m = Math.floor(timeLeft / 60);
+        const s = timeLeft % 60;
+        timerEl.textContent = `${m < 10 ? '0' : ''}${m}:${s < 10 ? '0' : ''}${s}`;
+      }, 1000);
+
+      // 3. Cơ chế Lắng nghe / Polling kiểm tra trạng thái Webhook
+      let isCompleted = false;
+      let pollInterval = setInterval(checkPaymentStatus, 2000);
+
+      async function checkPaymentStatus() {
+        if (isCompleted) return;
+        try {
+          const res = await fetch(`../api/check_payment_status.php?order_id=${encodeURIComponent(orderId)}`, {
+            cache: 'no-store'
+          });
+          const json = await res.json();
+          if (json && json.success && json.data) {
+            if (json.data.trang_thai === 'SUCCESS' || json.data.is_paid) {
+              onPaymentSuccess(json.data);
+            }
+          }
+        } catch (e) {
+          // Bỏ qua lỗi polling mạng tạm thời
+        }
+      }
+
+      // Xử lý khi thanh toán thành công
+      function onPaymentSuccess(data) {
+        if (isCompleted) return;
+        isCompleted = true;
+        clearInterval(pollInterval);
+        clearInterval(timerInterval);
+
+        // Hiển thị view thành công
+        document.getElementById('waitingPaymentView').style.display = 'none';
+        const succView = document.getElementById('successPaymentView');
+        succView.style.display = 'block';
+
+        document.getElementById('succOrderCode').textContent = data.ma_don_hang || orderId;
+        document.getElementById('succAmount').textContent = formatVND(data.so_tien || rawAmount);
+        document.getElementById('succPaidAt').textContent = data.thoi_gian_thanh_toan || new Date().toLocaleString('vi-VN');
+        document.getElementById('succTransId').textContent = data.ma_giao_dich_cong || ('WH-' + Date.now().toString().slice(-8));
+
+        // Phát âm thanh báo hiệu
+        playSuccessSound();
+      }
+
+      function playSuccessSound() {
+        try {
+          const ctx = new (window.AudioContext || window.webkitAudioContext)();
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(587.33, ctx.currentTime); // D5
+          osc.frequency.setValueAtTime(880, ctx.currentTime + 0.15); // A5
+          gain.gain.setValueAtTime(0.3, ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.5);
+          osc.start();
+          osc.stop(ctx.currentTime + 0.5);
+        } catch (err) {}
+      }
+
+      // 4. Nút Giả lập Webhook (Dành cho demo)
+      const btnSim = document.getElementById('btnSimulateWebhook');
+      if (btnSim) {
+        btnSim.addEventListener('click', async function () {
+          btnSim.disabled = true;
+          btnSim.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i> Đang bắn Webhook...';
+
+          try {
+            const res = await fetch('../api/simulate_webhook.php', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                ma_don_hang: orderId,
+                so_tien: rawAmount,
+                status: 'SUCCESS'
+              })
+            });
+            const data = await res.json();
+            if (data.success) {
+              btnSim.className = 'btn btn-success';
+              btnSim.innerHTML = '<i class="fas fa-check me-1"></i> Webhook đã kích hoạt!';
+              // Kiểm tra lại ngay
+              setTimeout(checkPaymentStatus, 500);
+            } else {
+              alert('Lỗi giả lập Webhook: ' + (data.message || 'Thất bại'));
+              btnSim.disabled = false;
+              btnSim.innerHTML = '<i class="fas fa-bolt me-1"></i> Bắn Webhook thành công ngay';
+            }
+          } catch (err) {
+            alert('Lỗi kết nối Webhook: ' + err.message);
+            btnSim.disabled = false;
+            btnSim.innerHTML = '<i class="fas fa-bolt me-1"></i> Bắn Webhook thành công ngay';
+          }
+        });
+      }
+    })();
+
+    // Hàm sao chép nhanh
+    function copyText(elementId, btn) {
+      const text = document.getElementById(elementId).innerText.trim();
+      navigator.clipboard.writeText(text).then(() => {
+        const orig = btn.innerHTML;
+        btn.innerHTML = '<i class="fas fa-check"></i> Đã chép';
+        btn.classList.add('bg-success', 'text-white');
+        setTimeout(() => {
+          btn.innerHTML = orig;
+          btn.classList.remove('bg-success', 'text-white');
+        }, 1500);
+      });
+    }
+
+    function copyRaw(val, btn) {
+      navigator.clipboard.writeText(val).then(() => {
+        const orig = btn.innerHTML;
+        btn.innerHTML = '<i class="fas fa-check"></i> Đã chép';
+        btn.classList.add('bg-success', 'text-white');
+        setTimeout(() => {
+          btn.innerHTML = orig;
+          btn.classList.remove('bg-success', 'text-white');
+        }, 1500);
+      });
+    }
+  </script>
+</body>
+</html>

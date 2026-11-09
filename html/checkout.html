@@ -571,31 +571,76 @@
       document.getElementById('coTotal').textContent = formatVND(subtotal + shipping - discount);
     }
 
-    // Tự động điền thông tin nếu đã đăng nhập
+    // 1. Kiểm tra đăng nhập bắt buộc: Nếu chưa đăng nhập chuyển sang login.html
     fetch('../api/me.php', { credentials: 'same-origin' })
       .then(res => res.json())
       .then(res => {
-        if (res && res.success && res.data && res.data.logged_in) {
-          const u = res.data;
-          if (u.ho_ten) document.getElementById('custName').value = u.ho_ten;
-          if (u.email) document.getElementById('custEmail').value = u.email;
-          if (u.so_dien_thoai) document.getElementById('custPhone').value = u.so_dien_thoai;
+        if (!res || !res.success || !res.data || !res.data.logged_in) {
+          window.location.href = 'login.html?redirect=checkout.html';
+          return;
         }
+        const u = res.data;
+        if (u.ho_ten) document.getElementById('custName').value = u.ho_ten;
+        if (u.email) document.getElementById('custEmail').value = u.email;
+        if (u.so_dien_thoai) document.getElementById('custPhone').value = u.so_dien_thoai;
       })
-      .catch(() => {});
+      .catch(() => {
+        window.location.href = 'login.html?redirect=checkout.html';
+      });
 
-    document.getElementById('checkoutForm').addEventListener('submit', function(e) {
+    // 2. Xử lý đặt hàng
+    document.getElementById('checkoutForm').addEventListener('submit', async function(e) {
       e.preventDefault();
-      const method = document.querySelector('input[name="payment"]:checked').value;
-      const orderCode = 'FM' + Math.floor(100000 + Math.random() * 900000);
-      
-      let methodText = 'Thanh toán khi nhận hàng (COD)';
-      if (method === 'bank') methodText = 'Chuyển khoản VietQR';
-      else if (method === 'momo') methodText = 'Ví điện tử MoMo';
-      else if (method === 'card') methodText = 'Thẻ quốc tế Visa/Mastercard';
+      const btn = document.getElementById('btnPlaceOrder');
+      const originalText = btn.innerHTML;
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i> Đang khởi tạo đơn hàng...';
 
-      alert(`🎉 ĐẶT HÀNG THÀNH CÔNG!\n\n• Mã đơn hàng: ${orderCode}\n• Phương thức: ${methodText}\n• Tổng thanh toán: ${formatVND(subtotal + shipping - discount)}\n\nCảm ơn bạn đã tin tưởng mua sắm tại FreshMart! Nhân viên sẽ liên hệ để xác nhận đơn giao sớm nhất.`);
-      window.location.href = 'index.html';
+      const method = document.querySelector('input[name="payment"]:checked').value;
+      const totalAmount = subtotal + shipping - discount;
+      const custName = document.getElementById('custName').value;
+      const custPhone = document.getElementById('custPhone').value;
+      const custEmail = document.getElementById('custEmail').value;
+      const detailAddress = document.querySelector('input[placeholder*="Số nhà"]').value;
+      const note = document.querySelector('textarea').value;
+
+      try {
+        const res = await fetch('../api/create_order.php', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            so_tien: totalAmount,
+            phuong_thuc: (method === 'bank' ? 'VIETQR' : method.toUpperCase()),
+            ho_ten: custName,
+            so_dien_thoai: custPhone,
+            dia_chi: detailAddress,
+            ghi_chu: note
+          })
+        });
+
+        const data = await res.json();
+
+        if (data.success) {
+          const orderId = data.data.ma_don_hang;
+
+          if (method === 'bank') {
+            // Chuyển hướng sang trang Quét mã QR VietQR
+            window.location.href = `payment_qr.html?order_id=${orderId}&amount=${totalAmount}`;
+          } else {
+            // COD hoặc thẻ
+            alert(`🎉 ĐẶT HÀNG THÀNH CÔNG!\n\n• Mã đơn hàng: ${orderId}\n• Phương thức: Thanh toán khi nhận hàng (COD)\n• Tổng thanh toán: ${formatVND(totalAmount)}\n\nCảm ơn bạn đã tin tưởng mua sắm tại FreshMart!`);
+            window.location.href = 'index.html';
+          }
+        } else {
+          alert('Không thể tạo đơn hàng: ' + (data.message || 'Lỗi không xác định'));
+          btn.disabled = false;
+          btn.innerHTML = originalText;
+        }
+      } catch (err) {
+        alert('Lỗi kết nối tới hệ thống: ' + err.message);
+        btn.disabled = false;
+        btn.innerHTML = originalText;
+      }
     });
   </script>
 </body>

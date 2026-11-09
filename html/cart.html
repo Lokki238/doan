@@ -635,6 +635,27 @@
         });
       }
 
+      // Nút chuyển sang Thanh toán (Kiểm tra đăng nhập)
+      const btnGoCheckout = document.getElementById('btnGoCheckout');
+      if (btnGoCheckout) {
+        btnGoCheckout.addEventListener('click', function (e) {
+          e.preventDefault();
+          btnGoCheckout.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i> Đang kiểm tra...';
+          fetch('../api/me.php', { credentials: 'same-origin' })
+            .then(res => res.json())
+            .then(res => {
+              if (res && res.success && res.data && res.data.logged_in) {
+                window.location.href = 'checkout.html';
+              } else {
+                window.location.href = 'login.html?redirect=checkout.html';
+              }
+            })
+            .catch(() => {
+              window.location.href = 'login.html?redirect=checkout.html';
+            });
+        });
+      }
+
       // Khởi tạo tính toán ban đầu
       updateCartTotals();
     })();
