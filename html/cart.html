@@ -251,7 +251,7 @@
         <div class="header-actions">
           <button class="action-btn search-btn" id="searchToggle"><i class="fas fa-search"></i></button>
           <a href="#" class="action-btn"><i class="far fa-heart"></i><span class="badge-count">0</span></a>
-          <a href="cart.html" class="action-btn cart-btn"><i class="fas fa-shopping-basket"></i><span class="badge-count" id="headerCartCount">3</span></a>
+          <a href="cart.html" class="action-btn cart-btn"><i class="fas fa-shopping-basket"></i><span class="badge-count" id="headerCartCount">0</span></a>
           <button class="action-btn mobile-menu-btn d-lg-none" id="mobileMenuBtn"><i class="fas fa-bars"></i></button>
         </div>
       </div>
@@ -317,71 +317,7 @@
                 </tr>
               </thead>
               <tbody id="cartTableBody">
-                <tr class="cart-item-row" data-id="1" data-price="32000">
-                  <td data-label="Sản phẩm">
-                    <div class="cart-product">
-                      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTlaYUKDTlQ4Ky1dcHpEkLWHA6-PLI7SGyoqW3g0PS1J7W31gJcO2OppTm0&s=10" alt="Cà chua bi Đà Lạt">
-                      <div>
-                        <h4>Cà chua bi Đà Lạt</h4>
-                        <span>500g / hộp</span>
-                      </div>
-                    </div>
-                  </td>
-                  <td data-label="Đơn giá" class="cart-price">32.000đ</td>
-                  <td data-label="Số lượng">
-                    <div class="cart-qty">
-                      <button type="button" class="btn-qty-minus">−</button>
-                      <input type="text" class="input-qty" value="2" readonly>
-                      <button type="button" class="btn-qty-plus">+</button>
-                    </div>
-                  </td>
-                  <td data-label="Thành tiền" class="cart-price item-line-total">64.000đ</td>
-                  <td><button type="button" class="cart-remove" title="Xóa món này"><i class="fas fa-trash-alt"></i></button></td>
-                </tr>
-
-                <tr class="cart-item-row" data-id="2" data-price="34000">
-                  <td data-label="Sản phẩm">
-                    <div class="cart-product">
-                      <img src="https://images.unsplash.com/photo-1550583724-b2692b85b150?w=150&q=80" alt="Sữa tươi TH True Milk">
-                      <div>
-                        <h4>Sữa tươi TH True Milk</h4>
-                        <span>1 lít</span>
-                      </div>
-                    </div>
-                  </td>
-                  <td data-label="Đơn giá" class="cart-price">34.000đ</td>
-                  <td data-label="Số lượng">
-                    <div class="cart-qty">
-                      <button type="button" class="btn-qty-minus">−</button>
-                      <input type="text" class="input-qty" value="1" readonly>
-                      <button type="button" class="btn-qty-plus">+</button>
-                    </div>
-                  </td>
-                  <td data-label="Thành tiền" class="cart-price item-line-total">34.000đ</td>
-                  <td><button type="button" class="cart-remove" title="Xóa món này"><i class="fas fa-trash-alt"></i></button></td>
-                </tr>
-
-                <tr class="cart-item-row" data-id="3" data-price="189000">
-                  <td data-label="Sản phẩm">
-                    <div class="cart-product">
-                      <img src="https://images.unsplash.com/photo-1607623814075-e51df1bdc82f?w=150&q=80" alt="Thịt bò Úc thăn">
-                      <div>
-                        <h4>Thịt bò Úc thăn</h4>
-                        <span>300g</span>
-                      </div>
-                    </div>
-                  </td>
-                  <td data-label="Đơn giá" class="cart-price">189.000đ</td>
-                  <td data-label="Số lượng">
-                    <div class="cart-qty">
-                      <button type="button" class="btn-qty-minus">−</button>
-                      <input type="text" class="input-qty" value="1" readonly>
-                      <button type="button" class="btn-qty-plus">+</button>
-                    </div>
-                  </td>
-                  <td data-label="Thành tiền" class="cart-price item-line-total">189.000đ</td>
-                  <td><button type="button" class="cart-remove" title="Xóa món này"><i class="fas fa-trash-alt"></i></button></td>
-                </tr>
+                <!-- Danh sách sản phẩm thực tế được sinh động từ giỏ hàng -->
               </tbody>
             </table>
           </div>
@@ -509,32 +445,68 @@
       const shippingFee = 30000;
 
       function formatVND(amount) {
-        return amount.toLocaleString('vi-VN') + 'đ';
+        return Number(amount).toLocaleString('vi-VN') + 'đ';
       }
 
-      function updateCartTotals() {
-        const rows = document.querySelectorAll('.cart-item-row');
-        let subtotal = 0;
-        let totalItems = 0;
+      function escapeHtml(text) {
+        if (!text) return '';
+        return String(text).replace(/[&<>"']/g, function (m) {
+          return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m];
+        });
+      }
 
-        if (rows.length === 0) {
-          document.getElementById('cartContentWrapper').style.display = 'none';
-          document.getElementById('emptyCartWrapper').style.display = 'block';
-          updateBadges(0);
+      function renderCart() {
+        const cart = window.FreshMartCart ? window.FreshMartCart.getCart() : [];
+        const contentWrapper = document.getElementById('cartContentWrapper');
+        const emptyWrapper = document.getElementById('emptyCartWrapper');
+        const tbody = document.getElementById('cartTableBody');
+
+        // Mặc định khi chưa có sản phẩm: Hiển thị giỏ hàng trống
+        if (!cart || cart.length === 0) {
+          contentWrapper.style.display = 'none';
+          emptyWrapper.style.display = 'block';
+          if (window.FreshMartCart) window.FreshMartCart.updateBadges();
           return;
         }
 
-        document.getElementById('cartContentWrapper').style.display = 'flex';
-        document.getElementById('emptyCartWrapper').style.display = 'none';
+        // Khi có sản phẩm: Hiển thị danh sách sản phẩm
+        contentWrapper.style.display = 'flex';
+        emptyWrapper.style.display = 'none';
 
-        rows.forEach(row => {
-          const price = parseInt(row.getAttribute('data-price')) || 0;
-          const qty = parseInt(row.querySelector('.input-qty').value) || 1;
-          const lineTotal = price * qty;
-          row.querySelector('.item-line-total').textContent = formatVND(lineTotal);
+        let subtotal = 0;
+        let totalItems = 0;
+
+        tbody.innerHTML = cart.map(item => {
+          const itemPrice = parseInt(item.price) || 0;
+          const itemQty = parseInt(item.qty) || 1;
+          const lineTotal = itemPrice * itemQty;
           subtotal += lineTotal;
-          totalItems += qty;
-        });
+          totalItems += itemQty;
+
+          return `
+            <tr class="cart-item-row" data-id="${escapeHtml(item.id || item.name)}" data-price="${itemPrice}">
+              <td data-label="Sản phẩm">
+                <div class="cart-product">
+                  <img src="${item.image || 'https://images.unsplash.com/photo-1619566636858-adf3ef4644b9?w=400&q=80'}" alt="${escapeHtml(item.name)}">
+                  <div>
+                    <h4>${escapeHtml(item.name)}</h4>
+                    <span>${escapeHtml(item.unit || '500g')}</span>
+                  </div>
+                </div>
+              </td>
+              <td data-label="Đơn giá" class="cart-price">${formatVND(itemPrice)}</td>
+              <td data-label="Số lượng">
+                <div class="cart-qty">
+                  <button type="button" class="btn-qty-minus" data-id="${escapeHtml(item.id || item.name)}">−</button>
+                  <input type="text" class="input-qty" value="${itemQty}" readonly>
+                  <button type="button" class="btn-qty-plus" data-id="${escapeHtml(item.id || item.name)}">+</button>
+                </div>
+              </td>
+              <td data-label="Thành tiền" class="cart-price item-line-total">${formatVND(lineTotal)}</td>
+              <td><button type="button" class="cart-remove" data-id="${escapeHtml(item.id || item.name)}" title="Xóa món này"><i class="fas fa-trash-alt"></i></button></td>
+            </tr>
+          `;
+        }).join('');
 
         // Cập nhật tóm tắt
         document.getElementById('labelItemCount').textContent = `Tạm tính (${totalItems} sản phẩm)`;
@@ -545,42 +517,45 @@
         const total = Math.max(0, subtotal + shippingFee - currentDiscount);
         document.getElementById('summaryTotal').textContent = formatVND(total);
 
-        updateBadges(totalItems);
-      }
-
-      function updateBadges(count) {
-        const badges = document.querySelectorAll('.cart-btn .badge-count');
-        badges.forEach(b => {
-          b.textContent = count;
-        });
+        if (window.FreshMartCart) window.FreshMartCart.updateBadges();
       }
 
       // Xử lý nút tăng giảm số lượng và xóa món
       const tbody = document.getElementById('cartTableBody');
       if (tbody) {
         tbody.addEventListener('click', function (e) {
-          const row = e.target.closest('.cart-item-row');
-          if (!row) return;
+          const plusBtn = e.target.closest('.btn-qty-plus');
+          const minusBtn = e.target.closest('.btn-qty-minus');
+          const removeBtn = e.target.closest('.cart-remove');
 
-          const inputQty = row.querySelector('.input-qty');
-          let currentQty = parseInt(inputQty.value) || 1;
-
-          if (e.target.closest('.btn-qty-plus')) {
-            inputQty.value = currentQty + 1;
-            updateCartTotals();
-          } else if (e.target.closest('.btn-qty-minus')) {
-            if (currentQty > 1) {
-              inputQty.value = currentQty - 1;
-              updateCartTotals();
+          if (plusBtn) {
+            const id = plusBtn.getAttribute('data-id');
+            const cart = window.FreshMartCart.getCart();
+            const item = cart.find(p => p.id === id || p.name === id);
+            if (item) {
+              window.FreshMartCart.updateQty(id, (item.qty || 1) + 1);
+              renderCart();
             }
-          } else if (e.target.closest('.cart-remove')) {
-            row.style.transition = 'all 0.3s ease';
-            row.style.opacity = '0';
-            row.style.transform = 'translateX(20px)';
-            setTimeout(() => {
-              row.remove();
-              updateCartTotals();
-            }, 300);
+          } else if (minusBtn) {
+            const id = minusBtn.getAttribute('data-id');
+            const cart = window.FreshMartCart.getCart();
+            const item = cart.find(p => p.id === id || p.name === id);
+            if (item && item.qty > 1) {
+              window.FreshMartCart.updateQty(id, item.qty - 1);
+              renderCart();
+            }
+          } else if (removeBtn) {
+            const id = removeBtn.getAttribute('data-id');
+            const row = removeBtn.closest('.cart-item-row');
+            if (row) {
+              row.style.transition = 'all 0.3s ease';
+              row.style.opacity = '0';
+              row.style.transform = 'translateX(20px)';
+              setTimeout(() => {
+                window.FreshMartCart.removeItem(id);
+                renderCart();
+              }, 250);
+            }
           }
         });
       }
@@ -590,9 +565,8 @@
       if (btnClearCart) {
         btnClearCart.addEventListener('click', function () {
           if (confirm('Bạn có chắc muốn xóa tất cả sản phẩm khỏi giỏ hàng?')) {
-            const tbody = document.getElementById('cartTableBody');
-            if (tbody) tbody.innerHTML = '';
-            updateCartTotals();
+            window.FreshMartCart.clearCart();
+            renderCart();
           }
         });
       }
@@ -613,7 +587,7 @@
             couponMsg.style.display = 'block';
             couponMsg.style.color = '#10b981';
             couponMsg.textContent = 'Mã hợp lệ! Đã áp dụng giảm 20.000đ';
-            updateCartTotals();
+            renderCart();
           } else if (code === 'FRESHMART50' || code === 'FRESH50') {
             discountAmount = 50000;
             discountRow.style.display = 'flex';
@@ -621,12 +595,12 @@
             couponMsg.style.display = 'block';
             couponMsg.style.color = '#10b981';
             couponMsg.textContent = 'Mã hợp lệ! Đã áp dụng giảm 50.000đ';
-            updateCartTotals();
+            renderCart();
           } else if (code === '') {
             discountAmount = 0;
             discountRow.style.display = 'none';
             couponMsg.style.display = 'none';
-            updateCartTotals();
+            renderCart();
           } else {
             couponMsg.style.display = 'block';
             couponMsg.style.color = '#ef4444';
@@ -635,11 +609,18 @@
         });
       }
 
-      // Nút chuyển sang Thanh toán (Kiểm tra đăng nhập)
+      // Nút chuyển sang Thanh toán (Kiểm tra đăng nhập & giỏ hàng rỗng)
       const btnGoCheckout = document.getElementById('btnGoCheckout');
       if (btnGoCheckout) {
         btnGoCheckout.addEventListener('click', function (e) {
           e.preventDefault();
+          const cart = window.FreshMartCart.getCart();
+          if (!cart || cart.length === 0) {
+            alert('Giỏ hàng của bạn đang trống! Vui lòng chọn sản phẩm trước khi thanh toán.');
+            window.location.href = 'products.html';
+            return;
+          }
+
           btnGoCheckout.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i> Đang kiểm tra...';
           fetch('../api/me.php', { credentials: 'same-origin' })
             .then(res => res.json())
@@ -656,8 +637,11 @@
         });
       }
 
-      // Khởi tạo tính toán ban đầu
-      updateCartTotals();
+      // Lắng nghe sự kiện giỏ hàng được cập nhật
+      window.addEventListener('cartUpdated', renderCart);
+
+      // Khởi tạo hiển thị giỏ hàng
+      renderCart();
     })();
   </script>
 </body>

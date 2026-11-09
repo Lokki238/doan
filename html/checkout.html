@@ -428,45 +428,24 @@
           <div class="col-lg-4">
             <div class="order-summary">
               <h3>Đơn hàng của bạn</h3>
-              <div class="order-item">
-                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTlaYUKDTlQ4Ky1dcHpEkLWHA6-PLI7SGyoqW3g0PS1J7W31gJcO2OppTm0&s=10" alt="Cà chua bi Đà Lạt">
-                <div class="info">
-                  <h5>Cà chua bi Đà Lạt</h5>
-                  <span>x2 · 500g/hộp</span>
-                </div>
-                <div class="price">64.000đ</div>
-              </div>
-              <div class="order-item">
-                <img src="https://images.unsplash.com/photo-1550583724-b2692b85b150?w=100&q=80" alt="Sữa tươi TH True Milk">
-                <div class="info">
-                  <h5>Sữa tươi TH True Milk</h5>
-                  <span>x1 · 1 lít</span>
-                </div>
-                <div class="price">34.000đ</div>
-              </div>
-              <div class="order-item">
-                <img src="https://images.unsplash.com/photo-1607623814075-e51df1bdc82f?w=100&q=80" alt="Thịt bò Úc thăn">
-                <div class="info">
-                  <h5>Thịt bò Úc thăn</h5>
-                  <span>x1 · 300g</span>
-                </div>
-                <div class="price">189.000đ</div>
+              <div id="checkoutOrderItems">
+                <!-- Danh sách sản phẩm thực tế được sinh từ giỏ hàng -->
               </div>
               <div class="summary-row">
                 <span>Tạm tính</span>
-                <span id="coSubtotal">287.000đ</span>
+                <span id="coSubtotal">0đ</span>
               </div>
               <div class="summary-row">
                 <span>Phí vận chuyển</span>
                 <span id="coShipping">30.000đ</span>
               </div>
-              <div class="summary-row">
+              <div class="summary-row" id="coDiscountRow">
                 <span>Giảm giá</span>
-                <span style="color:var(--accent);">-20.000đ</span>
+                <span id="coDiscount" style="color:var(--accent);">-20.000đ</span>
               </div>
               <div class="summary-row total">
                 <span>Tổng cộng</span>
-                <span id="coTotal">297.000đ</span>
+                <span id="coTotal">0đ</span>
               </div>
               <button type="submit" class="btn btn-primary w-100 btn-lg mt-3" id="btnPlaceOrder">
                 Đặt hàng ngay <i class="fas fa-check ms-2"></i>
@@ -544,12 +523,19 @@
   <script src="../js/bootstrap.bundle.min.js"></script>
   <script src="../js/main.js"></script>
   <script>
-    let subtotal = 287000;
+    let subtotal = 0;
     let shipping = 30000;
-    const discount = 20000;
+    let discount = 20000;
 
     function formatVND(amt) {
-      return amt.toLocaleString('vi-VN') + 'đ';
+      return Number(amt).toLocaleString('vi-VN') + 'đ';
+    }
+
+    function escapeHtml(text) {
+      if (!text) return '';
+      return String(text).replace(/[&<>"']/g, function (m) {
+        return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m];
+      });
     }
 
     function selectPay(el) {
@@ -568,7 +554,57 @@
       el.querySelector('input').checked = true;
       shipping = fee;
       document.getElementById('coShipping').textContent = formatVND(shipping);
-      document.getElementById('coTotal').textContent = formatVND(subtotal + shipping - discount);
+      updateTotal();
+    }
+
+    function updateTotal() {
+      const total = Math.max(0, subtotal + shipping - discount);
+      document.getElementById('coTotal').textContent = formatVND(total);
+      return total;
+    }
+
+    // Tải danh sách sản phẩm thật từ Giỏ hàng LocalStorage
+    function loadCheckoutCart() {
+      const cart = window.FreshMartCart ? window.FreshMartCart.getCart() : [];
+      const container = document.getElementById('checkoutOrderItems');
+
+      if (!cart || cart.length === 0) {
+        container.innerHTML = '<div class="alert alert-warning py-3 text-center">Giỏ hàng của bạn đang trống! Vui lòng chọn sản phẩm trước.</div>';
+        subtotal = 0;
+        discount = 0;
+        document.getElementById('coSubtotal').textContent = '0đ';
+        document.getElementById('coTotal').textContent = '0đ';
+        setTimeout(() => {
+          window.location.href = 'products.html';
+        }, 1500);
+        return;
+      }
+
+      subtotal = 0;
+      container.innerHTML = cart.map(item => {
+        const itemPrice = parseInt(item.price) || 0;
+        const itemQty = parseInt(item.qty) || 1;
+        const lineTotal = itemPrice * itemQty;
+        subtotal += lineTotal;
+
+        return `
+          <div class="order-item">
+            <img src="${item.image || 'https://images.unsplash.com/photo-1619566636858-adf3ef4644b9?w=400&q=80'}" alt="${escapeHtml(item.name)}">
+            <div class="info">
+              <h5>${escapeHtml(item.name)}</h5>
+              <span>x${itemQty} · ${escapeHtml(item.unit || '500g')}</span>
+            </div>
+            <div class="price">${formatVND(lineTotal)}</div>
+          </div>
+        `;
+      }).join('');
+
+      document.getElementById('coSubtotal').textContent = formatVND(subtotal);
+      if (subtotal < 50000) {
+        discount = 0;
+        document.getElementById('coDiscountRow').style.display = 'none';
+      }
+      updateTotal();
     }
 
     // 1. Kiểm tra đăng nhập bắt buộc: Nếu chưa đăng nhập chuyển sang login.html
@@ -588,16 +624,25 @@
         window.location.href = 'login.html?redirect=checkout.html';
       });
 
+    loadCheckoutCart();
+
     // 2. Xử lý đặt hàng
     document.getElementById('checkoutForm').addEventListener('submit', async function(e) {
       e.preventDefault();
+      const cart = window.FreshMartCart ? window.FreshMartCart.getCart() : [];
+      if (!cart || cart.length === 0) {
+        alert('Giỏ hàng trống! Vui lòng chọn sản phẩm.');
+        window.location.href = 'products.html';
+        return;
+      }
+
       const btn = document.getElementById('btnPlaceOrder');
       const originalText = btn.innerHTML;
       btn.disabled = true;
       btn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i> Đang khởi tạo đơn hàng...';
 
       const method = document.querySelector('input[name="payment"]:checked').value;
-      const totalAmount = subtotal + shipping - discount;
+      const totalAmount = updateTotal();
       const custName = document.getElementById('custName').value;
       const custPhone = document.getElementById('custPhone').value;
       const custEmail = document.getElementById('custEmail').value;
@@ -622,6 +667,11 @@
 
         if (data.success) {
           const orderId = data.data.ma_don_hang;
+
+          // Xóa giỏ hàng sau khi đặt hàng thành công
+          if (window.FreshMartCart) {
+            window.FreshMartCart.clearCart();
+          }
 
           if (method === 'bank') {
             // Chuyển hướng sang trang Quét mã QR VietQR

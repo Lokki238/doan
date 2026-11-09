@@ -3,117 +3,141 @@
  * Basic interactions (effects will be enhanced later)
  */
 
+// =====================================================
+// FRESHMART CART - Quản lý giỏ hàng chuẩn LocalStorage
+// =====================================================
+window.FreshMartCart = {
+  STORAGE_KEY: 'freshmart_cart',
+
+  getCart: function () {
+    try {
+      const data = localStorage.getItem(this.STORAGE_KEY);
+      return data ? JSON.parse(data) : [];
+    } catch (e) {
+      return [];
+    }
+  },
+
+  saveCart: function (cart) {
+    try {
+      localStorage.setItem(this.STORAGE_KEY, JSON.stringify(cart));
+      this.updateBadges();
+      window.dispatchEvent(new CustomEvent('cartUpdated', { detail: cart }));
+    } catch (e) {}
+  },
+
+  addItem: function (item) {
+    const cart = this.getCart();
+    const existing = cart.find(p => p.name === item.name);
+    if (existing) {
+      existing.qty = (parseInt(existing.qty) || 1) + (parseInt(item.qty) || 1);
+      if (item.price) existing.price = parseInt(item.price);
+      if (item.image && !existing.image) existing.image = item.image;
+    } else {
+      cart.push({
+        id: item.id || ('prod_' + Date.now() + '_' + Math.floor(Math.random() * 1000)),
+        name: item.name,
+        price: parseInt(item.price) || 0,
+        image: item.image || 'https://images.unsplash.com/photo-1619566636858-adf3ef4644b9?w=400&q=80',
+        unit: item.unit || '500g',
+        qty: parseInt(item.qty) || 1
+      });
+    }
+    this.saveCart(cart);
+  },
+
+  updateQty: function (productId, qty) {
+    const cart = this.getCart();
+    const target = cart.find(p => p.id === productId || p.name === productId);
+    if (target) {
+      target.qty = Math.max(1, parseInt(qty) || 1);
+      this.saveCart(cart);
+    }
+  },
+
+  removeItem: function (productId) {
+    let cart = this.getCart();
+    cart = cart.filter(p => p.id !== productId && p.name !== productId);
+    this.saveCart(cart);
+  },
+
+  clearCart: function () {
+    this.saveCart([]);
+  },
+
+  getTotalCount: function () {
+    const cart = this.getCart();
+    return cart.reduce((sum, item) => sum + (parseInt(item.qty) || 1), 0);
+  },
+
+  getSubtotal: function () {
+    const cart = this.getCart();
+    return cart.reduce((sum, item) => sum + ((parseInt(item.price) || 0) * (parseInt(item.qty) || 1)), 0);
+  },
+
+  updateBadges: function () {
+    const count = this.getTotalCount();
+    document.querySelectorAll('.cart-btn .badge-count, #headerCartCount').forEach(b => {
+      b.textContent = count;
+    });
+  }
+};
+
 document.addEventListener('DOMContentLoaded', function () {
-  // ---------- Search Toggle ----------
-  const searchToggle = document.getElementById('searchToggle');
-  const searchOverlay = document.getElementById('searchOverlay');
-  const searchClose = document.getElementById('searchClose');
-
-  if (searchToggle && searchOverlay) {
-    searchToggle.addEventListener('click', function () {
-      searchOverlay.classList.toggle('active');
-      if (searchOverlay.classList.contains('active')) {
-        const input = searchOverlay.querySelector('.search-input');
-        if (input) setTimeout(() => input.focus(), 100);
-      }
-    });
+  // Cập nhật số đếm trên giỏ hàng ban đầu
+  if (window.FreshMartCart) {
+    window.FreshMartCart.updateBadges();
   }
 
-  if (searchClose) {
-    searchClose.addEventListener('click', function () {
-      searchOverlay.classList.remove('active');
-    });
-  }
-
-  // ---------- Mobile Menu ----------
-  const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-  const mobileMenu = document.getElementById('mobileMenu');
-  const mobileMenuClose = document.getElementById('mobileMenuClose');
-  const overlay = document.getElementById('overlay');
-
-  function openMobileMenu() {
-    if (mobileMenu) mobileMenu.classList.add('active');
-    if (overlay) overlay.classList.add('active');
-    document.body.style.overflow = 'hidden';
-  }
-
-  function closeMobileMenu() {
-    if (mobileMenu) mobileMenu.classList.remove('active');
-    if (overlay) overlay.classList.remove('active');
-    document.body.style.overflow = '';
-  }
-
-  if (mobileMenuBtn) mobileMenuBtn.addEventListener('click', openMobileMenu);
-  if (mobileMenuClose) mobileMenuClose.addEventListener('click', closeMobileMenu);
-  if (overlay) overlay.addEventListener('click', closeMobileMenu);
-
-  // ---------- Product Dropdown ----------
-  const dropdowns = document.querySelectorAll('.has-dropdown');
-
-  dropdowns.forEach(function (dropdown) {
-    const link = dropdown.querySelector('.nav-link');
-    if (!link) return;
-
-    link.addEventListener('click', function (event) {
-      if (window.innerWidth >= 992) return;
-      event.preventDefault();
-      const isOpen = dropdown.classList.contains('active');
-      dropdowns.forEach(function (item) {
-        item.classList.remove('active');
-      });
-      if (!isOpen) dropdown.classList.add('active');
-    });
-  });
-
-  document.addEventListener('click', function (event) {
-    if (!event.target.closest('.has-dropdown')) {
-      dropdowns.forEach(function (dropdown) {
-        dropdown.classList.remove('active');
-      });
-    }
-  });
-
-  // ---------- Back to Top ----------
-  const backToTop = document.getElementById('backToTop');
-
-  window.addEventListener('scroll', function () {
-    if (backToTop) {
-      if (window.scrollY > 400) {
-        backToTop.classList.add('visible');
-      } else {
-        backToTop.classList.remove('visible');
-      }
-    }
-  });
-
-  if (backToTop) {
-    backToTop.addEventListener('click', function () {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    });
-  }
-
-  // ---------- Add to Cart (basic feedback) ----------
+  // ---------- Add to Cart (Lưu vào Giỏ hàng thật) ----------
   const addToCartBtns = document.querySelectorAll('.add-to-cart');
   addToCartBtns.forEach(function (btn) {
     btn.addEventListener('click', function (e) {
       e.preventDefault();
+      const card = btn.closest('.product-card') || btn.closest('.card') || btn.closest('.product-item');
+      let name = 'Sản phẩm FreshMart';
+      let price = 32000;
+      let image = '';
+      let unit = '500g / gói';
+
+      if (card) {
+        const nameEl = card.querySelector('.product-name a, .product-name, h3, h4');
+        if (nameEl) name = nameEl.textContent.trim();
+
+        const catEl = card.querySelector('.product-cat');
+        if (catEl) unit = catEl.textContent.trim();
+
+        const priceEl = card.querySelector('.price-new, .product-price');
+        if (priceEl) {
+          const rawPrice = priceEl.textContent.replace(/[^\d]/g, '');
+          if (rawPrice) price = parseInt(rawPrice);
+        }
+
+        const imgEl = card.querySelector('img');
+        if (imgEl && imgEl.src) image = imgEl.src;
+      }
+
+      // Lưu vào giỏ hàng
+      window.FreshMartCart.addItem({
+        name: name,
+        price: price,
+        image: image,
+        unit: unit,
+        qty: 1
+      });
+
       const original = btn.innerHTML;
       btn.innerHTML = '<i class="fas fa-check me-1"></i> Đã thêm';
       btn.disabled = true;
-      btn.style.background = '#40916c';
-
-      // Update cart badge
-      const badge = document.querySelector('.cart-btn .badge-count');
-      if (badge) {
-        const current = parseInt(badge.textContent) || 0;
-        badge.textContent = current + 1;
-      }
+      btn.style.background = '#059669';
+      btn.style.borderColor = '#059669';
 
       setTimeout(function () {
         btn.innerHTML = original;
         btn.disabled = false;
         btn.style.background = '';
-      }, 1500);
+        btn.style.borderColor = '';
+      }, 1200);
     });
   });
 
