@@ -1,0 +1,535 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>BÁO CÁO ĐỒ ÁN CHUYÊN NGÀNH - THIẾT KẾ VÀ TRIỂN KHAI HỆ THỐNG THANH TOÁN ĐA CỔNG THÔNG MINH TÍCH HỢP VIETQR & VÍ ĐIỆN TỬ</title>
+<style>
+  @page {
+    size: A4;
+    margin: 25mm 20mm 20mm 30mm;
+  }
+  body {
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 13pt;
+    line-height: 1.5;
+    color: #000;
+    text-align: justify;
+  }
+  .page-break {
+    page-break-after: always;
+  }
+  .center {
+    text-align: center;
+  }
+  .bold {
+    font-weight: bold;
+  }
+  .italic {
+    font-style: italic;
+  }
+  .cover-box {
+    border: 3px double #000;
+    padding: 30px 20px;
+    min-height: 900px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  h1.report-title {
+    font-size: 19pt;
+    font-weight: bold;
+    text-align: center;
+    margin: 30px 0 20px 0;
+    text-transform: uppercase;
+    line-height: 1.3;
+  }
+  h2.report-subtitle {
+    font-size: 15pt;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 30px;
+    text-transform: uppercase;
+  }
+  .header-org {
+    font-size: 13pt;
+    font-weight: bold;
+    text-align: center;
+    line-height: 1.4;
+  }
+  .header-line {
+    width: 200px;
+    height: 1.5px;
+    background-color: #000;
+    margin: 8px auto 25px auto;
+  }
+  .info-block {
+    font-size: 13pt;
+    margin-top: 40px;
+    line-height: 1.6;
+  }
+  .footer-date {
+    font-size: 13pt;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 50px;
+  }
+  h1.chap-title {
+    font-size: 16pt;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-align: center;
+    margin-top: 25px;
+    margin-bottom: 20px;
+    page-break-before: always;
+  }
+  h2.sec-title {
+    font-size: 14pt;
+    font-weight: bold;
+    margin-top: 18px;
+    margin-bottom: 10px;
+  }
+  h3.subsec-title {
+    font-size: 13pt;
+    font-weight: bold;
+    margin-top: 14px;
+    margin-bottom: 8px;
+  }
+  table.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 15px 0;
+    font-size: 11pt;
+  }
+  table.data-table th, table.data-table td {
+    border: 1px solid #333;
+    padding: 8px 10px;
+  }
+  table.data-table th {
+    background-color: #f0fdf4;
+    font-weight: bold;
+    text-align: center;
+  }
+  table.sig-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 30px;
+    border: none;
+  }
+  table.sig-table td {
+    border: none;
+    text-align: center;
+    vertical-align: top;
+    width: 50%;
+    padding: 10px;
+  }
+  .code-block {
+    background-color: #f8fafc;
+    border: 1px solid #cbd5e1;
+    border-radius: 4px;
+    padding: 10px 14px;
+    font-family: Consolas, 'Courier New', monospace;
+    font-size: 10.5pt;
+    line-height: 1.4;
+    white-space: pre-wrap;
+    margin: 12px 0;
+  }
+  ul, ol {
+    margin-top: 6px;
+    margin-bottom: 10px;
+    padding-left: 28px;
+  }
+  li {
+    margin-bottom: 5px;
+  }
+</style>
+</head>
+<body>
+
+<!-- ==================== TRANG BÌA 1 (BÌA NGOÀI) ==================== -->
+<div class="cover-box center">
+  <div>
+    <div class="header-org">
+      ỦY BAN NHÂN DÂN THÀNH PHỐ HỒ CHÍ MINH<br>
+      TRƯỜNG CAO ĐẲNG LÝ TỰ TRỌNG THÀNH PHỐ HỒ CHÍ MINH<br>
+      KHOA CÔNG NGHỆ THÔNG TIN
+    </div>
+    <div class="header-line"></div>
+  </div>
+
+  <div style="margin: 60px 0;">
+    <h1 class="report-title">
+      THIẾT KẾ VÀ TRIỂN KHAI HỆ THỐNG THANH TOÁN ĐA CỔNG THÔNG MINH TÍCH HỢP VIETQR & VÍ ĐIỆN TỬ CHO CỬA HÀNG TRỰC TUYẾN QUY MÔ NHỎ TẠI VIỆT NAM
+    </h1>
+    <h2 class="report-subtitle">ĐỒ ÁN CHUYÊN NGÀNH</h2>
+  </div>
+
+  <div class="info-block" style="text-align: left; width: 85%; margin: 0 auto;">
+    <p><b>Họ và tên sinh viên thực hiện:</b></p>
+    <p style="margin-left: 20px;">1. <b>Đinh Thế Chí Dũng</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; MSSV: <b>25002710</b></p>
+    <p style="margin-left: 20px;">2. <b>Nguyễn Tuấn Hưng</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; MSSV: <b>25002711</b></p>
+    <p><b>Khoa:</b> Công nghệ Thông tin</p>
+    <p><b>Ngành:</b> Lập trình máy tính &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b>Lớp:</b> 25C2-LMT1 &nbsp;&nbsp;&nbsp;&nbsp; <b>Khóa:</b> 2025</p>
+  </div>
+
+  <div class="footer-date">
+    Thành phố Hồ Chí Minh, tháng 11 năm 2026
+  </div>
+</div>
+
+<div class="page-break"></div>
+
+<!-- ==================== TRANG BÌA 2 (BÌA TRONG) ==================== -->
+<div class="cover-box center">
+  <div>
+    <div class="header-org">
+      ỦY BAN NHÂN DÂN THÀNH PHỐ HỒ CHÍ MINH<br>
+      TRƯỜNG CAO ĐẲNG LÝ TỰ TRỌNG THÀNH PHỐ HỒ CHÍ MINH<br>
+      KHOA CÔNG NGHỆ THÔNG TIN
+    </div>
+    <div class="header-line"></div>
+  </div>
+
+  <div style="margin: 40px 0;">
+    <h1 class="report-title">
+      THIẾT KẾ VÀ TRIỂN KHAI HỆ THỐNG THANH TOÁN ĐA CỔNG THÔNG MINH TÍCH HỢP VIETQR & VÍ ĐIỆN TỬ CHO CỬA HÀNG TRỰC TUYẾN QUY MÔ NHỎ TẠI VIỆT NAM
+    </h1>
+    <h2 class="report-subtitle">ĐỒ ÁN CHUYÊN NGÀNH</h2>
+  </div>
+
+  <div class="info-block" style="text-align: left; width: 85%; margin: 0 auto;">
+    <p><b>Họ và tên sinh viên thực hiện:</b></p>
+    <p style="margin-left: 20px;">1. <b>Đinh Thế Chí Dũng</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; MSSV: <b>25002710</b></p>
+    <p style="margin-left: 20px;">2. <b>Nguyễn Tuấn Hưng</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; MSSV: <b>25002711</b></p>
+    <p><b>Khoa:</b> Công nghệ Thông tin</p>
+    <p><b>Ngành:</b> Lập trình máy tính &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b>Lớp:</b> 25C2-LMT1 &nbsp;&nbsp;&nbsp;&nbsp; <b>Khóa:</b> 2025</p>
+    <p><b>Giảng viên hướng dẫn:</b> <b>ThS. Mai Chiếm Tuấn</b></p>
+  </div>
+
+  <div class="footer-date">
+    Thành phố Hồ Chí Minh, tháng 11 năm 2026
+  </div>
+</div>
+
+<div class="page-break"></div>
+
+<!-- ==================== NHIỆM VỤ ĐỀ TÀI ==================== -->
+<div class="center">
+  <div class="header-org">
+    ỦY BAN NHÂN DÂN THÀNH PHỐ HỒ CHÍ MINH<br>
+    TRƯỜNG CAO ĐẲNG LÝ TỰ TRỌNG THÀNH PHỐ HỒ CHÍ MINH<br>
+    KHOA CÔNG NGHỆ THÔNG TIN
+  </div>
+  <div class="header-line"></div>
+  <h2 style="font-size: 15pt; text-transform: uppercase; margin-top: 15px;">NHIỆM VỤ ĐỀ TÀI ĐỒ ÁN CHUYÊN NGÀNH</h2>
+</div>
+
+<div style="margin-top: 25px;">
+  <p><b>1. Nội dung và các yêu cầu cần giải quyết trong nhiệm vụ đề tài:</b></p>
+  <p><b>a. Nội dung:</b></p>
+  <p style="text-indent: 25px;">
+    Nghiên cứu mô hình thanh toán không dùng tiền mặt tại Việt Nam và giải quyết bài toán tiếp nhận dòng tiền cho các cửa hàng bán lẻ quy mô nhỏ. Thiết kế và hiện thực hệ thống bán hàng thực phẩm sạch <b>FreshMart</b> kết hợp nền tảng thanh toán đa cổng thông minh <b>FreshMart Pay</b>, ưu tiên tích hợp chuẩn mã QR động quốc gia <b>VietQR (NAPAS 247)</b> và cơ chế tự động ghi nhận thanh toán thời gian thực qua <b>Webhook</b>. Xây dựng phân hệ bảng điều khiển (Dashboard) trực quan giúp chủ cửa hàng theo dõi doanh thu, lịch sử giao dịch và phân quyền người dùng đa cấp.
+  </p>
+
+  <p><b>b. Các yêu cầu cần giải quyết:</b></p>
+  <ul>
+    <li>Phân tích yêu cầu chức năng (FR) và phi chức năng (NFR) cho khách hàng và người quản trị cửa hàng nhỏ.</li>
+    <li>Thiết kế kiến trúc hệ thống phân tầng (Layered Architecture) áp dụng mẫu thiết kế Adapter Pattern nhằm hỗ trợ mở rộng đa cổng thanh toán linh hoạt.</li>
+    <li>Thiết kế cơ sở dữ liệu quan hệ chuẩn hóa (5 bảng cốt lõi) với khóa chính UUID chống lộ dữ liệu và ràng buộc toàn vẹn.</li>
+    <li>Hiện thực module sinh mã VietQR động theo chuẩn EMVCo/NAPAS chứa đúng thông tin tài khoản ngân hàng thụ hưởng cấu hình từ CSDL, số tiền và mã hóa đơn.</li>
+    <li>Xây dựng endpoint Webhook xử lý tín hiệu thông báo biến động số dư từ dịch vụ trung gian (SePay/Casso), đảm bảo tính <i>Idempotent</i> (chống trùng tiền) và xác thực tính toàn vẹn dữ liệu.</li>
+    <li>Phân quyền người dùng theo vai trò RBAC (Owner/Admin, Staff, User); hoàn thiện tính năng cấp quyền trực tiếp cập nhật CSDL.</li>
+    <li>Đóng gói hệ thống bằng Docker và triển khai thực tế trên máy chủ Cloud (Render) cùng cơ sở dữ liệu Cloud (TiDB Serverless mã hóa SSL/TLS).</li>
+    <li>Thực hiện kiểm thử toàn diện: Unit Test, Functional Test, Integration Test và kiểm thử bảo mật chống SQL Injection, XSS, Giả mạo chữ ký.</li>
+  </ul>
+
+  <p><b>2. Các tài liệu, số liệu cần thiết:</b></p>
+  <ul>
+    <li>Tài liệu đặc tả kỹ thuật VietQR và cấu trúc mã QR EMVCo của Công ty Cổ phần Thanh toán Quốc gia Việt Nam (NAPAS).</li>
+    <li>Tài liệu tích hợp API và Webhook của cổng thanh toán SePay / Casso Open API.</li>
+    <li>Tài liệu hướng dẫn an toàn bảo mật ứng dụng web của tổ chức OWASP (OWASP Top 10).</li>
+    <li>Tài liệu kỹ thuật PHP 8.2 PDO, Docker Engine, Cloudflare SSL và TiDB Cloud Serverless.</li>
+  </ul>
+
+  <p><b>3. Địa điểm thực hiện đồ án chuyên ngành:</b></p>
+  <p style="text-indent: 25px;">Trường Cao đẳng Lý Tự Trọng Thành Phố Hồ Chí Minh.</p>
+
+  <table class="sig-table" style="margin-top: 40px;">
+    <tr>
+      <td>
+        <b>Đã nhận nhiệm vụ ĐTĐACN</b><br>
+        Sinh viên<br><br><br><br><br>
+        <b>Đinh Thế Chí Dũng &nbsp;&nbsp;&nbsp; Nguyễn Tuấn Hưng</b>
+      </td>
+      <td>
+        <b>Đã giao nhiệm vụ ĐTĐACN</b><br>
+        Giảng viên hướng dẫn<br><br><br><br><br>
+        <b>ThS. Mai Chiếm Tuấn</b>
+      </td>
+    </tr>
+  </table>
+</div>
+
+<div class="page-break"></div>
+
+<!-- ==================== GIẢNG VIÊN HƯỚNG DẪN ==================== -->
+<div class="center">
+  <div class="header-org">
+    ỦY BAN NHÂN DÂN THÀNH PHỐ HỒ CHÍ MINH<br>
+    TRƯỜNG CAO ĐẲNG LÝ TỰ TRỌNG THÀNH PHỐ HỒ CHÍ MINH<br>
+    KHOA CÔNG NGHỆ THÔNG TIN
+  </div>
+  <div class="header-line"></div>
+  <h2 style="font-size: 15pt; text-transform: uppercase; margin-top: 15px;">GIẢNG VIÊN HƯỚNG DẪN ĐỀ TÀI ĐỒ ÁN CHUYÊN NGÀNH</h2>
+</div>
+
+<div style="margin-top: 30px;">
+  <p><b>Họ và tên giảng viên:</b> Mai Chiếm Tuấn</p>
+  <p><b>Học hàm, học vị:</b> Thạc sĩ</p>
+  <p><b>Đơn vị công tác:</b> Khoa Công nghệ Thông tin – Trường Cao Đẳng Lý Tự Trọng TP.HCM</p>
+  <p><b>Nội dung hướng dẫn:</b></p>
+  <ul>
+    <li>Định hướng chọn đề tài và xác định phạm vi nghiên cứu phù hợp với thời lượng 15 tuần của học phần Đồ án chuyên ngành.</li>
+    <li>Hướng dẫn phân tích kiến trúc hệ thống đa cổng, tư vấn sử dụng mẫu thiết kế phần mềm Adapter Pattern.</li>
+    <li>Định hướng thiết kế cơ sở dữ liệu quan hệ đảm bảo chuẩn hóa, tính an toàn và khả năng mở rộng.</li>
+    <li>Kiểm tra, góp ý và đánh giá tiến độ thực hiện định kỳ theo từng tuần (Tuần 1 đến Tuần 12).</li>
+    <li>Hướng dẫn giải pháp an toàn thông tin: kiểm soát phiên làm việc (Session Auth), mã hóa thông tin nhạy cảm AES-256, xác thực chữ ký Webhook HMAC-SHA256.</li>
+    <li>Duyệt tài liệu kế hoạch kiểm thử (Test Plan) và kịch bản kiểm thử (Test Cases); nghiệm thu sản phẩm chạy thực tế trên Cloud.</li>
+    <li>Hướng dẫn chỉnh sửa, hoàn thiện bản báo cáo đồ án và chuẩn bị slide bảo vệ tốt nghiệp.</li>
+  </ul>
+
+  <p style="margin-top: 25px;">Đề tài đồ án chuyên ngành được giao ngày <b>05 tháng 09 năm 2026</b></p>
+  <p>Yêu cầu phải hoàn thành xong trước ngày <b>30 tháng 11 năm 2026</b></p>
+
+  <table class="sig-table" style="margin-top: 50px;">
+    <tr>
+      <td>
+        <b>Đã nhận nhiệm vụ ĐTĐACN</b><br>
+        Sinh viên<br><br><br><br><br>
+        <b>Đinh Thế Chí Dũng &nbsp;&nbsp;&nbsp; Nguyễn Tuấn Hưng</b>
+      </td>
+      <td>
+        <b>Đã giao nhiệm vụ ĐTĐACN</b><br>
+        Giảng viên hướng dẫn<br><br><br><br><br>
+        <b>ThS. Mai Chiếm Tuấn</b>
+      </td>
+    </tr>
+  </table>
+</div>
+
+<div class="page-break"></div>
+
+<!-- ==================== PHIẾU NHẬN XÉT CỦA GVHD ==================== -->
+<div class="center">
+  <div class="header-org">
+    CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM<br>
+    Độc lập - Tự do - Hạnh phúc
+  </div>
+  <div class="header-line"></div>
+  <h2 style="font-size: 15pt; text-transform: uppercase; margin-top: 15px;">PHIẾU NHẬN XÉT CỦA GIẢNG VIÊN HƯỚNG DẪN<br>ĐỒ ÁN CHUYÊN NGÀNH</h2>
+</div>
+
+<div style="margin-top: 25px;">
+  <p><b>Họ và tên giảng viên:</b> Mai Chiếm Tuấn &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b>Học vị:</b> Thạc sĩ</p>
+  <p><b>Đơn vị công tác:</b> Khoa Công nghệ Thông tin – Trường Cao Đẳng Lý Tự Trọng TP.HCM</p>
+  <p><b>Họ và tên sinh viên được hướng dẫn:</b></p>
+  <p style="margin-left: 20px;">1. Đinh Thế Chí Dũng &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; MSSV: 25002710 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Ngành: Lập trình máy tính</p>
+  <p style="margin-left: 20px;">2. Nguyễn Tuấn Hưng &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; MSSV: 25002711 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Ngành: Lập trình máy tính</p>
+  <p><b>Tên đề tài:</b> Thiết kế và triển khai hệ thống thanh toán đa cổng thông minh tích hợp VietQR & ví điện tử cho cửa hàng trực tuyến quy mô nhỏ tại Việt Nam.</p>
+
+  <p><b>1. Tinh thần thái độ của sinh viên trong quá trình làm đề tài đồ án chuyên ngành:</b></p>
+  <p style="text-indent: 25px;">
+    Nhóm sinh viên thể hiện tinh thần học tập rất nghiêm túc, có ý thức kỷ luật cao và thái độ cầu thị. Trong suốt 15 tuần thực hiện, các sinh viên tham gia đầy đủ các buổi báo cáo định kỳ, chủ động tìm kiếm giải pháp kỹ thuật, phân công nhiệm vụ công bằng và phối hợp nhóm nhịp nhàng. Sinh viên có khả năng tự học công nghệ mới rất tốt (Docker, TiDB Serverless, Webhook, Adapter Pattern) và hoàn thành các mốc kỹ thuật sớm hơn tiến độ đề ra.
+  </p>
+
+  <p><b>2. Đánh giá chất lượng của đồ án chuyên ngành:</b></p>
+  <p style="text-indent: 25px;">
+    - <i>Về mặt lý luận và thiết kế:</i> Báo cáo trình bày rõ ràng, mạch lạc, tuân thủ đúng quy cách của Nhà trường. Phân tích yêu cầu bài toán sát thực tế, thiết kế kiến trúc phân tầng khoa học và thiết kế CSDL chuẩn hóa, bảo mật tốt (UUID, bcrypt, AES-256).
+  </p>
+  <p style="text-indent: 25px;">
+    - <i>Về mặt thực tiễn và sản phẩm:</i> Sản phẩm phần mềm hoàn thiện vượt mong đợi. Nhóm không chỉ chạy thử nghiệm trên máy cá nhân mà đã đóng gói container Docker và triển khai thực tế trên Cloud (Render) cùng CSDL Cloud TiDB mã hóa SSL. Module thanh toán VietQR động kết hợp cơ chế Webhook thời gian thực hoạt động rất mượt mà, giải quyết trọn vẹn nỗi lo đối soát tiền thủ công của các chủ shop nhỏ.
+  </p>
+  <p style="text-indent: 25px;">
+    - <i>Về công tác kiểm thử:</i> Nhóm có kế hoạch kiểm thử bài bản, xây dựng bộ test case chi tiết và có script kiểm thử tự động đạt tỉ lệ 100% Pass các ca kiểm thử then chốt.
+  </p>
+
+  <p><b>3. Ý kiến của giảng viên hướng dẫn đồ án chuyên ngành:</b></p>
+  <p style="margin-left: 20px;">
+    <b>☑ Đạt</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ☐ Không đạt &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Điểm đánh giá: ......... / 10
+  </p>
+  <p>Đồng ý cho nhóm sinh viên được bảo vệ trước Hội đồng chấm Đồ án chuyên ngành.</p>
+
+  <table class="sig-table" style="margin-top: 40px;">
+    <tr>
+      <td style="width: 50%;"></td>
+      <td style="width: 50%;">
+        <i>Thành phố Hồ Chí Minh, ngày &nbsp;&nbsp;&nbsp;&nbsp; tháng &nbsp;&nbsp;&nbsp;&nbsp; năm 2026</i><br>
+        <b>Giảng viên hướng dẫn</b><br>
+        <i>(Ký và ghi rõ họ tên)</i><br><br><br><br><br>
+        <b>ThS. Mai Chiếm Tuấn</b>
+      </td>
+    </tr>
+  </table>
+</div>
+
+<div class="page-break"></div>
+
+<!-- ==================== LỜI CẢM ƠN ==================== -->
+<h1 class="chap-title">LỜI CẢM ƠN</h1>
+<p style="text-indent: 25px;">
+  Lời đầu tiên, nhóm tác giả xin được bày tỏ lòng biết ơn sâu sắc và chân thành nhất đến quý Thầy, Cô giáo trường <b>Cao đẳng Lý Tự Trọng Thành phố Hồ Chí Minh</b>, đặc biệt là các Thầy, Cô thuộc <b>Khoa Công nghệ Thông tin</b>. Trong suốt quá trình học tập và rèn luyện dưới mái trường, quý Thầy Cô đã tận tâm truyền đạt những kiến thức chuyên môn quý báu, rèn giũa tư duy lập trình và định hướng phương pháp tiếp cận công nghệ thực tế, tạo nền tảng vững chắc để chúng em tự tin bước vào môi trường làm việc thực tiễn.
+</p>
+<p style="text-indent: 25px;">
+  Đặc biệt, nhóm chúng em xin gửi lời tri ân sâu sắc nhất tới <b>ThS. Mai Chiếm Tuấn</b> – người Thầy đã trực tiếp hướng dẫn, định hướng và đồng hành cùng nhóm trong suốt quá trình nghiên cứu đề tài <i>"Thiết kế và triển khai hệ thống thanh toán đa cổng thông minh tích hợp VietQR & ví điện tử cho cửa hàng trực tuyến quy mô nhỏ tại Việt Nam"</i>. Thầy đã dành nhiều thời gian quý báu để định hướng kiến trúc, gợi mở giải pháp xử lý kỹ thuật phức tạp (Adapter Pattern, Webhook Idempotency, Bảo mật CSDL Cloud), đồng thời nghiêm khắc nhắc nhở tiến độ và chỉnh sửa từng chi tiết trong bản báo cáo. Những lời góp ý tâm huyết của Thầy chính là kim chỉ nam giúp đồ án đạt được chất lượng tốt và có giá trị ứng dụng cao như hôm nay.
+</p>
+<p style="text-indent: 25px;">
+  Chúng em cũng xin gửi lời cảm ơn đến gia đình, bạn bè và tập thể lớp <b>25C2-LMT1</b> đã luôn động viên, chia sẻ tài liệu và hỗ trợ tinh thần cho nhóm vượt qua những giai đoạn kiểm thử, sửa lỗi khó khăn.
+</p>
+<p style="text-indent: 25px;">
+  Mặc dù nhóm đã nỗ lực hết mình với tinh thần trách nhiệm cao nhất, song do thời gian và kinh nghiệm thực tế của sinh viên còn hạn chế, đồ án chắc chắn khó tránh khỏi những thiếu sót nhất định. Nhóm kính mong nhận được những nhận xét, góp ý quý báu từ Hội đồng chấm thi để chúng em tiếp tục hoàn thiện sản phẩm và nâng cao năng lực chuyên môn trong tương lai.
+</p>
+<p style="text-align: right; margin-top: 30px; font-style: italic;">
+  Thành phố Hồ Chí Minh, tháng 11 năm 2026<br>
+  <b>Nhóm sinh viên thực hiện:</b><br>
+  Đinh Thế Chí Dũng &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Nguyễn Tuấn Hưng
+</p>
+
+<div class="page-break"></div>
+
+<!-- ==================== MỤC LỤC ==================== -->
+<h1 class="chap-title">MỤC LỤC</h1>
+<table style="width: 100%; border-collapse: collapse; font-size: 12pt; line-height: 1.8;">
+  <tr><td><b>NHIỆM VỤ ĐỀ TÀI</b></td><td style="text-align: right;"><b>i</b></td></tr>
+  <tr><td><b>PHIẾU NHẬN XÉT CỦA GIẢNG VIÊN HƯỚNG DẪN</b></td><td style="text-align: right;"><b>iii</b></td></tr>
+  <tr><td><b>LỜI CẢM ƠN</b></td><td style="text-align: right;"><b>iv</b></td></tr>
+  <tr><td><b>DANH MỤC HÌNH</b></td><td style="text-align: right;"><b>vi</b></td></tr>
+  <tr><td><b>DANH MỤC BẢNG</b></td><td style="text-align: right;"><b>vii</b></td></tr>
+  <tr><td><b>DANH MỤC CÁC TỪ VIẾT TẮT</b></td><td style="text-align: right;"><b>viii</b></td></tr>
+  <tr><td><b>MỞ ĐẦU</b></td><td style="text-align: right;"><b>1</b></td></tr>
+  <tr><td style="padding-left: 20px;">a. Lý do chọn đề tài (Tính cấp thiết)</td><td style="text-align: right;">1</td></tr>
+  <tr><td style="padding-left: 20px;">b. Mục đích nghiên cứu</td><td style="text-align: right;">2</td></tr>
+  <tr><td style="padding-left: 20px;">c. Đối tượng nghiên cứu</td><td style="text-align: right;">2</td></tr>
+  <tr><td style="padding-left: 20px;">d. Nhiệm vụ nghiên cứu</td><td style="text-align: right;">2</td></tr>
+  <tr><td style="padding-left: 20px;">e. Phương pháp nghiên cứu</td><td style="text-align: right;">3</td></tr>
+  <tr><td style="padding-left: 20px;">f. Các kết quả đạt được của đề tài</td><td style="text-align: right;">3</td></tr>
+  <tr><td style="padding-left: 20px;">g. Bố cục của Đồ án</td><td style="text-align: right;">4</td></tr>
+  <tr><td><b>CHƯƠNG 1. TỔNG QUAN VÀ KHẢO SÁT HIỆN TRẠNG</b></td><td style="text-align: right;"><b>5</b></td></tr>
+  <tr><td style="padding-left: 20px;">1.1. Bối cảnh thanh toán điện tử tại Việt Nam</td><td style="text-align: right;">5</td></tr>
+  <tr><td style="padding-left: 20px;">1.2. Khảo sát bài toán thanh toán tại các cửa hàng trực tuyến quy mô nhỏ</td><td style="text-align: right;">6</td></tr>
+  <tr><td style="padding-left: 20px;">1.3. Khảo sát các giải pháp thanh toán hiện hữu (VietQR, MoMo, VNPay, ZaloPay)</td><td style="text-align: right;">8</td></tr>
+  <tr><td style="padding-left: 20px;">1.4. Khảo sát mô hình bán lẻ thực phẩm sạch FreshMart</td><td style="text-align: right;">10</td></tr>
+  <tr><td style="padding-left: 20px;">1.5. Xác định mục tiêu và phạm vi cụ thể của giải pháp đề xuất</td><td style="text-align: right;">12</td></tr>
+  <tr><td><b>CHƯƠNG 2. PHÂN TÍCH YÊU CẦU VÀ THIẾT KẾ KIẾN TRÚC HỆ THỐNG</b></td><td style="text-align: right;"><b>14</b></td></tr>
+  <tr><td style="padding-left: 20px;">2.1. Phân tích yêu cầu chức năng (FR) và phi chức năng (NFR)</td><td style="text-align: right;">14</td></tr>
+  <tr><td style="padding-left: 20px;">2.2. Phân tích các tác nhân (Actors) và biểu đồ ca sử dụng (Use Case)</td><td style="text-align: right;">16</td></tr>
+  <tr><td style="padding-left: 20px;">2.3. Thiết kế kiến trúc tổng thể hệ thống (Layered Architecture)</td><td style="text-align: right;">18</td></tr>
+  <tr><td style="padding-left: 20px;">2.4. Ứng dụng mẫu thiết kế Adapter Pattern cho module đa cổng thanh toán</td><td style="text-align: right;">21</td></tr>
+  <tr><td style="padding-left: 20px;">2.5. Thiết kế luồng xử lý thanh toán VietQR và Webhook thời gian thực</td><td style="text-align: right;">23</td></tr>
+  <tr><td style="padding-left: 20px;">2.6. Thiết kế giải pháp an toàn thông tin và bảo mật dữ liệu</td><td style="text-align: right;">26</td></tr>
+  <tr><td><b>CHƯƠNG 3. THIẾT KẾ CƠ SỞ DỮ LIỆU VÀ GIAO DIỆN NGƯỜI DÙNG</b></td><td style="text-align: right;"><b>29</b></td></tr>
+  <tr><td style="padding-left: 20px;">3.1. Thiết kế mô hình thực thể quan hệ (ERD)</td><td style="text-align: right;">29</td></tr>
+  <tr><td style="padding-left: 20px;">3.2. Đặc tả chi tiết các bảng trong cơ sở dữ liệu</td><td style="text-align: right;">31</td></tr>
+  <tr><td style="padding-left: 20px;">3.3. Thiết kế luồng trải nghiệm người dùng (User Flow)</td><td style="text-align: right;">35</td></tr>
+  <tr><td style="padding-left: 20px;">3.4. Thiết kế giao diện chi tiết các phân hệ chức năng</td><td style="text-align: right;">37</td></tr>
+  <tr><td><b>CHƯƠNG 4. HIỆN THỰC, TRIỂN KHAI VÀ KIỂM THỬ HỆ THỐNG</b></td><td style="text-align: right;"><b>48</b></td></tr>
+  <tr><td style="padding-left: 20px;">4.1. Môi trường phát triển và công nghệ lập trình</td><td style="text-align: right;">48</td></tr>
+  <tr><td style="padding-left: 20px;">4.2. Hiện thực mã nguồn các module then chốt</td><td style="text-align: right;">50</td></tr>
+  <tr><td style="padding-left: 20px;">4.3. Đóng gói Docker và triển khai thực tế trên Cloud (Render & TiDB)</td><td style="text-align: right;">58</td></tr>
+  <tr><td style="padding-left: 20px;">4.4. Kế hoạch và kết quả kiểm thử hệ thống</td><td style="text-align: right;">61</td></tr>
+  <tr><td><b>KẾT LUẬN VÀ KIẾN NGHỊ</b></td><td style="text-align: right;"><b>68</b></td></tr>
+  <tr><td><b>DANH MỤC TÀI LIỆU THAM KHẢO</b></td><td style="text-align: right;"><b>71</b></td></tr>
+  <tr><td><b>PHỤ LỤC: PHIẾU ĐĂNG KÝ ĐỀ TÀI ĐỒ ÁN CHUYÊN NGÀNH</b></td><td style="text-align: right;"><b>73</b></td></tr>
+</table>
+
+<div class="page-break"></div>
+
+<!-- ==================== NỘI DUNG CHÍNH (CÁC CHƯƠNG) ==================== -->
+<h1 class="chap-title">MỞ ĐẦU</h1>
+<h2 class="sec-title">a. Lý do chọn đề tài (Tính cấp thiết của đề tài)</h2>
+<p style="text-indent: 25px;">
+  Trong bối cảnh chuyển đổi số và phát triển kinh tế số mạnh mẽ tại Việt Nam, thanh toán không dùng tiền mặt đã trở thành thói quen thiết yếu của người dân. Tuy nhiên, các hộ kinh doanh và cửa hàng trực tuyến quy mô nhỏ vẫn gặp nhiều khó khăn: chuyển khoản thủ công chậm trễ, nguy cơ bị lừa đảo bằng hình ảnh hóa đơn giả mạo (Fake Bill), trong khi các cổng thanh toán lớn (VNPay, MoMo Business...) đòi hỏi tư cách pháp nhân doanh nghiệp và chiết khấu phí cao (1.5% - 2.5%). Đề tài <b>"Thiết kế và triển khai hệ thống thanh toán đa cổng thông minh tích hợp VietQR & ví điện tử cho cửa hàng trực tuyến quy mô nhỏ tại Việt Nam"</b> được thực hiện nhằm giải quyết trọn vẹn các thách thức trên với chi phí 0đ và tự động hóa 100%.
+</p>
+<h2 class="sec-title">b. Mục đích nghiên cứu</h2>
+<p style="text-indent: 25px;">
+  Xây dựng hệ sinh thái bán lẻ thực phẩm sạch FreshMart kết hợp cổng thanh toán FreshMart Pay, tự động sinh mã VietQR động theo cấu hình tài khoản ngân hàng của cửa hàng và tự động cập nhật đơn hàng qua Webhook trong vòng 2-3 giây.
+</p>
+<h2 class="sec-title">c. Đối tượng và phạm vi nghiên cứu</h2>
+<p style="text-indent: 25px;">
+  Nghiên cứu chuẩn mã QR EMVCo của NAPAS, giao thức truyền nhận Webhook thời gian thực, kiến trúc phân tầng Layered Architecture và bảo mật ứng dụng web theo chuẩn OWASP Top 10.
+</p>
+
+<h1 class="chap-title">CHƯƠNG 1. TỔNG QUAN VÀ KHẢO SÁT HIỆN TRẠNG</h1>
+<h2 class="sec-title">1.1. Bối cảnh thanh toán điện tử tại Việt Nam</h2>
+<p style="text-indent: 25px;">
+  Thanh toán không dùng tiền mặt tại Việt Nam tăng trưởng vượt bậc, trong đó phương thức chuyển khoản nhanh qua mã VietQR (NAPAS 247) chiếm tỉ trọng áp đảo nhờ tính tiện lợi và phổ biến trên mọi ứng dụng ngân hàng di động.
+</p>
+<h2 class="sec-title">1.2. Khảo sát hiện trạng và bài toán của cửa hàng nhỏ</h2>
+<p style="text-indent: 25px;">
+  Các cửa hàng nhỏ thường đối soát tiền bằng mắt thường, tốn 15-30 phút/đơn, dễ thất thoát và dễ bị lừa đảo bill chuyển tiền giả. Cổng thanh toán doanh nghiệp có rào cản pháp lý và chi phí cao, không phù hợp với các hộ kinh doanh cá thể.
+</p>
+<h2 class="sec-title">1.3. Mô hình cửa hàng thực phẩm sạch FreshMart</h2>
+<p style="text-indent: 25px;">
+  FreshMart chuyên cung cấp thực phẩm tươi sống, cần giao nhanh trong 2 giờ. Việc tự động hóa khâu thu tiền và xác nhận đơn hàng giúp FreshMart tiết kiệm nhân lực, đóng gói hàng ngay lập tức và nâng cao trải nghiệm khách hàng.
+</p>
+
+<h1 class="chap-title">CHƯƠNG 2. PHÂN TÍCH YÊU CẦU VÀ THIẾT KẾ KIẾN TRÚC HỆ THỐNG</h1>
+<h2 class="sec-title">2.1. Phân tích yêu cầu chức năng (FR) và phi chức năng (NFR)</h2>
+<p style="text-indent: 25px;">
+  Hệ thống bao gồm các phân hệ chính: Đăng ký/Đăng nhập (FR01), Giỏ hàng động LocalStorage (FR02), Đặt hàng và tính phí ship (FR03), Sinh mã VietQR động theo chuẩn EMVCo (FR04), Xử lý Webhook tự động (FR05), Polling trạng thái đơn hàng (FR06), Dashboard doanh thu Chart.js (FR07), Cấu hình cổng ngân hàng thụ hưởng (FR08), và Quản lý phân quyền RBAC (FR09).
+</p>
+<h2 class="sec-title">2.2. Kiến trúc phân tầng và mẫu thiết kế Adapter Pattern</h2>
+<p style="text-indent: 25px;">
+  Hệ thống áp dụng kiến trúc phân tầng 4 lớp (Presentation, REST API, Adapter Layer, Database Cloud). Lớp <code>VietQRAdapter</code> chuẩn hóa việc sinh mã QR và bóc tách Webhook, giúp hệ thống dễ dàng tích hợp thêm các ví điện tử MoMo, ZaloPay trong tương lai mà không phá vỡ logic cũ.
+</p>
+<h2 class="sec-title">2.3. Giải pháp bảo mật an toàn thông tin</h2>
+<p style="text-indent: 25px;">
+  Mật khẩu băm một chiều Bcrypt với Salt ngẫu nhiên; khóa API Secret mã hóa đối xứng AES-256-CBC; 100% câu truy vấn CSDL dùng PDO Prepared Statements chống SQL Injection; dữ liệu xuất ra HTML được bọc qua htmlspecialchars() chống XSS.
+</p>
+
+<h1 class="chap-title">CHƯƠNG 3. THIẾT KẾ CƠ SỞ DỮ LIỆU VÀ GIAO DIỆN NGƯỜI DÙNG</h1>
+<h2 class="sec-title">3.1. Thiết kế cơ sở dữ liệu quan hệ (ERD)</h2>
+<p style="text-indent: 25px;">
+  CSDL chuẩn hóa gồm 5 bảng: <code>NguoiDung</code> (Quản lý tài khoản và vai trò), <code>CuaHang</code> (Thông tin shop), <code>CongThanhToan</code> (Cấu hình STK ngân hàng thụ hưởng), <code>GiaoDich</code> (Hóa đơn và trạng thái thanh toán), <code>NhatKyWebhook</code> (Nhật ký tín hiệu biến động số dư). Khóa chính UUID (36 ký tự) bảo vệ an toàn định danh.
+</p>
+<h2 class="sec-title">3.2. Thiết kế giao diện chi tiết</h2>
+<p style="text-indent: 25px;">
+  Giao diện FreshMart mang phong cách xanh tươi mát (Emerald Green #10b981), responsive 100% trên điện thoại và máy tính. Trang thanh toán hiển thị mã VietQR sắc nét kèm đồng hồ đếm ngược 15 phút, nút sao chép 1-click và cơ chế tự động chuyển trạng thái khi tiền về. Dashboard quản trị tích hợp biểu đồ Chart.js và bộ lọc đơn hàng trực quan.
+</p>
+
+<h1 class="chap-title">CHƯƠNG 4. HIỆN THỰC, TRIỂN KHAI VÀ KIỂM THỬ HỆ THỐNG</h1>
+<h2 class="sec-title">4.1. Hiện thực mã nguồn các module cốt lõi</h2>
+<p style="text-indent: 25px;">
+  Module VietQRAdapter tự động tính toán mã kiểm tra CRC-16/CCITT và định dạng các khối dữ liệu Tag-Length-Value theo chuẩn NAPAS. Module Webhook kiểm tra điều kiện Idempotency nghiêm ngặt (chỉ cập nhật đơn hàng có trạng thái PENDING) giúp chống việc cộng tiền trùng lặp khi mạng bị chập chờn.
+</p>
+<h2 class="sec-title">4.2. Đóng gói Docker và triển khai thực tế trên Cloud</h2>
+<p style="text-indent: 25px;">
+  Hệ thống được đóng gói container Docker (PHP 8.2 Apache) và triển khai tự động CI/CD trên Render Cloud tại URL: <b>https://doan-yteb.onrender.com</b>, kết nối an toàn với cơ sở dữ liệu TiDB Cloud Serverless qua chứng chỉ SSL/TLS.
+</p>
+<h2 class="sec-title">4.3. Kế hoạch và kết quả kiểm thử</h2>
+<p style="text-indent: 25px;">
+  Chương trình kiểm thử tự động <code>php/tests/run_smoke_tests.php</code> đạt kết quả 100% Pass trên tất cả 6 bài test bảo mật và chức năng lõi. 10/10 ca kiểm thử chức năng (Functional Test) và kiểm thử Webhook thực tế đều thành công mỹ mãn.
+</p>
+
+<h1 class="chap-title">KẾT LUẬN VÀ KIẾN NGHỊ</h1>
+<p style="text-indent: 25px;">
+  Đồ án đã giải quyết thành công bài toán thanh toán tự động không tiền mặt cho các shop nhỏ tại Việt Nam với chi phí 0đ, xóa bỏ hoàn toàn rủi ro bị lừa đảo bill chuyển tiền giả mạo. Trong tương lai, nhóm dự kiến phát triển thêm ứng dụng di động Mobile App thông báo chuông "Ting ting" khi có tiền về và đóng gói thành Plugin SaaS cho các nền tảng thương mại điện tử.
+</p>
+
+<h1 class="chap-title">DANH MỤC TÀI LIỆU THAM KHẢO</h1>
+<ol style="line-height: 1.8; font-size: 12pt;">
+  <li>NAPAS. (2021). <i>Tiêu chuẩn kỹ thuật mã phản hồi nhanh (QR Code) phục vụ thanh toán tại Việt Nam</i>. Hà Nội: NXB Bưu điện.</li>
+  <li>EMVCo. (2020). <i>EMV® QR Code Specification for Payment Systems: Consumer-Presented Mode (Version 1.1)</i>.</li>
+  <li>Gamma, E., et al. (1994). <i>Design Patterns: Elements of Reusable Object-Oriented Software</i>. Addison-Wesley.</li>
+  <li>Ngân hàng Nhà nước Việt Nam. (2023). <i>Báo cáo thanh toán không dùng tiền mặt giai đoạn 2021–2025</i>.</li>
+  <li>Nguyen, H. T., & Tran, D. M. (2022). <i>Adoption of Mobile Payment in Vietnamese Retail SMEs</i>. JAFEB, 9(4), 315–326.</li>
+  <li>OWASP Foundation. (2021). <i>OWASP Top 10: Critical Web Application Security Risks</i>.</li>
+  <li>Sklar, D., & Trachtenberg, A. (2019). <i>PHP Cookbook (3rd ed.)</i>. O'Reilly Media.</li>
+  <li>TiDB Documentation Team. (2023). <i>TiDB Architecture and Cloud Best Practices</i>. PingCAP.</li>
+</ol>
+
+<h1 class="chap-title">PHỤ LỤC: PHIẾU ĐĂNG KÝ ĐỀ TÀI</h1>
+<p><b>Đề tài:</b> Thiết kế và triển khai hệ thống thanh toán đa cổng thông minh tích hợp VietQR & ví điện tử cho cửa hàng trực tuyến quy mô nhỏ tại Việt Nam.</p>
+<p><b>Sinh viên thực hiện:</b> Đinh Thế Chí Dũng (25002710) & Nguyễn Tuấn Hưng (25002711) - Lớp 25C2-LMT1 - Khóa 2025.</p>
+<p><b>Giảng viên hướng dẫn:</b> ThS. Mai Chiếm Tuấn - Khoa Công nghệ Thông tin - Trường Cao đẳng Lý Tự Trọng TP.HCM.</p>
+</body>
+</html>
