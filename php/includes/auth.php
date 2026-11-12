@@ -11,10 +11,13 @@
  */
 
 // -----------------------------------------------------
-// Khởi tạo Session nếu chưa có
-// Session là nơi lưu thông tin người dùng giữa các request
-// (ví dụ: user_id, email, vai trò...) trên server
+// Khởi tạo Output Buffering & Session nếu chưa có
+// Output Buffering ngăn chặn triệt để lỗi "Headers already sent"
 // -----------------------------------------------------
+if (ob_get_level() === 0) {
+    ob_start();
+}
+
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
@@ -82,8 +85,8 @@ function isPrivileged(): bool {
  * Bắt buộc người dùng phải có quyền quản trị
  * Nếu không có quyền → chuyển hướng về trang tài khoản người dùng cá nhân
  */
-function requirePrivileged(string $redirect = 'html/account.html'): void {
-    requireLogin('html/login.html');
+function requirePrivileged(string $redirect = '/html/account.html'): void {
+    requireLogin('/html/login.html');
     if (!isPrivileged()) {
         header('Location: ' . $redirect);
         exit;
@@ -98,9 +101,9 @@ function requirePrivileged(string $redirect = 'html/account.html'): void {
  * - Nếu chưa đăng nhập → chuyển hướng (redirect) về trang login
  * - Dùng header('Location: ...') + exit để dừng script ngay lập tức
  *
- * @param string $redirect Đường dẫn trang login (mặc định về html/login.html)
+ * @param string $redirect Đường dẫn trang login (mặc định về /html/login.html)
  */
-function requireLogin(string $redirect = '../html/login.html'): void {
+function requireLogin(string $redirect = '/html/login.html'): void {
     if (!isLoggedIn()) {
         header('Location: ' . $redirect);
         exit; // Rất quan trọng: dừng toàn bộ code phía sau
@@ -119,7 +122,7 @@ function requireLogin(string $redirect = '../html/login.html'): void {
  *
  * @param string $redirect
  */
-function requireOwner(string $redirect = '../html/login.html'): void {
+function requireOwner(string $redirect = '/html/login.html'): void {
     requireLogin($redirect);
     
     if (($_SESSION['vai_tro'] ?? '') !== 'OWNER') {

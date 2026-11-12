@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 /**
  * =====================================================
  * FILE: dashboard.php
@@ -7,9 +7,9 @@
  * =====================================================
  */
 require_once __DIR__ . '/includes/auth.php';
-requireLogin('html/login.html');
+requireLogin('/html/login.html');
 if (!isPrivileged()) {
-    header('Location: html/account.html');
+    header('Location: /html/account.html');
     exit;
 }
 

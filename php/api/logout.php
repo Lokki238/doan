@@ -37,5 +37,5 @@ if ($isAjax) {
 }
 
 // Nếu không phải AJAX → chuyển hướng về trang đăng nhập
-header('Location: ../html/login.html');
+header('Location: /html/login.html');
 exit;
