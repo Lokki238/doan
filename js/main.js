@@ -12,7 +12,18 @@ window.FreshMartCart = {
   getCart: function () {
     try {
       const data = localStorage.getItem(this.STORAGE_KEY);
-      return data ? JSON.parse(data) : [];
+      let cart = data ? JSON.parse(data) : [];
+      // Tự động thay thế URL ảnh cũ bị lỗi
+      cart = cart.map(function (item) {
+        if (item.image && item.image.indexOf('photo-1619566636858') !== -1) {
+          item.image = 'img/ca-chua-bi.jpg';
+        }
+        if (item.image && item.image.indexOf('photo-1464965328260') !== -1) {
+          item.image = 'img/tao-nhap-khau.jpg';
+        }
+        return item;
+      });
+      return cart;
     } catch (e) {
       return [];
     }
@@ -38,7 +49,7 @@ window.FreshMartCart = {
         id: item.id || ('prod_' + Date.now() + '_' + Math.floor(Math.random() * 1000)),
         name: item.name,
         price: parseInt(item.price) || 0,
-        image: item.image || 'https://images.unsplash.com/photo-1619566636858-adf3ef4644b9?w=400&q=80',
+        image: item.image || 'img/ca-chua-bi.jpg',
         unit: item.unit || '500g',
         qty: parseInt(item.qty) || 1
       });
