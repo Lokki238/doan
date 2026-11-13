@@ -1,0 +1,785 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>TÀI LIỆU HƯỚNG DẪN CÀI ĐẶT VÀ SỬ DỤNG HỆ THỐNG - FRESHMART & FRESHMART PAY</title>
+<style>
+  @page {
+    size: A4;
+    margin: 25mm 20mm 20mm 30mm;
+  }
+  body {
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 13pt;
+    line-height: 1.5;
+    color: #000;
+    text-align: justify;
+  }
+  .page-break {
+    page-break-after: always;
+  }
+  .center {
+    text-align: center;
+  }
+  .bold {
+    font-weight: bold;
+  }
+  .italic {
+    font-style: italic;
+  }
+  .cover-box {
+    border: 3px double #000;
+    padding: 35px 25px;
+    min-height: 920px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .header-org {
+    font-size: 13pt;
+    font-weight: bold;
+    text-align: center;
+    line-height: 1.35;
+    text-transform: uppercase;
+  }
+  .header-line {
+    width: 220px;
+    height: 1.5px;
+    background-color: #000;
+    margin: 8px auto 25px auto;
+  }
+  h1.guide-title {
+    font-size: 20pt;
+    font-weight: bold;
+    text-align: center;
+    margin: 30px 0 15px 0;
+    text-transform: uppercase;
+    line-height: 1.3;
+    color: #047857;
+  }
+  h2.guide-subtitle {
+    font-size: 14.5pt;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 25px;
+    text-transform: uppercase;
+    color: #1e293b;
+    line-height: 1.4;
+  }
+  .info-block {
+    font-size: 13.5pt;
+    line-height: 1.7;
+    margin-top: 35px;
+  }
+  .footer-date {
+    font-size: 13.5pt;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 45px;
+  }
+  h1.part-title {
+    font-size: 16pt;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-align: center;
+    margin-top: 25px;
+    margin-bottom: 20px;
+    color: #065f46;
+    page-break-before: always;
+  }
+  h2.sec-title {
+    font-size: 14pt;
+    font-weight: bold;
+    margin-top: 18px;
+    margin-bottom: 10px;
+    color: #0f172a;
+  }
+  h3.subsec-title {
+    font-size: 13pt;
+    font-weight: bold;
+    margin-top: 14px;
+    margin-bottom: 8px;
+    color: #334155;
+  }
+  table.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 15px 0;
+    font-size: 12pt;
+  }
+  table.data-table th, table.data-table td {
+    border: 1px solid #333;
+    padding: 8px 10px;
+  }
+  table.data-table th {
+    background-color: #f1f5f9;
+    font-weight: bold;
+    text-align: center;
+  }
+  .callout-box {
+    background-color: #f0fdf4;
+    border-left: 5px solid #10b981;
+    padding: 12px 18px;
+    margin: 15px 0;
+    border-radius: 4px;
+  }
+  .callout-warn {
+    background-color: #fffbeb;
+    border-left: 5px solid #f59e0b;
+    padding: 12px 18px;
+    margin: 15px 0;
+    border-radius: 4px;
+  }
+  .code-block {
+    background-color: #0f172a;
+    color: #38bdf8;
+    border-radius: 6px;
+    padding: 12px 16px;
+    font-family: Consolas, 'Courier New', monospace;
+    font-size: 11pt;
+    line-height: 1.45;
+    white-space: pre-wrap;
+    margin: 12px 0;
+  }
+  ul, ol {
+    margin-top: 6px;
+    margin-bottom: 10px;
+    padding-left: 28px;
+  }
+  li {
+    margin-bottom: 6px;
+  }
+  .text-indent {
+    text-indent: 1.27cm;
+  }
+</style>
+</head>
+<body>
+
+<!-- ====================================================================
+     TRANG BÌA TÀI LIỆU HƯỚNG DẪN
+     ==================================================================== -->
+<div class="cover-box center">
+  <div>
+    <div class="header-org">
+      ỦY BAN NHÂN DÂN THÀNH PHỐ HỒ CHÍ MINH<br>
+      TRƯỜNG CAO ĐẲNG LÝ TỰ TRỌNG THÀNH PHỐ HỒ CHÍ MINH<br>
+      KHOA CÔNG NGHỆ THÔNG TIN
+    </div>
+    <div class="header-line"></div>
+  </div>
+
+  <div style="margin: 35px 0;">
+    <h1 class="guide-title">
+      TÀI LIỆU HƯỚNG DẪN CÀI ĐẶT VÀ SỬ DỤNG HỆ THỐNG
+    </h1>
+    <h2 class="guide-subtitle">
+      HỆ THỐNG THANH TOÁN ĐA CỔNG THÔNG MINH TÍCH HỢP VIETQR & VÍ ĐIỆN TỬ<br>
+      DÀNH CHO CỬA HÀNG TRỰC TUYẾN QUY MÔ NHỎ (FRESHMART & FRESHMART PAY)
+    </h2>
+    <div style="width: 120px; height: 3px; background: #10b981; margin: 20px auto;"></div>
+  </div>
+
+  <div class="info-block" style="text-align: left; width: 85%; margin: 0 auto;">
+    <p><b>Sinh viên thực hiện:</b></p>
+    <p style="margin-left: 20px;">1. <b>Đinh Thế Chí Dũng</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; MSSV: <b>25002710</b> (Trưởng nhóm / Backend)</p>
+    <p style="margin-left: 20px;">2. <b>Nguyễn Tuấn Hưng</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; MSSV: <b>25002711</b> (Frontend / Testing)</p>
+    <p><b>Chuyên ngành:</b> Lập trình máy tính &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b>Khóa học:</b> 2025</p>
+    <p><b>Lớp:</b> 25C2-LMT1</p>
+    <p style="margin-top: 15px;"><b>Giảng viên hướng dẫn:</b> <b>Th.S. Mai Chiếm Tuấn</b></p>
+  </div>
+
+  <div class="footer-date">
+    Thành phố Hồ Chí Minh, tháng 11 năm 2026
+  </div>
+</div>
+
+<div class="page-break"></div>
+
+<!-- ====================================================================
+     MỤC LỤC TÀI LIỆU HƯỚNG DẪN
+     ==================================================================== -->
+<h1 class="part-title">MỤC LỤC TÀI LIỆU HƯỚNG DẪN</h1>
+<table style="width: 100%; border-collapse: collapse; font-size: 12.5pt; line-height: 1.85;">
+  <tr><td><b>PHẦN 1: GIỚI THIỆU TỔNG QUAN HỆ THỐNG</b></td><td style="text-align: right;"><b>1</b></td></tr>
+  <tr><td style="padding-left: 20px;">1.1. Mục đích và phạm vi áp dụng của tài liệu</td><td style="text-align: right;">1</td></tr>
+  <tr><td style="padding-left: 20px;">1.2. Tổng quan kiến trúc & Cấu trúc 6 thư mục chuẩn</td><td style="text-align: right;">1</td></tr>
+  <tr><td style="padding-left: 20px;">1.3. Danh sách tài khoản demo và vai trò phân quyền</td><td style="text-align: right;">2</td></tr>
+  <tr><td style="padding-left: 20px;">1.4. Thông tin triển khai trực tuyến trên Cloud (Production)</td><td style="text-align: right;">2</td></tr>
+  <tr><td><b>PHẦN 2: YÊU CẦU MÔI TRƯỜNG & HỆ THỐNG (SYSTEM REQUIREMENTS)</b></td><td style="text-align: right;"><b>3</b></td></tr>
+  <tr><td style="padding-left: 20px;">2.1. Yêu cầu phần cứng máy chủ & máy trạm</td><td style="text-align: right;">3</td></tr>
+  <tr><td style="padding-left: 20px;">2.2. Yêu cầu phần mềm và các extension PHP bắt buộc</td><td style="text-align: right;">3</td></tr>
+  <tr><td style="padding-left: 20px;">2.3. Yêu cầu về cơ sở dữ liệu và bảo mật</td><td style="text-align: right;">4</td></tr>
+  <tr><td><b>PHẦN 3: HƯỚNG DẪN CÀI ĐẶT VÀ TRIỂN KHAI (INSTALLATION GUIDE)</b></td><td style="text-align: right;"><b>5</b></td></tr>
+  <tr><td style="padding-left: 20px;">3.1. Phương pháp 1: Cài đặt trên máy chủ cục bộ (XAMPP / Laragon)</td><td style="text-align: right;">5</td></tr>
+  <tr><td style="padding-left: 20px;">3.2. Phương pháp 2: Triển khai nhanh bằng Docker Container</td><td style="text-align: right;">8</td></tr>
+  <tr><td style="padding-left: 20px;">3.3. Phương pháp 3: Triển khai tự động trên Render Cloud + TiDB Cloud</td><td style="text-align: right;">9</td></tr>
+  <tr><td><b>PHẦN 4: HƯỚNG DẪN SỬ DỤNG DÀNH CHO KHÁCH HÀNG (CUSTOMER GUIDE)</b></td><td style="text-align: right;"><b>11</b></td></tr>
+  <tr><td style="padding-left: 20px;">4.1. Đăng ký tài khoản và Đăng nhập hệ thống</td><td style="text-align: right;">11</td></tr>
+  <tr><td style="padding-left: 20px;">4.2. Tìm kiếm, lọc sản phẩm và thêm vào giỏ hàng</td><td style="text-align: right;">12</td></tr>
+  <tr><td style="padding-left: 20px;">4.3. Quản lý giỏ hàng và áp dụng mã voucher giảm giá</td><td style="text-align: right;">13</td></tr>
+  <tr><td style="padding-left: 20px;">4.4. Đặt hàng và quy trình thanh toán quét mã VietQR tự động</td><td style="text-align: right;">14</td></tr>
+  <tr><td><b>PHẦN 5: HƯỚNG DẪN DÀNH CHO QUẢN TRỊ VIÊN (ADMIN & OWNER GUIDE)</b></td><td style="text-align: right;"><b>16</b></td></tr>
+  <tr><td style="padding-left: 20px;">5.1. Truy cập Bảng điều khiển quản trị (Dashboard)</td><td style="text-align: right;">16</td></tr>
+  <tr><td style="padding-left: 20px;">5.2. Quản lý danh sách giao dịch & đối soát hóa đơn</td><td style="text-align: right;">17</td></tr>
+  <tr><td style="padding-left: 20px;">5.3. Báo cáo & phân tích doanh thu qua biểu đồ trực quan</td><td style="text-align: right;">18</td></tr>
+  <tr><td style="padding-left: 20px;">5.4. Cấu hình cổng thanh toán ngân hàng thụ hưởng (gateways.php)</td><td style="text-align: right;">19</td></tr>
+  <tr><td style="padding-left: 20px;">5.5. Quản lý & Phân quyền người dùng trực tiếp (permissions.php)</td><td style="text-align: right;">21</td></tr>
+  <tr><td style="padding-left: 20px;">5.6. Công cụ mô phỏng Webhook kiểm thử (simulate_webhook.php)</td><td style="text-align: right;">22</td></tr>
+  <tr><td><b>PHẦN 6: XỬ LÝ SỰ CỐ VÀ CÂU HỎI THƯỜNG GẶP (TROUBLESHOOTING & FAQ)</b></td><td style="text-align: right;"><b>24</b></td></tr>
+</table>
+
+<div class="page-break"></div>
+
+<!-- ====================================================================
+     PHẦN 1: GIỚI THIỆU TỔNG QUAN HỆ THỐNG
+     ==================================================================== -->
+<h1 class="part-title">PHẦN 1: GIỚI THIỆU TỔNG QUAN HỆ THỐNG</h1>
+
+<h2 class="sec-title">1.1. Mục đích và phạm vi áp dụng của tài liệu</h2>
+<p class="text-indent">
+  Tài liệu này cung cấp hướng dẫn chi tiết từ khâu chuẩn bị môi trường, cài đặt, cấu hình kỹ thuật cho đến quy trình vận hành toàn diện hệ thống <b>FreshMart</b> (Website bán lẻ thực phẩm sạch) và <b>FreshMart Pay</b> (Hệ thống thanh toán đa cổng thông minh tích hợp VietQR và Webhook tự động).
+</p>
+<p class="text-indent">
+  Tài liệu được biên soạn phục vụ cho:
+</p>
+<ul>
+  <li><b>Hội đồng chấm Đồ án chuyên ngành:</b> Tra cứu thông tin cài đặt, cấu hình kỹ thuật, tài khoản kiểm thử và kịch bản demo sản phẩm.</li>
+  <li><b>Nhà phát triển (Developers):</b> Nắm bắt cấu trúc mã nguồn, quy trình cài đặt môi trường cục bộ (Localhost) hoặc Docker Container.</li>
+  <li><b>Quản trị viên cửa hàng (Store Owner / Admin):</b> Hướng dẫn quản trị cấu hình tài khoản ngân hàng thụ hưởng, quản lý đơn hàng và phân quyền người dùng.</li>
+  <li><b>Khách hàng (Customers):</b> Hướng dẫn trải nghiệm mua sắm, quản lý giỏ hàng và thanh toán không tiền mặt qua mã VietQR.</li>
+</ul>
+
+<h2 class="sec-title">1.2. Tổng quan kiến trúc & Cấu trúc 6 thư mục chuẩn</h2>
+<p class="text-indent">
+  Toàn bộ mã nguồn dự án được quy hoạch khoa học thành đúng <b>6 thư mục chuẩn</b> nhằm phân định rạch ròi trách nhiệm giữa các tầng (Layer Separation):
+</p>
+<table class="data-table">
+  <thead>
+    <tr>
+      <th style="width: 15%;">Thư mục</th>
+      <th style="width: 35%;">Chức năng & Nhiệm vụ</th>
+      <th style="width: 50%;">Các tệp tin tiêu biểu</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="bold center"><code>html/</code></td>
+      <td>Giao diện người dùng Storefront & Trang quét mã QR</td>
+      <td><code>index.html</code>, <code>products.html</code>, <code>cart.html</code>, <code>checkout.html</code>, <code>payment_qr.html</code>, <code>login.html</code>, <code>register.html</code>, <code>account.html</code>, <code>about.html</code>, <code>contact.html</code>, thư mục <code>img/</code> (ảnh sản phẩm).</td>
+    </tr>
+    <tr>
+      <td class="bold center"><code>php/</code></td>
+      <td>Backend xử lý nghiệp vụ, API, Adapter & Trang quản trị</td>
+      <td><code>dashboard.php</code>, <code>transactions.php</code>, <code>reports.php</code>, <code>permissions.php</code>, <code>admin/gateways.php</code>, <code>includes/auth.php</code>, <code>includes/security.php</code>, <code>api/</code> (xử lý đặt hàng, Webhook, polling).</td>
+    </tr>
+    <tr>
+      <td class="bold center"><code>css/</code></td>
+      <td>Tập trung toàn bộ stylesheet, framework và webfonts</td>
+      <td><code>bootstrap.min.css</code>, <code>all.min.css</code> (Font Awesome icon), <code>webfonts/</code> (font chữ icon offline).</td>
+    </tr>
+    <tr>
+      <td class="bold center"><code>js/</code></td>
+      <td>Thư viện JavaScript, biểu đồ và giỏ hàng LocalStorage</td>
+      <td><code>main.js</code> (logic giỏ hàng FreshMartCart, badge), <code>chart.umd.min.js</code> (vẽ biểu đồ doanh thu), <code>bootstrap.bundle.min.js</code>.</td>
+    </tr>
+    <tr>
+      <td class="bold center"><code>csdl/</code></td>
+      <td>Kết nối cơ sở dữ liệu và script tạo bảng</td>
+      <td><code>db.php</code> (kết nối PDO SSL/TLS), <code>database.sql</code> (script DDL tạo 5 bảng CSDL 3NF và chèn dữ liệu mẫu ban đầu).</td>
+    </tr>
+    <tr>
+      <td class="bold center"><code>doct/</code></td>
+      <td>Toàn bộ tài liệu báo cáo Word, Slide và Hướng dẫn</td>
+      <td><code>BAO_CAO_DO_AN_CHUYEN_NGANH.docx</code>, <code>SLIDE_THUYET_TRINH.html</code>, <code>SLIDE_THUYET_TRINH.docx</code>, <code>TEST_PLAN_AND_CASES.docx</code>, <code>TaiLieuHuongDan.docx</code>.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 class="sec-title">1.3. Danh sách tài khoản demo và vai trò phân quyền</h2>
+<p class="text-indent">
+  Hệ thống đã nạp sẵn các tài khoản kiểm thử tiêu biểu tương ứng với 3 cấp độ phân quyền trong bảng <code>NguoiDung</code>:
+</p>
+<table class="data-table">
+  <thead>
+    <tr>
+      <th style="width: 25%;">Vai trò (Role)</th>
+      <th style="width: 30%;">Tên đăng nhập / Email</th>
+      <th style="width: 20%;">Mật khẩu</th>
+      <th style="width: 25%;">Quyền hạn truy cập</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="bold">Chủ cửa hàng (OWNER)</td>
+      <td><code>admin@freshmart.vn</code></td>
+      <td><code>Admin@123456</code></td>
+      <td>Toàn quyền hệ thống: Cấu hình cổng ngân hàng thụ hưởng, Phân quyền người dùng, xem Dashboard, xem Báo cáo doanh thu.</td>
+    </tr>
+    <tr>
+      <td class="bold">Nhân viên (STAFF)</td>
+      <td><code>staff@freshmart.vn</code></td>
+      <td><code>Staff@123456</code></td>
+      <td>Xem Dashboard, kiểm tra danh sách đơn hàng, tra cứu lịch sử giao dịch và đối soát thanh toán. Không được đổi cấu hình ngân hàng.</td>
+    </tr>
+    <tr>
+      <td class="bold">Khách hàng (USER)</td>
+      <td><code>khachhang@gmail.com</code></td>
+      <td><code>User@123456</code></td>
+      <td>Duyệt sản phẩm, thêm giỏ hàng, đặt hàng, quét mã QR thanh toán và xem lịch sử đơn cá nhân.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 class="sec-title">1.4. Thông tin triển khai trực tuyến trên Cloud (Production)</h2>
+<ul>
+  <li><b>Địa chỉ website chính thức:</b> <a href="https://doan-yteb.onrender.com">https://doan-yteb.onrender.com</a></li>
+  <li><b>Nền tảng máy chủ:</b> Render Cloud Web Service (Đóng gói Docker Container, tự động deploy từ GitHub qua CI/CD).</li>
+  <li><b>Nền tảng Cơ sở dữ liệu:</b> TiDB Cloud Serverless (Mã hóa đường truyền an toàn SSL/TLS Certificate).</li>
+  <li><b>Kho mã nguồn GitHub:</b> <a href="https://github.com/Lokki238/doan">https://github.com/Lokki238/doan</a> (Nhánh <code>main</code>).</li>
+</ul>
+
+<div class="page-break"></div>
+
+<!-- ====================================================================
+     PHẦN 2: YÊU CẦU MÔI TRƯỜNG & HỆ THỐNG
+     ==================================================================== -->
+<h1 class="part-title">PHẦN 2: YÊU CẦU MÔI TRƯỜNG & HỆ THỐNG (SYSTEM REQUIREMENTS)</h1>
+
+<h2 class="sec-title">2.1. Yêu cầu phần cứng máy chủ & máy trạm</h2>
+<p class="text-indent">
+  Hệ thống được thiết kế tối ưu, tiêu thụ ít tài nguyên nên có thể vận hành mượt mà trên cả các thiết bị cá nhân thông thường:
+</p>
+<table class="data-table">
+  <thead>
+    <tr>
+      <th style="width: 25%;">Thành phần</th>
+      <th style="width: 35%;">Cấu hình tối thiểu</th>
+      <th style="width: 40%;">Cấu hình khuyến nghị</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="bold">Vi xử lý (CPU)</td>
+      <td>Intel Core i3 / AMD Ryzen 3 (2 nhân)</td>
+      <td>Intel Core i5 / AMD Ryzen 5 hoặc tương đương Cloud vCPU</td>
+    </tr>
+    <tr>
+      <td class="bold">Bộ nhớ trong (RAM)</td>
+      <td>4 GB RAM</td>
+      <td>8 GB RAM trở lên (đặc biệt khi chạy Docker Desktop)</td>
+    </tr>
+    <tr>
+      <td class="bold">Ổ đĩa trống (Storage)</td>
+      <td>500 MB dung lượng trống</td>
+      <td>2 GB dung lượng trống (SSD)</td>
+    </tr>
+    <tr>
+      <td class="bold">Kết nối mạng (Network)</td>
+      <td>1 Mbps (khi chạy local)</td>
+      <td>Kết nối Internet ổn định để sinh mã VietQR và đón Webhook</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 class="sec-title">2.2. Yêu cầu phần mềm và các extension PHP bắt buộc</h2>
+<p class="text-indent">
+  Để ứng dụng vận hành đầy đủ chức năng, môi trường máy chủ PHP bắt buộc phải đáp ứng:
+</p>
+<ul>
+  <li><b>Phiên bản PHP:</b> PHP 8.1 trở lên (Khuyến nghị **PHP 8.2** hoặc PHP 8.3).</li>
+  <li><b>Web Server:</b> Apache 2.4+ (bắt buộc kích hoạt 2 module: <code>mod_rewrite</code> và <code>mod_headers</code>) hoặc Nginx 1.20+.</li>
+  <li><b>Các PHP Extensions bắt buộc:</b>
+    <ul>
+      <li><code>pdo</code> và <code>pdo_mysql</code>: Dùng để kết nối cơ sở dữ liệu quan hệ an toàn qua Prepared Statements.</li>
+      <li><code>openssl</code>: Dùng cho hàm mã hóa / giải mã đối xứng <code>openssl_encrypt()</code> / <code>openssl_decrypt()</code> thuật toán AES-256-CBC.</li>
+      <li><code>curl</code>: Dùng để gọi API ngân hàng và gửi tín hiệu Webhook.</li>
+      <li><code>json</code>: Dùng để giải mã payload Webhook và trả về JSON API.</li>
+      <li><code>mbstring</code>: Dùng xử lý chuỗi ký tự tiếng Việt có dấu.</li>
+      <li><code>session</code>: Quản lý phiên đăng nhập người dùng trên máy chủ.</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 class="sec-title">2.3. Yêu cầu về cơ sở dữ liệu và bảo mật</h2>
+<ul>
+  <li><b>Hệ quản trị CSDL tương thích:</b> MySQL 8.0+, MariaDB 10.5+, hoặc TiDB Cloud Serverless.</li>
+  <li><b>Bảng mã (Character Set & Collation):</b> <code>utf8mb4</code> và <code>utf8mb4_unicode_ci</code> để hỗ trợ trọn vẹn ký tự tiếng Việt và emoji.</li>
+  <li><b>Bảo mật kết nối SSL:</b> Bắt buộc kích hoạt kết nối mã hóa TLS 1.2 / 1.3 khi kết nối CSDL từ xa (như TiDB Cloud).</li>
+</ul>
+
+<div class="page-break"></div>
+
+<!-- ====================================================================
+     PHẦN 3: HƯỚNG DẪN CÀI ĐẶT VÀ TRIỂN KHAI
+     ==================================================================== -->
+<h1 class="part-title">PHẦN 3: HƯỚNG DẪN CÀI ĐẶT VÀ TRIỂN KHAI (INSTALLATION GUIDE)</h1>
+
+<h2 class="sec-title">3.1. Phương pháp 1: Cài đặt trên máy chủ cục bộ (XAMPP / Laragon)</h2>
+<p class="text-indent">
+  Đây là phương pháp phổ biến và nhanh chóng nhất dành cho sinh viên và giảng viên khi kiểm thử trực tiếp trên máy tính cá nhân.
+</p>
+
+<h3 class="subsec-title">Bước 1: Tải và sao chép mã nguồn</h3>
+<p class="text-indent">
+  1. Tải toàn bộ mã nguồn đồ án từ GitHub hoặc giải nén thư mục <code>DoAn</code>.
+</p>
+<p class="text-indent">
+  2. Sao chép thư mục dự án vào thư mục gốc của web server:
+</p>
+<ul>
+  <li>Đối với <b>XAMPP</b>: <code>C:\xampp\htdocs\DoAn</code></li>
+  <li>Đối với <b>Laragon</b>: <code>C:\laragon\www\DoAn</code></li>
+</ul>
+
+<h3 class="subsec-title">Bước 2: Nạp cơ sở dữ liệu mẫu (Database Import)</h3>
+<p class="text-indent">
+  1. Khởi động dịch vụ <b>Apache</b> và <b>MySQL</b> trong bảng điều khiển XAMPP / Laragon.
+</p>
+<p class="text-indent">
+  2. Mở trình duyệt web và truy cập công cụ <code>phpMyAdmin</code> tại địa chỉ: <code>http://localhost/phpmyadmin</code>.
+</p>
+<p class="text-indent">
+  3. Tạo mới một cơ sở dữ liệu với tên: <code>freshmart_db</code>, chọn bảng mã (Collation) là: <code>utf8mb4_unicode_ci</code>.
+</p>
+<p class="text-indent">
+  4. Chọn tab <b>Import (Nhập)</b> -> Nhấn <b>Choose File (Chọn tệp)</b> -> Chọn tệp: <code>csdl/database.sql</code> nằm trong thư mục đồ án -> Nhấn nút <b>Import (Thực hiện)</b> ở cuối trang.
+</p>
+<div class="callout-box">
+  <b>✓ Kết quả:</b> Hệ thống sẽ tự động tạo đủ 5 bảng: <code>NguoiDung</code>, <code>CuaHang</code>, <code>CongThanhToan</code>, <code>GiaoDich</code>, <code>NhatKyWebhook</code> và chèn sẵn các tài khoản demo (Admin, Staff, User) cùng tài khoản ngân hàng MB Bank thụ hưởng.
+</div>
+
+<h3 class="subsec-title">Bước 3: Cấu hình kết nối Cơ sở dữ liệu (csdl/db.php)</h3>
+<p class="text-indent">
+  Mở tệp tin [`csdl/db.php`](file:///d:/DoAnUp29/DoAn/csdl/db.php) bằng phần mềm soạn thảo (VS Code, Notepad++) và kiểm tra cấu hình kết nối local:
+</p>
+<div class="code-block">
+&lt;?php
+$host = 'localhost';
+$port = '3306';
+$dbname = 'freshmart_db';
+$username = 'root';
+$password = ''; // Mặc định trên XAMPP mật khẩu rỗng
+
+$dsn = "mysql:host={$host};port={$port};dbname={$dbname};charset=utf8mb4";
+$pdo = new PDO($dsn, $username, $password, [
+    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+    PDO::ATTR_EMULATE_PREPARES => false,
+]);
+</div>
+
+<h3 class="subsec-title">Bước 4: Kiểm tra và chạy kiểm thử tự động (Smoke Test)</h3>
+<p class="text-indent">
+  Để đảm bảo toàn bộ các hàm mã hóa bảo mật, phân quyền và kết nối CSDL hoạt động chính xác trước khi mở trình duyệt, mở Terminal (PowerShell / Command Prompt) tại thư mục dự án và chạy lệnh:
+</p>
+<div class="code-block">
+php php/tests/run_smoke_tests.php
+</div>
+<div class="callout-box">
+  Màn hình sẽ hiển thị thông báo <b>100% CÁC BÀI TEST CHỨC NĂNG VÀ BẢO MẬT ĐÃ ĐẠT!</b> (Bao gồm UUID RFC 4122, mã hóa AES-256, mật khẩu Bcrypt, phân quyền isPrivileged và chữ ký HMAC-SHA256).
+</div>
+
+<h3 class="subsec-title">Bước 5: Khởi chạy và trải nghiệm trên trình duyệt</h3>
+<p class="text-indent">
+  Mở trình duyệt web (Google Chrome / Cốc Cốc / Edge) và truy cập đường dẫn:
+</p>
+<div class="code-block">
+http://localhost/DoAn/
+hoặc: http://localhost/DoAn/html/index.html
+</div>
+
+<h2 class="sec-title">3.2. Phương pháp 2: Triển khai nhanh bằng Docker Container</h2>
+<p class="text-indent">
+  Đồ án đã được đóng gói sẵn file cấu hình [`Dockerfile`](file:///d:/DoAnUp29/DoAn/Dockerfile) dựa trên nền tảng PHP 8.2 Apache chính thống.
+</p>
+<p class="text-indent">
+  1. Mở cửa sổ dòng lệnh tại thư mục gốc của dự án.
+</p>
+<p class="text-indent">
+  2. Thực hiện lệnh build Docker image:
+</p>
+<div class="code-block">
+docker build -t freshmart-pay .
+</div>
+<p class="text-indent">
+  3. Khởi chạy Docker container với cổng chuyển tiếp:
+</p>
+<div class="code-block">
+docker run -d -p 8080:10000 --name freshmart-container freshmart-pay
+</div>
+<p class="text-indent">
+  4. Mở trình duyệt và truy cập: <code>http://localhost:8080/</code>. Container sẽ tự động thiết lập quyền hạn thư mục, cấu hình Apache Rewrite và kích hoạt toàn bộ hệ thống.
+</p>
+
+<h2 class="sec-title">3.3. Phương pháp 3: Triển khai tự động trên Render Cloud + TiDB Cloud</h2>
+<p class="text-indent">
+  Hệ thống được thiết kế theo tiêu chuẩn Cloud-Native, sẵn sàng cho việc triển khai trên hạ tầng đám mây không máy chủ (Serverless):
+</p>
+<ol>
+  <li><b>Tạo cơ sở dữ liệu trên TiDB Cloud:</b>
+    <ul>
+      <li>Đăng ký tài khoản miễn phí tại <code>tidbcloud.com</code> và khởi tạo cụm Serverless Cluster.</li>
+      <li>Tải chứng chỉ <code>ca-certificates.crt</code> và lấy thông tin Host, Port (4000), Username, Password.</li>
+      <li>Mở SQL Editor trên TiDB Cloud và thực thi toàn bộ nội dung tệp <code>csdl/database.sql</code>.</li>
+    </ul>
+  </li>
+  <li><b>Triển khai Web Service trên Render:</b>
+    <ul>
+      <li>Đăng nhập <code>render.com</code>, chọn <b>New +</b> -> <b>Web Service</b> -> Kết nối với kho GitHub <code>Lokki238/doan</code>.</li>
+      <li>Runtime: Chọn <b>Docker</b>.</li>
+      <li>Instance Type: Chọn <b>Free</b>.</li>
+      <li>Cấu hình Environment Variables (Biến môi trường) kết nối CSDL:
+        <ul>
+          <li><code>TIDB_HOST</code>: Hostname của cụm TiDB Cloud.</li>
+          <li><code>TIDB_PORT</code>: <code>4000</code>.</li>
+          <li><code>TIDB_USER</code>: Tên tài khoản TiDB.</li>
+          <li><code>TIDB_PASSWORD</code>: Mật khẩu kết nối.</li>
+          <li><code>TIDB_DB_NAME</code>: <code>freshmart_db</code>.</li>
+        </ul>
+      </li>
+      <li>Nhấn <b>Create Web Service</b>. Render sẽ tự động kéo code, build Docker container và cấp phát tên miền SSL Let's Encrypt công khai: <code>https://doan-yteb.onrender.com</code>.</li>
+    </ul>
+  </li>
+</ol>
+
+<div class="page-break"></div>
+
+<!-- ====================================================================
+     PHẦN 4: HƯỚNG DẪN SỬ DỤNG DÀNH CHO KHÁCH HÀNG
+     ==================================================================== -->
+<h1 class="part-title">PHẦN 4: HƯỚNG DẪN SỬ DỤNG DÀNH CHO KHÁCH HÀNG (CUSTOMER GUIDE)</h1>
+
+<h2 class="sec-title">4.1. Đăng ký tài khoản và Đăng nhập hệ thống</h2>
+<ol>
+  <li><b>Đăng ký tài khoản mới:</b>
+    <ul>
+      <li>Truy cập menu đầu trang (Header) -> Nhấp vào nút <b>Đăng ký</b> hoặc truy cập trực tiếp <code>html/register.html</code>.</li>
+      <li>Điền đầy đủ các thông tin: Họ và tên, Email, Số điện thoại và Mật khẩu (tối thiểu 6 ký tự).</li>
+      <li>Nhấn <b>Đăng ký ngay</b>. Hệ thống sẽ mã hóa mật khẩu an toàn bằng thuật toán Bcrypt và tạo mới người dùng với vai trò mặc định là <code>USER</code>.</li>
+    </ul>
+  </li>
+  <li><b>Đăng nhập hệ thống:</b>
+    <ul>
+      <li>Truy cập <code>html/login.html</code>, nhập Email và Mật khẩu đã đăng ký.</li>
+      <li>Sau khi xác thực thành công, thanh điều hướng Header sẽ tự động hiển thị tên người dùng và vai trò tài khoản (Khách hàng hoặc Quản trị viên).</li>
+    </ul>
+  </li>
+</ol>
+
+<h2 class="sec-title">4.2. Tìm kiếm, lọc sản phẩm và thêm vào giỏ hàng</h2>
+<p class="text-indent">
+  1. <i>Duyệt xem sản phẩm:</i> Nhấp vào menu <b>Sản phẩm</b> (<code>html/products.html</code>).
+</p>
+<p class="text-indent">
+  2. <i>Bộ lọc thông minh:</i> Ở thanh sidebar bên trái, khách hàng có thể chọn lọc theo danh mục (Rau củ quả, Thịt & Hải sản, Sữa & Trứng, Gạo & Ngũ cốc, Đồ uống) hoặc lọc theo khoảng giá mong muốn.
+</p>
+<p class="text-indent">
+  3. <i>Thêm sản phẩm vào giỏ:</i> Trên từng thẻ sản phẩm, nhấp nút <b>Thêm vào giỏ</b>. Ngay lập tức:
+</p>
+<ul>
+  <li>Nút bấm sẽ chuyển sang trạng thái xanh lá: <i><i class="fas fa-check"></i> Đã thêm</i>.</li>
+  <li>Hệ thống lưu trữ thông tin sản phẩm (ID, tên, đơn giá, ảnh, đơn vị) vào <code>localStorage</code> của trình duyệt.</li>
+  <li>Huy hiệu số lượng giỏ hàng trên Header lập tức tự động tăng lên (+1).</li>
+</ul>
+
+<h2 class="sec-title">4.3. Quản lý giỏ hàng và áp dụng mã voucher giảm giá</h2>
+<p class="text-indent">
+  Nhấp vào biểu tượng Giỏ hàng trên thanh điều hướng để mở trang <code>html/cart.html</code>:
+</p>
+<ul>
+  <li><b>Điều chỉnh số lượng:</b> Nhấp nút <b>[+]</b> hoặc <b>[-]</b> để tăng/giảm số lượng sản phẩm. Tổng tiền của từng dòng và tổng đơn hàng sẽ tự động tính lại ngay lập tức mà không cần tải lại trang.</li>
+  <li><b>Xóa sản phẩm:</b> Nhấp vào biểu tượng thùng rác màu đỏ để loại bỏ sản phẩm khỏi giỏ hàng.</li>
+  <li><b>Áp dụng mã giảm giá (Voucher):</b> Nhập mã voucher ưu đãi vào ô khuyến mãi:
+    <div class="callout-box">
+      Nhập mã: <b>FRESHMART20</b> -> Nhấn nút <b>Áp dụng</b> -> Hệ thống tự động giảm ngay <b>20.000đ</b> vào tổng thanh toán của đơn hàng!
+    </div>
+  </li>
+</ul>
+
+<h2 class="sec-title">4.4. Đặt hàng và quy trình thanh toán quét mã VietQR tự động</h2>
+<p class="text-indent">
+  1. Tại trang giỏ hàng, nhấp nút <b>Tiến hành thanh toán</b>. Hệ thống tự động kiểm tra phiên:
+</p>
+<ul>
+  <li>Nếu khách hàng chưa đăng nhập: Hệ thống tự động chuyển hướng sang trang <code>html/login.html</code> để đăng nhập.</li>
+  <li>Nếu đã đăng nhập: Chuyển thẳng đến trang xác nhận thanh toán <code>html/checkout.html</code>.</li>
+</ul>
+<p class="text-indent">
+  2. Điền địa chỉ nhận hàng, chọn phương thức vận chuyển (Giao hàng tiêu chuẩn 30.000đ hoặc Giao hàng nhanh 50.000đ).
+</p>
+<p class="text-indent">
+  3. Tại mục <b>Phương thức thanh toán</b>, chọn <b>Chuyển khoản qua mã VietQR (Tự động kích hoạt)</b> -> Nhấn nút <b>Đặt hàng ngay</b>.
+</p>
+<p class="text-indent">
+  4. Hệ thống tự động tạo mã hóa đơn duy nhất (ví dụ: <code>FM903964</code>) và chuyển khách hàng sang trang hiển thị mã QR: <code>html/payment_qr.html</code>:
+</p>
+<ul>
+  <li><b>Mã QR động NAPAS 247:</b> Hiển thị sắc nét, chứa sẵn thông tin Ngân hàng thụ hưởng, Số tài khoản, Tên chủ shop và <b>Số tiền chính xác đến từng đồng</b>.</li>
+  <li><b>Nội dung chuyển khoản:</b> Hiển thị mã đơn hàng duy nhất kèm nút <b>Copy</b> 1-click để khách sao chép nhanh nếu chuyển khoản thủ công.</li>
+  <li><b>Đồng hồ đếm ngược 15 phút:</b> Nhắc nhở thời gian giữ đơn hàng.</li>
+  <li><b>Cơ chế tự động nhảy trạng thái (Webhook & Polling 2 giây):</b> Khách hàng mở app ngân hàng bất kỳ (Vietcombank, MB Bank, Techcombank, TPBank, MoMo...) quét mã QR và xác nhận chuyển tiền. Ngay khi tiền về tài khoản shop (chỉ mất 2-3 giây):
+    <div class="callout-box">
+      <b>✓ Webhook kích hoạt:</b> Màn hình thanh toán tự động chuyển sang thông báo <b>"Thanh toán thành công!"</b> kèm hiệu ứng confetti chúc mừng, giỏ hàng tự động được làm sạch và chuyển về trang quản lý đơn hàng mà khách hàng <b>không cần nhấn bất kỳ phím F5 hay tải lại trang nào</b>!
+    </div>
+  </li>
+</ul>
+
+<div class="page-break"></div>
+
+<!-- ====================================================================
+     PHẦN 5: HƯỚNG DẪN DÀNH CHO QUẢN TRỊ VIÊN
+     ==================================================================== -->
+<h1 class="part-title">PHẦN 5: HƯỚNG DẪN DÀNH CHO QUẢN TRỊ VIÊN (ADMIN & OWNER GUIDE)</h1>
+
+<h2 class="sec-title">5.1. Truy cập Bảng điều khiển quản trị (Dashboard)</h2>
+<p class="text-indent">
+  1. Đăng nhập với tài khoản Chủ cửa hàng (<code>admin@freshmart.vn</code>) hoặc Nhân viên (<code>staff@freshmart.vn</code>).
+</p>
+<p class="text-indent">
+  2. Trên thanh menu Header, nhấp vào nút <b>Admin</b> hoặc truy cập đường dẫn: <code>/php/dashboard.php</code>.
+</p>
+<p class="text-indent">
+  3. Bảng điều khiển tổng quan cung cấp các số liệu kinh doanh thời gian thực:
+</p>
+<ul>
+  <li><b>Tổng doanh thu:</b> Tổng số tiền thực thu từ các đơn hàng có trạng thái <code>PAID</code>.</li>
+  <li><b>Số đơn hàng thành công:</b> Tổng số giao dịch đã thanh toán qua VietQR.</li>
+  <li><b>Tỉ lệ thanh toán thành công:</b> Phần trăm đơn thanh toán tự động so với tổng đơn phát sinh.</li>
+  <li><b>Biểu đồ doanh thu 7 ngày gần nhất:</b> Được trực quan hóa bằng biểu đồ cột sinh động thông qua thư viện Chart.js.</li>
+</ul>
+
+<h2 class="sec-title">5.2. Quản lý danh sách giao dịch & đối soát hóa đơn</h2>
+<p class="text-indent">
+  Truy cập menu <b>Giao dịch</b> (<code>/php/transactions.php</code>):
+</p>
+<ul>
+  <li>Xem danh sách toàn bộ các hóa đơn trong hệ thống: Mã giao dịch, Tên khách hàng, Số tiền, Phương thức thanh toán, Thời gian tạo.</li>
+  <li><b>Bộ lọc trạng thái:</b> Lọc nhanh các đơn hàng theo: <i>Tất cả</i>, <i>Đã thanh toán (PAID)</i>, <i>Chờ thanh toán (PENDING)</i>, <i>Đã hủy / Hết hạn (EXPIRED)</i>.</li>
+  <li><b>Tra cứu đối soát:</b> Nhập mã hóa đơn hoặc số tài khoản khách hàng vào ô tìm kiếm để tra cứu thông tin mã tham chiếu ngân hàng (Bank Transaction ID).</li>
+</ul>
+
+<h2 class="sec-title">5.3. Báo cáo & phân tích doanh thu qua biểu đồ trực quan</h2>
+<p class="text-indent">
+  Truy cập menu <b>Báo cáo</b> (<code>/php/reports.php</code>):
+</p>
+<ul>
+  <li>Theo dõi cơ cấu doanh thu theo từng kênh thanh toán (VietQR, Tiền mặt COD, Ví điện tử).</li>
+  <li>Thống kê top sản phẩm tươi sạch bán chạy nhất trong tuần và trong tháng.</li>
+  <li>Xuất dữ liệu báo cáo đối soát phục vụ quyết toán thuế và kế toán cửa hàng.</li>
+</ul>
+
+<h2 class="sec-title">5.4. Cấu hình cổng thanh toán ngân hàng thụ hưởng (gateways.php)</h2>
+<div class="callout-warn">
+  <b>Lưu ý quan trọng:</b> Trang cấu hình cổng thanh toán ([`php/admin/gateways.php`](file:///d:/DoAnUp29/DoAn/php/admin/gateways.php)) được bảo vệ nghiêm ngặt bằng hàm <code>requireOwner()</code>. Chỉ tài khoản có vai trò <b>OWNER (Chủ cửa hàng)</b> mới có quyền truy cập và thay đổi.
+</div>
+<p class="text-indent">
+  Khi cửa hàng muốn đổi sang tài khoản ngân hàng khác để nhận tiền, thực hiện các bước sau:
+</p>
+<ol>
+  <li>Truy cập menu <b>Cổng thanh toán</b> trên thanh Sidebar.</li>
+  <li>Tại phần <b>Cấu hình VietQR (Ưu tiên)</b>:
+    <ul>
+      <li><b>Số tài khoản nhận tiền:</b> Nhập số tài khoản ngân hàng mới (Ví dụ: <code>0389336829</code>).</li>
+      <li><b>Mã ngân hàng (BIN / Code):</b> Chọn ngân hàng thụ hưởng từ danh sách chọn (Ví dụ: <i>MB Bank - Mã 970422</i>, <i>Vietcombank - Mã 970436</i>, <i>Techcombank - Mã 970407</i>, <i>ACB - Mã 970416</i>...).</li>
+      <li><b>Tên chủ tài khoản:</b> Nhập họ tên in hoa không dấu của chủ tài khoản (Ví dụ: <code>FRESHMART STORE</code> hoặc <code>DINH THE CHI DUNG</code>).</li>
+      <li><b>Trạng thái:</b> Chọn <i>Đang hoạt động</i>.</li>
+    </ul>
+  </li>
+  <li>Nhấn nút <b>Lưu cấu hình VietQR</b>.</li>
+</ol>
+<div class="callout-box">
+  <b>Cơ chế cập nhật thời gian thực:</b> Ngay khi bấm Lưu, thông tin mới được ghi đè trực tiếp vào bảng <code>CongThanhToan</code> trong cơ sở dữ liệu TiDB Cloud. Mọi khách hàng đặt đơn ngay sau thời điểm đó sẽ quét mã VietQR trỏ thẳng về số tài khoản mới này mà <b>không cần phải sửa đổi bất kỳ dòng mã nguồn PHP hay khởi động lại máy chủ</b>!
+</div>
+
+<h2 class="sec-title">5.5. Quản lý & Phân quyền người dùng trực tiếp (permissions.php)</h2>
+<p class="text-indent">
+  Truy cập menu <b>Cấp quyền</b> ([`php/permissions.php`](file:///d:/DoAnUp29/DoAn/php/permissions.php)):
+</p>
+<ol>
+  <li>Giao diện hiển thị danh sách toàn bộ người dùng đã đăng ký tài khoản trong hệ thống.</li>
+  <li><b>Tìm kiếm:</b> Nhập tên hoặc email người dùng vào ô tìm kiếm nhanh.</li>
+  <li><b>Thay đổi vai trò (Role):</b> Tại cột "Vai trò", chọn cấp quyền mong muốn:
+    <ul>
+      <li><code>OWNER</code>: Chủ cửa hàng (toàn quyền hệ thống).</li>
+      <li><code>STAFF</code>: Nhân viên quản lý đơn hàng và đối soát.</li>
+      <li><code>USER</code>: Khách hàng mua sắm tiêu chuẩn.</li>
+    </ul>
+  </li>
+  <li>Nhấn nút <b>Lưu quyền</b> tương ứng với người dùng đó. Hệ thống sẽ phát lệnh SQL <code>UPDATE NguoiDung SET vai_tro = :role WHERE id_nguoi_dung = :id</code> cập nhật ngay lập tức vào CSDL.</li>
+</ol>
+
+<h2 class="sec-title">5.6. Công cụ mô phỏng Webhook kiểm thử (simulate_webhook.php)</h2>
+<p class="text-indent">
+  Nhằm phục vụ công tác chấm thi, nghiệm thu đồ án và kiểm thử chức năng thanh toán tự động mà <b>không cần phải chuyển tiền thật từ app ngân hàng</b>, nhóm tác giả đã xây dựng sẵn công cụ mô phỏng Webhook tại địa chỉ:
+</p>
+<div class="code-block">
+https://doan-yteb.onrender.com/php/api/simulate_webhook.php
+(Hoặc trên máy local: http://localhost/DoAn/php/api/simulate_webhook.php)
+</div>
+<p class="text-indent">
+  <b>Quy trình thực hiện mô phỏng chuyển tiền:</b>
+</p>
+<ol>
+  <li>Khách hàng đặt một đơn hàng mới và đang đứng tại màn hình quét mã QR có mã đơn (Ví dụ: <code>FM903964</code>, số tiền <code>297000</code>).</li>
+  <li>Người kiểm thử mở tab mới truy cập công cụ <code>simulate_webhook.php</code>.</li>
+  <li>Nhập mã đơn hàng <code>FM903964</code> và số tiền <code>297000</code> -> Nhấn nút <b>Bắn tín hiệu Webhook giả lập</b>.</li>
+  <li>Hệ thống gửi gói tin JSON chuẩn xác đến <code>php/api/webhook_vietqr.php</code>. Ngay lập tức, quay lại tab màn hình quét mã QR của khách hàng, màn hình sẽ tự động nhảy sang <b>Thanh toán thành công</b> chỉ sau 1 giây!</li>
+</ol>
+
+<div class="page-break"></div>
+
+<!-- ====================================================================
+     PHẦN 6: XỬ LÝ SỰ CỐ VÀ CÂU HỎI THƯỜNG GẶP
+     ==================================================================== -->
+<h1 class="part-title">PHẦN 6: XỬ LÝ SỰ CỐ VÀ CÂU HỎI THƯỜNG GẶP (TROUBLESHOOTING & FAQ)</h1>
+
+<table class="data-table">
+  <thead>
+    <tr>
+      <th style="width: 25%;">Hiện tượng sự cố</th>
+      <th style="width: 35%;">Nguyên nhân chính</th>
+      <th style="width: 40%;">Cách khắc phục triệt để</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="bold">1. Lỗi "Database connection failed"</td>
+      <td>Sai thông tin kết nối máy chủ MySQL/TiDB hoặc cổng 3306 bị chiếm dụng.</td>
+      <td>Mở tệp <code>csdl/db.php</code>, kiểm tra lại host, port, username, password. Đảm bảo dịch vụ MySQL trong XAMPP đã chuyển sang màu xanh (Running). Nếu dùng TiDB Cloud, kiểm tra kết nối mạng Internet.</td>
+    </tr>
+    <tr>
+      <td class="bold">2. Lỗi 404 Not Found khi chuyển trang</td>
+      <td>Web server Apache chưa bật module <code>mod_rewrite</code> hoặc tệp <code>.htaccess</code> bị thiếu.</td>
+      <td>Mở file <code>httpd.conf</code> của Apache, tìm dòng <code>#LoadModule rewrite_module modules/mod_rewrite.so</code> và bỏ dấu <code>#</code> ở đầu dòng. Đảm bảo file <code>.htaccess</code> nằm ở thư mục gốc của dự án.</td>
+    </tr>
+    <tr>
+      <td class="bold">3. Lỗi "Headers already sent"</td>
+      <td>Tệp tin PHP bị dính ký tự UTF-8 BOM hoặc khoảng trắng trước thẻ <code>&lt;?php</code>.</td>
+      <td>Hệ thống đã được xử lý triệt để: toàn bộ file đã xóa sạch BOM và có sẵn hàm <code>ob_start()</code> trong <code>php/includes/auth.php</code>. Nếu tự tạo file mới, hãy lưu tệp ở định dạng <b>UTF-8 without BOM</b>.</td>
+    </tr>
+    <tr>
+      <td class="bold">4. Quét mã QR rồi nhưng web không tự nhảy trạng thái</td>
+      <td>Khách hàng nhập sai nội dung chuyển khoản hoặc chuyển sai số tiền lẻ.</td>
+      <td>Yêu cầu khách hàng giữ nguyên nội dung chuyển khoản là mã đơn hàng (Ví dụ: <code>FM903964</code>) do mã VietQR tự động sinh ra. Có thể vào công cụ <code>simulate_webhook.php</code> để kích hoạt lại đơn nếu cần đối soát gấp.</td>
+    </tr>
+    <tr>
+      <td class="bold">5. Bị chuyển hướng về trang login khi vào Dashboard</td>
+      <td>Người dùng chưa đăng nhập hoặc tài khoản chỉ có quyền <code>USER</code> thông thường.</td>
+      <td>Đăng nhập bằng tài khoản Quản trị viên (<code>admin@freshmart.vn</code> / <code>Admin@123456</code>). Nếu dùng tài khoản khác, nhờ tài khoản Admin vào trang <code>permissions.php</code> để cấp quyền <code>STAFF</code> hoặc <code>OWNER</code>.</td>
+    </tr>
+    <tr>
+      <td class="bold">6. Hình ảnh sản phẩm bị vỡ hoặc không hiển thị</td>
+      <td>Link ảnh mạng bên ngoài bị chặn hoặc chưa lưu ảnh cục bộ.</td>
+      <td>Hệ thống đã lưu trữ toàn bộ ảnh sản phẩm cốt lõi (Cà chua bi, Táo nhập khẩu...) trực tiếp trong thư mục <code>html/img/</code>. Hệ thống có sẵn fallback tự động nạp ảnh cục bộ giúp trang luôn hiển thị sắc nét 100%.</td>
+    </tr>
+  </tbody>
+</table>
+
+<div style="margin-top: 40px; text-align: center; font-style: italic;">
+  --- HẾT TÀI LIỆU HƯỚNG DẪN CÀI ĐẶT VÀ SỬ DỤNG HỆ THỐNG ---
+</div>
+
+</body>
+</html>
