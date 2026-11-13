@@ -306,5 +306,6 @@ $user = getCurrentUser();
 
     loadReportData();
   </script>
+  <script src="../js/admin_notifications.js"></script>
 </body>
 </html>

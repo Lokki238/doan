@@ -323,5 +323,6 @@ $user = getCurrentUser();
     // Load lần đầu
     loadData();
   </script>
+  <script src="../js/admin_notifications.js"></script>
 </body>
 </html>

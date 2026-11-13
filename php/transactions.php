@@ -357,5 +357,6 @@ $user = getCurrentUser();
     // Khởi chạy
     loadTransactions(0);
   </script>
+  <script src="../js/admin_notifications.js"></script>
 </body>
 </html>

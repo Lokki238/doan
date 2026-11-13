@@ -344,5 +344,6 @@ $user = getCurrentUser();
     // Tự động load danh sách ban đầu khi vào trang
     loadUsers('');
   </script>
+  <script src="../js/admin_notifications.js"></script>
 </body>
 </html>

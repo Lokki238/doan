@@ -247,5 +247,6 @@ $user = getCurrentUser();
       setTimeout(() => box.classList.add('d-none'), 4000);
     }
   </script>
+  <script src="../../js/admin_notifications.js"></script>
 </body>
 </html>

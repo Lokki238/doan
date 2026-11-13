@@ -124,6 +124,26 @@ try {
     // 4. Sinh link ảnh VietQR chuẩn NAPAS dựa trên dữ liệu CSDL
     $qrImage = "https://img.vietqr.io/image/{$bankCode}-{$accountNo}-compact2.png?amount={$soTien}&addInfo={$orderId}&accountName=" . urlencode($accountName);
 
+    // 5. Nếu đơn hàng chưa từng lưu trong CSDL (ví dụ khách mở trực tiếp link QR), tự động ghi nhận PENDING
+    if (!$giaoDich) {
+        $newGiaoDichId = generateUUID();
+        $shopIdQuery = $pdo->query("SELECT ID FROM cuahang LIMIT 1")->fetchColumn();
+        $gwIdQuery = $gateway ? $gateway['ID'] : null;
+        $moTa = "Khách tạo mã VietQR đơn {$orderId}";
+        $ins = $pdo->prepare("
+            INSERT INTO giaodich (
+                ID, CuaHang_id, CongThanhToan_id, MaDonHang, SoTien, MoTa,
+                LoaiCongThanhToan, TrangThai, DuLieuQR, DuongDanThanhToan, ThoiGianTao
+            ) VALUES (?, ?, ?, ?, ?, ?, 'VIETQR', 'PENDING', '', ?, NOW())
+        ");
+        $ins->execute([$newGiaoDichId, $shopIdQuery, $gwIdQuery, $orderId, $soTien, $moTa, $qrImage]);
+        
+        // Nạp lại giao dịch vừa tạo
+        $stmt->execute([$orderId]);
+        $giaoDich = $stmt->fetch();
+        $trangThai = 'PENDING';
+    }
+
     $isPaid = ($trangThai === 'SUCCESS');
 
     jsonResponse(true, 'Lấy thông tin thanh toán thành công', [
