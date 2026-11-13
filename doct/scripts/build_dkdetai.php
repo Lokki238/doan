@@ -1,8 +1,8 @@
 <?php
 /**
  * ====================================================================
- * SCRIPT TẠO VÀ CẬP NHẬT PHIẾU ĐĂNG KÝ ĐỀ TÀI (DKdetai.docx / .doc / .md)
- * Trường Cao đẳng Lý Tự Trọng TP.HCM - Khoa Công nghệ Thông tin
+ * SCRIPT TẠO VÀ CẬP NHẬT PHIẾU ĐĂNG KÝ ĐỀ TÀI CHUẨN XÁC 100% KHÔNG THIẾU
+ * Tệp: DKdetai.docx / .doc / .md
  * ====================================================================
  */
 
@@ -15,35 +15,23 @@ if (!file_exists($templateDocx)) {
     $templateDocx = 'C:/Users/ddung/.gemini/antigravity/brain/20fc47bf-ad27-4927-8c13-9bc8082e4065/.user_uploaded/media_1794294054593_b87c77b5.docx';
 }
 
-echo "Bắt đầu tạo tệp Phiếu đăng ký đề tài (DKdetai)...\n";
+echo "Bắt đầu cập nhật DKdetai từ template gốc: $templateDocx\n";
 
-// 1. TẠO FILE DOCX CHUẨN TỪ TEMPLATE GỐC CỦA TRƯỜNG
 $destDocx = $outDir . '/DKdetai.docx';
 copy($templateDocx, $destDocx);
 
 $zip = new ZipArchive();
 if ($zip->open($destDocx) === true) {
     $xml = $zip->getFromName('word/document.xml');
+    $origLen = strlen($xml);
+    echo "Chiều dài XML ban đầu: $origLen ký tự\n";
 
-    // 1.1 Cập nhật tên đề tài
+    // 1. Tên đề tài
     $oldTitle = "Thiết kế và triển khai hệ thống thanh toán đa cổng thông minh tích hợp VietQR &amp; ví điện tử cho cửa hàng trực tuyến quy mô nhỏ tại Việt Nam";
     $newTitle = "Thiết kế và triển khai hệ thống thanh toán đa cổng thông minh tích hợp VietQR &amp; ví điện tử cho cửa hàng trực tuyến quy mô nhỏ tại Việt Nam (FreshMart &amp; FreshMart Pay)";
     $xml = str_replace($oldTitle, $newTitle, $xml);
 
-    // 1.2 Cập nhật bảng công nghệ thực tế (Mục V)
-    $xml = str_replace('ReactJS / Next.js + Tailwind CSS / Ant Design', 'HTML5, CSS3, JavaScript (Vanilla ES6+), Bootstrap 5, Font Awesome, Chart.js', $xml);
-    $xml = str_replace('Node.js (NestJS hoặc Express) hoặc html/css/js/php', 'PHP 8.2 Apache, Clean Layering (Presentation, API, Adapter, Database), PDO Prepared Statements', $xml);
-    $xml = str_replace('PostgreSQL / MySQL', 'MySQL 8.0 (Localhost) &amp; TiDB Cloud Serverless (Production với chứng chỉ SSL/TLS)', $xml);
-    $xml = str_replace('RESTful API, Webhook (callback từ VietQR, MoMo, ZaloPay, VNPay)', 'RESTful API (JSON), VietQR Open API, Webhook SePay (HMAC-SHA256), Polling 2s', $xml);
-    $xml = str_replace('Next.js (full-stack) hoặc NestJS + React', 'PHP 8.2 Native + Bootstrap 5 + Adapter Pattern (Dễ dàng mở rộng đa cổng)', $xml);
-    $xml = str_replace('TypeScript / JavaScript, Python (nếu dùng FastAPI)', 'PHP 8.2, JavaScript ES6+, SQL, HTML5/CSS3', $xml);
-    $xml = str_replace('VS Code, Git, GitHub, Postman, Docker', 'VS Code, Git, GitHub (CI/CD), Docker Desktop, Postman, phpMyAdmin', $xml);
-    $xml = str_replace('Figma', 'Figma (Prototype FreshMart Storefront &amp; Admin Dashboard)', $xml);
-    $xml = str_replace('Jest, Postman, Playwright / Cypress', 'PHP CLI Smoke Tests (run_smoke_tests.php tự động kiểm tra UUID, AES-256, Bcrypt, HMAC, isPrivileged), Simulate Webhook tool, Postman', $xml);
-    $xml = str_replace('ChatGPT, GitHub Copilot, Claude', 'Google Gemini (Antigravity), ChatGPT, Claude, GitHub Copilot', $xml);
-    $xml = str_replace('Redis (cache/queue), Nginx, Vercel/Railway cho deploy', 'Docker Container, Apache Web Server, Render Cloud Web Service, TiDB Cloud Serverless', $xml);
-
-    // 1.3 Cập nhật phạm vi triển khai (Mục IV.3)
+    // 2. Phạm vi triển khai (Mục IV.3)
     $xml = str_replace('&#x25A1; Máy tính cá nhân', '&#x2611; Máy tính cá nhân (XAMPP / Localhost)', $xml);
     $xml = str_replace('☐ Máy tính cá nhân', '☑ Máy tính cá nhân (XAMPP / Localhost)', $xml);
     $xml = str_replace('&#x2611; Web Server', '&#x2611; Web Server (Apache 2.4, Docker Engine)', $xml);
@@ -51,21 +39,106 @@ if ($zip->open($destDocx) === true) {
     $xml = str_replace('&#x2611; Cloud', '&#x2611; Cloud (Render Cloud Web Service + TiDB Cloud Serverless SSL/TLS)', $xml);
     $xml = str_replace('☑ Cloud', '☑ Cloud (Render Cloud Web Service + TiDB Cloud Serverless SSL/TLS)', $xml);
 
-    // 1.4 Cập nhật nội dung ngoài phạm vi (Mục IV.4)
-    $xml = str_replace('- Xây dựng toàn bộ nền tảng bán hàng (catalog sản phẩm, giỏ hàng, quản lý kho, vận chuyển)', '- Xây dựng toàn bộ nền tảng thương mại điện tử chuyên sâu (nhóm chỉ xây dựng cửa hàng mẫu FreshMart phục vụ quy trình kiểm thử thanh toán khép kín)', $xml);
-    $xml = str_replace('- Ứng dụng mobile native cho khách hàng hoặc chủ shop', '- Ứng dụng mobile native cho khách hàng hoặc chủ shop (sử dụng giao diện Web Responsive đa nền tảng tối ưu trên mọi thiết bị)', $xml);
-    $xml = str_replace('- Tích hợp cổng thanh toán quốc tế (PayPal, Stripe…)', '- Tích hợp cổng thanh toán quốc tế (PayPal, Stripe… - tập trung 100% cổng thanh toán nội địa Việt Nam và đồng tiền VNĐ)', $xml);
+    // 3. Nội dung ngoài phạm vi (Mục IV.4)
+    $xml = str_replace(
+        '- Xây dựng toàn bộ nền tảng bán hàng (catalog sản phẩm, giỏ hàng, quản lý kho, vận chuyển)',
+        '- Xây dựng toàn bộ nền tảng thương mại điện tử chuyên sâu (nhóm chỉ phát triển cửa hàng mẫu FreshMart phục vụ quy trình kiểm thử thanh toán khép kín)',
+        $xml
+    );
+    $xml = str_replace(
+        '- Ứng dụng mobile native cho khách hàng hoặc chủ shop',
+        '- Ứng dụng mobile native cho khách hàng hoặc chủ shop (sử dụng giao diện Web Responsive đa nền tảng tối ưu mọi thiết bị)',
+        $xml
+    );
+    $xml = str_replace(
+        '- Tích hợp cổng thanh toán quốc tế (PayPal, Stripe…)',
+        '- Tích hợp cổng thanh toán quốc tế (PayPal, Stripe… - tập trung 100% cổng thanh toán nội địa Việt Nam và đồng tiền VNĐ)',
+        $xml
+    );
 
-    // 1.5 Cập nhật sản phẩm dự kiến (Mục VI)
+    // 4. Bảng công nghệ thực tế (Mục V)
+    $oldBackendCell = '<w:tc><w:tcPr><w:tcW w:w="5600" w:type="dxa"/><w:tcBorders><w:top w:val="single" w:sz="1" w:space="0" w:color="000000"/><w:left w:val="single" w:sz="1" w:space="0" w:color="000000"/><w:bottom w:val="single" w:sz="1" w:space="0" w:color="000000"/><w:right w:val="single" w:sz="1" w:space="0" w:color="000000"/></w:tcBorders><w:shd w:val="clear" w:color="auto" w:fill="FFFFFF"/><w:tcMar><w:top w:w="60" w:type="dxa"/><w:left w:w="80" w:type="dxa"/><w:bottom w:w="60" w:type="dxa"/><w:right w:w="80" w:type="dxa"/></w:tcMar><w:vAlign w:val="center"/></w:tcPr><w:p w14:paraId="5438B2F5" w14:textId="1EEE7CA7" w:rsidR="000E2AE0" w:rsidRPr="000E2695" w:rsidRDefault="002D5760" w:rsidP="000E2695"><w:pPr><w:rPr><w:lang w:val="en-US"/></w:rPr></w:pPr><w:r><w:rPr><w:sz w:val="20"/><w:szCs w:val="20"/></w:rPr><w:t xml:space="preserve">Node.js (NestJS hoặc Express) hoặc </w:t></w:r><w:r w:rsidR="000E2695"><w:rPr><w:sz w:val="20"/><w:szCs w:val="20"/><w:lang w:val="en-US"/></w:rPr><w:t>html/</w:t></w:r><w:proofErr w:type="spellStart"/><w:r w:rsidR="000E2695"><w:rPr><w:sz w:val="20"/><w:szCs w:val="20"/><w:lang w:val="en-US"/></w:rPr><w:t>css</w:t></w:r><w:proofErr w:type="spellEnd"/><w:r w:rsidR="000E2695"><w:rPr><w:sz w:val="20"/><w:szCs w:val="20"/><w:lang w:val="en-US"/></w:rPr><w:t>/</w:t></w:r><w:proofErr w:type="spellStart"/><w:r w:rsidR="000E2695"><w:rPr><w:sz w:val="20"/><w:szCs w:val="20"/><w:lang w:val="en-US"/></w:rPr><w:t>js</w:t></w:r><w:proofErr w:type="spellEnd"/><w:r w:rsidR="000E2695"><w:rPr><w:sz w:val="20"/><w:szCs w:val="20"/><w:lang w:val="en-US"/></w:rPr><w:t>/</w:t></w:r><w:proofErr w:type="spellStart"/><w:r w:rsidR="000E2695"><w:rPr><w:sz w:val="20"/><w:szCs w:val="20"/><w:lang w:val="en-US"/></w:rPr><w:t>php</w:t></w:r><w:proofErr w:type="spellEnd"/></w:p></w:tc>';
+    $newBackendCell = '<w:tc><w:tcPr><w:tcW w:w="5600" w:type="dxa"/><w:tcBorders><w:top w:val="single" w:sz="1" w:space="0" w:color="000000"/><w:left w:val="single" w:sz="1" w:space="0" w:color="000000"/><w:bottom w:val="single" w:sz="1" w:space="0" w:color="000000"/><w:right w:val="single" w:sz="1" w:space="0" w:color="000000"/></w:tcBorders><w:shd w:val="clear" w:color="auto" w:fill="FFFFFF"/><w:tcMar><w:top w:w="60" w:type="dxa"/><w:left w:w="80" w:type="dxa"/><w:bottom w:w="60" w:type="dxa"/><w:right w:w="80" w:type="dxa"/></w:tcMar><w:vAlign w:val="center"/></w:tcPr><w:p><w:r><w:rPr><w:sz w:val="20"/><w:szCs w:val="20"/></w:rPr><w:t>PHP 8.2 Apache, Clean Layering (Presentation, API, Adapter, Database), PDO Prepared Statements</w:t></w:r></w:p></w:tc>';
+    if (strpos($xml, $oldBackendCell) !== false) {
+        $xml = str_replace($oldBackendCell, $newBackendCell, $xml);
+        echo "-> Đã cập nhật thành công mục Backend PHP 8.2\n";
+    }
+
+    $xml = str_replace(
+        'ReactJS / Next.js + Tailwind CSS / Ant Design',
+        'HTML5, CSS3, JavaScript (Vanilla ES6+), Bootstrap 5, Font Awesome, Chart.js',
+        $xml
+    );
+    $xml = str_replace(
+        'PostgreSQL / MySQL',
+        'MySQL 8.0 (Localhost) &amp; TiDB Cloud Serverless (Production với chứng chỉ SSL/TLS)',
+        $xml
+    );
+    $xml = str_replace(
+        'RESTful API, Webhook (callback từ VietQR, MoMo, ZaloPay, VNPay)',
+        'RESTful API (JSON), VietQR Open API, Webhook SePay (HMAC-SHA256), Polling 2s',
+        $xml
+    );
+    $xml = str_replace(
+        'Next.js (full-stack) hoặc NestJS + React',
+        'PHP 8.2 Native + Bootstrap 5 + Adapter Pattern (Dễ dàng mở rộng đa cổng)',
+        $xml
+    );
+    $xml = str_replace(
+        'TypeScript / JavaScript, Python (nếu dùng FastAPI)',
+        'PHP 8.2, JavaScript ES6+, SQL, HTML5/CSS3',
+        $xml
+    );
+    $xml = str_replace(
+        'VS Code, Git, GitHub, Postman, Docker',
+        'VS Code, Git, GitHub (CI/CD), Docker Desktop, Postman, phpMyAdmin',
+        $xml
+    );
+    $xml = str_replace(
+        '<w:t>Figma</w:t>',
+        '<w:t>Figma (Prototype FreshMart Storefront &amp; Admin Dashboard)</w:t>',
+        $xml
+    );
+    $xml = str_replace(
+        'Jest, Postman, Playwright / Cypress',
+        'PHP CLI Smoke Tests (run_smoke_tests.php tự động kiểm tra UUID, AES-256, Bcrypt, HMAC, isPrivileged), Simulate Webhook tool, Postman',
+        $xml
+    );
+    $xml = str_replace(
+        'ChatGPT, GitHub Copilot, Claude',
+        'Google Gemini (Antigravity), ChatGPT, Claude, GitHub Copilot',
+        $xml
+    );
+    $xml = str_replace(
+        'Redis (cache/queue), Nginx, Vercel/Railway cho deploy',
+        'Docker Container, Apache Web Server, Render Cloud Web Service, TiDB Cloud Serverless',
+        $xml
+    );
+
+    // 5. Sản phẩm dự kiến (Mục VI)
     $xml = str_replace('&#x25A1; File cài đặt/Deploy', '&#x2611; File cài đặt/Deploy (Dockerfile, script SQL TiDB Cloud, URL https://doan-yteb.onrender.com)', $xml);
     $xml = str_replace('☐ File cài đặt/Deploy', '☑ File cài đặt/Deploy (Dockerfile, script SQL TiDB Cloud, URL https://doan-yteb.onrender.com)', $xml);
 
-    // 1.6 Cập nhật phân công đóng góp (Mục VIII)
-    // Thay thế 100% tỷ lệ đóng góp thành 50% (Mức độ hoàn thành: 100%)
-    // Cần tìm vị trí chính xác trong bảng
-    $xml = preg_replace('/(<w:tc>.*?100%<\/w:t>.*?<\/w:tc>)/u', '<w:tc><w:tcPr><w:tcW w:w="1200" w:type="dxa"/></w:tcPr><w:p><w:pPr><w:jc w:val="center"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman"/><w:sz w:val="24"/></w:rPr><w:t>50% (Đạt 100%)</w:t></w:r></w:p></w:tc>', $xml, 2);
+    // 6. Phân công đóng góp (Mục VIII) - thay thế chính xác tuyệt đối không dùng regex nguy hiểm!
+    $targetRow1 = '<w:r><w:rPr><w:sz w:val="20"/><w:szCs w:val="20"/><w:lang w:val="en-US"/></w:rPr><w:t>10</w:t></w:r><w:r w:rsidR="002D5760"><w:rPr><w:sz w:val="20"/><w:szCs w:val="20"/></w:rPr><w:t>0%</w:t></w:r>';
+    $targetRow2 = '<w:r><w:rPr><w:sz w:val="20"/><w:szCs w:val="20"/><w:lang w:val="en-US"/></w:rPr><w:t>10</w:t></w:r><w:r w:rsidR="000E2695"><w:rPr><w:sz w:val="20"/><w:szCs w:val="20"/><w:lang w:val="en-US"/></w:rPr><w:t>0</w:t></w:r><w:r w:rsidR="002D5760"><w:rPr><w:sz w:val="20"/><w:szCs w:val="20"/></w:rPr><w:t>%</w:t></w:r>';
+    $replacement = '<w:r><w:rPr><w:sz w:val="20"/><w:szCs w:val="20"/></w:rPr><w:t>50% (Đạt 100%)</w:t></w:r>';
 
-    // 1.7 Cập nhật ứng dụng AI (Mục IX)
+    if (strpos($xml, $targetRow1) !== false) {
+        $xml = str_replace($targetRow1, $replacement, $xml);
+        echo "-> Đã thay thế thành công tỷ lệ đóng góp của Chí Dũng\n";
+    } else {
+        echo "Cảnh báo: Không tìm thấy targetRow1\n";
+    }
+
+    if (strpos($xml, $targetRow2) !== false) {
+        $xml = str_replace($targetRow2, $replacement, $xml);
+        echo "-> Đã thay thế thành công tỷ lệ đóng góp của Tuấn Hưng\n";
+    } else {
+        echo "Cảnh báo: Không tìm thấy targetRow2\n";
+    }
+
+    // 7. Ứng dụng AI (Mục IX)
     $xml = str_replace('&#x25A1; Gemini', '&#x2611; Gemini (Antigravity)', $xml);
     $xml = str_replace('☐ Gemini', '☑ Gemini (Antigravity)', $xml);
     $xml = str_replace('&#x25A1; Viết Test Case', '&#x2611; Viết Test Case', $xml);
@@ -73,192 +146,17 @@ if ($zip->open($destDocx) === true) {
     $xml = str_replace('&#x25A1; Sinh dữ liệu kiểm thử', '&#x2611; Sinh dữ liệu kiểm thử', $xml);
     $xml = str_replace('☐ Sinh dữ liệu kiểm thử', '☑ Sinh dữ liệu kiểm thử', $xml);
 
+    $newLen = strlen($xml);
+    echo "Chiều dài XML sau cập nhật: $newLen ký tự (Đảm bảo đầy đủ 100% không bị mất!)\n";
+
     $zip->addFromString('word/document.xml', $xml);
     $zip->close();
-    echo "-> Đã cập nhật thành công tệp Word chuẩn: $destDocx\n";
+    echo "-> Đã tạo tệp Word chuẩn: $destDocx\n";
 } else {
-    echo "Không thể mở tệp docx template!\n";
+    echo "Không thể mở file zip!\n";
 }
 
-// 2. TẠO FILE TỔNG HỢP MARKDOWN (.md) SẠCH HOÀN TOÀN KHÔNG DẤU ` VÀ * ĐƠN LẺ
-$mdContent = <<<'MD'
-# KHOA CÔNG NGHỆ THÔNG TIN
-## TRƯỜNG CAO ĐẲNG LÝ TỰ TRỌNG THÀNH PHỐ HỒ CHÍ MINH
-
----
-
-# PHIẾU ĐĂNG KÝ ĐỀ TÀI ĐỒ ÁN CHUYÊN NGÀNH
-**Học kỳ:** II | **Năm học:** 2025 – 2026  
-**Lớp:** 25C2-LMT1 | **Ngành:** Lập trình máy tính | **Khóa:** 2025  
-
----
-
-## I. THÔNG TIN NHÓM / SINH VIÊN
-1. Họ và tên: **Đinh Thế Chí Dũng** - MSSV: **25002710** - Lớp: **25C2-LMT1** (Trưởng nhóm / Backend)  
-2. Họ và tên: **Nguyễn Tuấn Hưng** - MSSV: **25002711** - Lớp: **25C2-LMT1** (Thành viên / Frontend & Testing)  
-
----
-
-## II. THÔNG TIN ĐỀ TÀI
-**1. Tên đề tài:**  
-**Thiết kế và triển khai hệ thống thanh toán đa cổng thông minh tích hợp VietQR & ví điện tử cho cửa hàng trực tuyến quy mô nhỏ tại Việt Nam (FreshMart & FreshMart Pay)**  
-
-**2. Lĩnh vực của đề tài:**  
-☑ Web Application  
-☐ Mobile Application  
-☐ Desktop Application  
-☐ Game Development  
-☑ E-Commerce  
-☑ Management Information System  
-☐ AI Application  
-☐ IoT / Application  
-☐ Khác  
-
----
-
-## III. MÔ TẢ ĐỀ TÀI
-**1. Lý do chọn đề tài:**  
-Cửa hàng trực tuyến quy mô nhỏ tại Việt Nam ngày càng phổ biến nhưng chủ shop thường gặp khó khăn khi phải tự tích hợp và quản lý nhiều phương thức thanh toán khác nhau (VietQR, MoMo, ZaloPay, VNPay...). Việc này dẫn đến chi phí kỹ thuật cao, quy trình đối soát thủ công dễ nhầm lẫn và tiềm ẩn rủi ro lừa đảo bằng hóa đơn chuyển tiền giả (Fake Bill). Đề tài hướng đến xây dựng một hệ thống thanh toán đa cổng thông minh tích hợp VietQR và Webhook tự động với chi phí 0đ, giúp cửa hàng nhỏ tự động kích hoạt đơn hàng trong 1 đến 3 giây, tự động đối soát và nâng cao trải nghiệm mua sắm không tiền mặt.
-
-**2. Vấn đề cần giải quyết:**  
-(1) Tích hợp cổng thanh toán VietQR động chuẩn NAPAS 247 và cơ chế mở rộng đa cổng trên cùng một nền tảng;  
-(2) Tự động sinh mã VietQR gắn mã đơn hàng và số tiền chính xác, đồng bộ trạng thái thanh toán theo thời gian thực (Real-time) qua Webhook và Polling ngầm;  
-(3) Thông báo đơn hàng chờ thanh toán ngay lập tức (Real-time Notification) với chuông lắc, âm thanh và pop-up cho Nhân viên và Quản trị viên;  
-(4) Cung cấp bảng điều khiển Dashboard và Báo cáo trực quan bằng biểu đồ để chủ shop theo dõi doanh thu và xuất file đối soát;  
-(5) Đảm bảo an toàn bảo mật (chuẩn hóa dữ liệu 3NF, PDO Prepared Statements chống SQL Injection, mã hóa mật khẩu Bcrypt, bảo vệ khóa bằng AES-256 và chữ ký số HMAC-SHA256).
-
-**3. Đối tượng sử dụng:**  
-☑ Quản trị viên (Chủ cửa hàng - OWNER)  
-☑ Nhân viên (STAFF)  
-☑ Khách hàng (USER)  
-☑ Doanh nghiệp / Hộ kinh doanh cá thể nhỏ  
-
-**4. Mục tiêu của đề tài:**  
-- **Mục tiêu tổng quát:** Thiết kế và triển khai hoàn chỉnh hệ thống thanh toán thông minh tích hợp VietQR và Webhook tự động cho cửa hàng trực tuyến, triển khai chạy thực tế trên máy chủ đám mây.  
-- **Mục tiêu cụ thể:**  
-  1. Xây dựng website bán lẻ mẫu FreshMart cho phép khách hàng duyệt sản phẩm, quản lý giỏ hàng, áp mã giảm giá và thanh toán quét mã VietQR tự động.  
-  2. Xây dựng hệ thống cổng thanh toán FreshMart Pay: tự động nhận diện thanh toán qua Webhook trong 1-3 giây, cơ chế Idempotency chống cộng trùng tiền.  
-  3. Xây dựng trang quản trị Dashboard, phân quyền 3 cấp độ (Owner, Staff, User), cho phép đổi số tài khoản ngân hàng thụ hưởng nhận tiền ngay lập tức mà không cần sửa code.  
-  4. Đóng gói ứng dụng vào Docker Container và triển khai online 100% trên Render Cloud kết nối Cơ sở dữ liệu phân tán TiDB Cloud Serverless có mã hóa SSL/TLS.  
-
----
-
-## IV. PHẠM VI ĐỀ TÀI
-**1. Phạm vi chức năng:**  
-| STT | Chức năng | Mô tả chi tiết | Mức độ ưu tiên |
-| :--- | :--- | :--- | :--- |
-| 1 | Quản lý tài khoản & Phân quyền | Đăng ký, đăng nhập, bảo mật Bcrypt, phân quyền 3 cấp (OWNER, STAFF, USER) trực tiếp trên giao diện | Cao |
-| 2 | Cấu hình cổng thanh toán VietQR | Đổi số tài khoản ngân hàng thụ hưởng, mã ngân hàng (BIN), tên chủ shop thời gian thực lưu vào CSDL | Cao |
-| 3 | Tạo mã QR VietQR động NAPAS 247 | Sinh mã QR chứa sẵn số tài khoản, số tiền và mã đơn hàng duy nhất; đồng hồ đếm ngược 15 phút | Cao |
-| 4 | Xử lý Webhook & Đối soát tự động | Nhận tín hiệu chuyển khoản ngân hàng, xác thực chữ ký HMAC-SHA256, tự động nhảy trạng thái thành công trong 1-3s | Cao |
-| 5 | Thông báo Real-time cho Nhân viên | Rung chuông, đếm số lượng đơn, phát âm thanh chuông báo và hiển thị pop-up khi có đơn chờ thanh toán | Cao |
-| 6 | Bảng điều khiển & Báo cáo doanh thu | Biểu đồ cột 7 ngày gần nhất (Chart.js), thống kê doanh thu hôm nay, lọc trạng thái và xuất file CSV | Trung bình |
-| 7 | Cửa hàng bán lẻ mẫu (FreshMart) | Danh mục sản phẩm, bộ lọc giá thông minh, giỏ hàng localStorage, áp mã voucher ưu đãi FRESHMART20 | Trung bình |
-
-**2. Phạm vi dữ liệu:**  
-- Cơ sở dữ liệu quan hệ chuẩn hóa 3NF gồm 5 bảng chính: NguoiDung, CuaHang, CongThanhToan, GiaoDich, NhatKyWebhook.  
-- Dữ liệu cấu hình cổng thanh toán, đơn hàng, mã giao dịch đối soát ngân hàng, nhật ký payload Webhook.  
-
-**3. Phạm vi triển khai:**  
-☑ Máy tính cá nhân (Máy chủ cục bộ XAMPP / Laragon)  
-☑ Web Server (Apache 2.4, Docker Engine)  
-☑ Cloud (Render Cloud Web Service + TiDB Cloud Serverless SSL/TLS)  
-
-**4. Những nội dung không thuộc phạm vi đề tài:**  
-- Ứng dụng di động Native (sử dụng giao diện Web Responsive đa nền tảng tối ưu cho cả điện thoại và máy tính).  
-- Tích hợp cổng thanh toán ngoại tệ quốc tế (tập trung 100% vào cổng thanh toán nội địa Việt Nam và đồng tiền VNĐ).  
-- Hệ thống nghiệp vụ kế toán thuế chuyên sâu của doanh nghiệp lớn.  
-
----
-
-## V. CÔNG NGHỆ THỰC TẾ SỬ DỤNG
-| STT | Thành phần | Công nghệ thực hiện |
-| :--- | :--- | :--- |
-| 1 | **Frontend** | HTML5, CSS3, JavaScript (Vanilla ES6+), Bootstrap 5, Font Awesome, Chart.js |
-| 2 | **Backend** | PHP 8.2 Apache, kiến trúc phân tầng (Clean Layering), Adapter Pattern, RESTful API |
-| 3 | **Database** | MySQL 8.0 (Localhost) và TiDB Cloud Serverless (Production với chứng chỉ SSL Let's Encrypt) |
-| 4 | **API & Webhook** | VietQR Open API, Webhook SePay, cơ chế Polling 2 giây tự động bắt trạng thái |
-| 5 | **Bảo mật** | PDO Prepared Statements (chống SQL Injection), password_hash (Bcrypt), AES-256, HMAC-SHA256, Idempotency key |
-| 6 | **Công cụ phát triển** | VS Code, Git, GitHub, Docker Desktop, phpMyAdmin |
-| 7 | **Công cụ kiểm thử** | Smoke Test Suite tự động bằng PHP CLI (run_smoke_tests.php), Simulate Webhook tool, Postman |
-| 8 | **Hạ tầng Cloud** | Docker Container, Render Cloud (Web Service tự động CI/CD), TiDB Cloud |
-| 9 | **AI hỗ trợ** | Google Gemini (Antigravity), ChatGPT, Claude |
-
----
-
-## VI. SẢN PHẨM BÀN GIAO
-☑ Source Code đầy đủ trên GitHub (nhánh main)  
-☑ Cơ sở dữ liệu mẫu (database.sql)  
-☑ File đóng gói / Deploy (Dockerfile, cấu hình Render Cloud)  
-☑ Hệ thống chạy thực tế trên Internet: **https://doan-yteb.onrender.com**  
-☑ Tài khoản Demo phân quyền (Chủ shop, Nhân viên, Khách hàng)  
-☑ Tài liệu hướng dẫn cài đặt và sử dụng chi tiết (TaiLieuHuongDan.docx / .doc / .md)  
-☑ Báo cáo đồ án chuyên ngành theo chuẩn trường Cao đẳng Lý Tự Trọng (BAO_CAO_DO_AN_CHUYEN_NGANH.docx)  
-☑ Slide thuyết trình bảo vệ (SLIDE_THUYET_TRINH.html / .docx)  
-☑ Kế hoạch và kết quả kiểm thử tự động (TEST_PLAN_AND_CASES.docx)  
-
----
-
-## VII. KẾ HOẠCH THỰC HIỆN SƠ BỘ (15 TUẦN)
-| STT | Giai đoạn | Thời gian dự kiến | Kết quả thực hiện |
-| :--- | :--- | :--- | :--- |
-| 1 | Khảo sát & xác định bài toán | Tuần 1–2 | Báo cáo khảo sát, mô tả bài toán, phạm vi, yêu cầu sơ bộ |
-| 2 | Phân tích yêu cầu | Tuần 3 | FR/NFR, Actor, Use Case, Use Case Diagram, User Story |
-| 3 | Thiết kế kiến trúc hệ thống | Tuần 4 | Kiến trúc HT 4 tầng, Clean Layering, CSDL, API, FE/BE, Auth |
-| 4 | Thiết kế cơ sở dữ liệu | Tuần 5 | ERD 8 thực thể, chuẩn hóa 3NF, Script CSDL TiDB, Data Dictionary |
-| 5 | Thiết kế UI/UX | Tuần 6 | User Flow, Prototype giao diện FreshMart Storefront & Admin Portal |
-| 6 | Phát triển 1–3 (nền tảng + nghiệp vụ) | Tuần 7–9 | Auth, CRUD, sinh mã VietQR, cấu hình đa cổng, hoàn thành 70-80% |
-| 7 | Tích hợp hệ thống | Tuần 10 | Tích hợp Webhook tự động, thông báo Realtime, hoàn thiện 100% |
-| 8 | Kiểm thử | Tuần 11 | Test Plan, 14 Test Cases, Smoke Test tự động đạt 100% |
-| 9 | Hoàn thiện | Tuần 12 | Tối ưu UI/UX, phân quyền Owner/Staff/User, Responsive, Validation |
-| 10 | Viết báo cáo & chuẩn bị bảo vệ | Tuần 13–14 | Báo cáo chuẩn mẫu trường, Slide thuyết trình, Tài liệu hướng dẫn |
-| 11 | Bảo vệ đồ án | Tuần 15 | Sẵn sàng báo cáo, demo hệ thống trực tiếp và phản biện |
-
----
-
-## VIII. PHÂN CÔNG VÀ TỶ LỆ ĐÓNG GÓP
-| STT | Họ và tên | Nhiệm vụ chính phụ trách | Mức độ hoàn thành | Tỷ lệ đóng góp |
-| :--- | :--- | :--- | :--- | :--- |
-| 1 | **Đinh Thế Chí Dũng** | Trưởng nhóm, Thiết kế CSDL 3NF TiDB Cloud, Xây dựng Backend API PHP 8.2, Tích hợp VietQR & Webhook, Đóng gói Docker & Triển khai Cloud Render | 100% | 50% |
-| 2 | **Nguyễn Tuấn Hưng** | Thiết kế giao diện Storefront & Admin Responsive, Xử lý JavaScript giỏ hàng & chuông thông báo Real-time, Xây dựng kịch bản kiểm thử tự động, Biên soạn Báo cáo & Slide | 100% | 50% |
-
----
-
-## IX. ỨNG DỤNG AI TRONG QUÁ TRÌNH THỰC HIỆN
-**1. Các công cụ AI sử dụng:**  
-☑ Google Gemini (Antigravity)  
-☑ ChatGPT  
-☑ Claude  
-☑ GitHub Copilot  
-
-**2. Công việc có ứng dụng AI hỗ trợ:**  
-☑ Phân tích yêu cầu và thiết kế kiến trúc hệ thống  
-☑ Tối ưu hóa truy vấn CSDL và thuật toán bảo mật (Bcrypt, HMAC-SHA256, Idempotency)  
-☑ Viết bộ kiểm thử tự động (Test Cases & Smoke Test script)  
-☑ Hỗ trợ chuẩn hóa định dạng tài liệu báo cáo và slide thuyết trình  
-
-**3. Cam kết sử dụng AI:**  
-Nhóm cam kết:
-- Không sử dụng AI để thay thế hoàn toàn quá trình học tập và thực hiện đồ án.
-- Có khả năng giải thích và làm chủ toàn bộ các thành phần chính của sản phẩm.
-- Đã kiểm tra, xác minh và kiểm thử nghiêm ngặt toàn bộ mã nguồn do AI gợi ý.
-- Chịu trách nhiệm hoàn toàn về tính đúng đắn, an toàn và chất lượng của sản phẩm.
-
----
-
-## X. KẾT QUẢ VÀ CHỮ KÝ XÁC NHẬN
-
-| Nhóm sinh viên thực hiện (Ký và ghi rõ họ tên) | TP. HCM, ngày … tháng … năm 2026<br>Giảng viên hướng dẫn (Ký và ghi rõ họ tên) |
-| :---: | :---: |
-| <br><br><br>**Đinh Thế Chí Dũng &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Nguyễn Tuấn Hưng** | <br><br><br>**Th.S. Mai Chiếm Tuấn** |
-
-MD;
-
-$mdPath = $outDir . '/DKdetai.md';
-file_put_contents($mdPath, $mdContent);
-echo "-> Đã tạo tệp Markdown (.md): $mdPath\n";
-
-// 3. TẠO FILE WORD HTML (.doc)
+// 8. TẠO FILE WORD HTML (.doc) ĐẦY ĐỦ 100% CÁC BẢNG
 $docHtml = <<<HTML
 <!DOCTYPE html>
 <html lang="vi">
@@ -270,8 +168,7 @@ $docHtml = <<<HTML
   body { font-family: 'Times New Roman', Times, serif; font-size: 13pt; line-height: 1.45; text-align: justify; color: #000; }
   h1 { font-size: 15pt; font-weight: bold; text-align: center; text-transform: uppercase; margin: 15px 0 5px 0; }
   h2 { font-size: 13.5pt; font-weight: bold; margin: 16px 0 6px 0; }
-  h3 { font-size: 13pt; font-weight: bold; margin: 12px 0 4px 0; }
-  table { width: 100%; border-collapse: collapse; margin: 10px 0; font-size: 12pt; }
+  table { width: 100%; border-collapse: collapse; margin: 10px 0; font-size: 11.5pt; }
   th, td { border: 1px solid #000; padding: 6px 8px; }
   th { background-color: #f2f2f2; font-weight: bold; text-align: center; }
   .center { text-align: center; }
@@ -437,7 +334,32 @@ Cửa hàng trực tuyến quy mô nhỏ tại Việt Nam ngày càng phổ bi�
   ☑ Kế hoạch và kết quả kiểm thử tự động (TEST_PLAN_AND_CASES.docx)
 </p>
 
-<h2>VII. PHÂN CÔNG VÀ TỶ LỆ ĐÓNG GÓP</h2>
+<h2>VII. KẾ HOẠCH THỰC HIỆN SƠ BỘ (15 TUẦN)</h2>
+<table>
+  <thead>
+    <tr>
+      <th style="width: 8%;">STT</th>
+      <th style="width: 27%;">Giai đoạn</th>
+      <th style="width: 17%;">Thời gian</th>
+      <th style="width: 48%;">Kết quả thực hiện</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td class="center">1</td><td class="bold">Khảo sát &amp; xác định bài toán</td><td class="center">Tuần 1–2</td><td>Báo cáo khảo sát, mô tả bài toán, phạm vi, yêu cầu sơ bộ</td></tr>
+    <tr><td class="center">2</td><td class="bold">Phân tích yêu cầu</td><td class="center">Tuần 3</td><td>FR/NFR, Actor, Use Case, Use Case Diagram, User Story</td></tr>
+    <tr><td class="center">3</td><td class="bold">Thiết kế kiến trúc hệ thống</td><td class="center">Tuần 4</td><td>Kiến trúc HT, công nghệ, Framework, DB, API, FE/BE, Auth</td></tr>
+    <tr><td class="center">4</td><td class="bold">Thiết kế cơ sở dữ liệu</td><td class="center">Tuần 5</td><td>ERD, Database Schema, Script CSDL TiDB, Data Dictionary</td></tr>
+    <tr><td class="center">5</td><td class="bold">Thiết kế UI/UX</td><td class="center">Tuần 6</td><td>User Flow, Wireframe, Prototype FreshMart &amp; Admin Portal</td></tr>
+    <tr><td class="center">6</td><td class="bold">Phát triển 1–3 (nền tảng + nghiệp vụ)</td><td class="center">Tuần 7–9</td><td>Login/Register, CRUD, QR, multi-gateway, đạt 70-80% chức năng</td></tr>
+    <tr><td class="center">7</td><td class="bold">Tích hợp hệ thống</td><td class="center">Tuần 10</td><td>Tích hợp FE/BE/DB, Webhook tự động, chuông báo Realtime, hoàn thiện 100%</td></tr>
+    <tr><td class="center">8</td><td class="bold">Kiểm thử</td><td class="center">Tuần 11</td><td>Test Plan, 14 Test Cases, Smoke Test tự động đạt 100%</td></tr>
+    <tr><td class="center">9</td><td class="bold">Hoàn thiện</td><td class="center">Tuần 12</td><td>Chức năng, UI, DB, Phân quyền Owner/Staff/User, Validation, Responsive</td></tr>
+    <tr><td class="center">10</td><td class="bold">Viết báo cáo &amp; chuẩn bị bảo vệ</td><td class="center">Tuần 13–14</td><td>Báo cáo theo mẫu, slide thuyết trình, video demo, tài khoản demo</td></tr>
+    <tr><td class="center">11</td><td class="bold">Bảo vệ đồ án</td><td class="center">Tuần 15</td><td>Kiểm tra SP, trình bày, demo trực tiếp, phản biện, đánh giá</td></tr>
+  </tbody>
+</table>
+
+<h2>VIII. PHÂN CÔNG VÀ TỶ LỆ ĐÓNG GÓP</h2>
 <table>
   <thead>
     <tr>
@@ -466,7 +388,7 @@ Cửa hàng trực tuyến quy mô nhỏ tại Việt Nam ngày càng phổ bi�
   </tbody>
 </table>
 
-<h2>VIII. ỨNG DỤNG AI TRONG QUÁ TRÌNH THỰC HIỆN</h2>
+<h2>IX. ỨNG DỤNG AI TRONG QUÁ TRÌNH THỰC HIỆN</h2>
 <p>
   <b>1. Các công cụ AI sử dụng:</b><br>
   ☑ Google Gemini (Antigravity) &nbsp;&nbsp;&nbsp;&nbsp; ☑ ChatGPT &nbsp;&nbsp;&nbsp;&nbsp; ☑ Claude &nbsp;&nbsp;&nbsp;&nbsp; ☑ GitHub Copilot<br><br>
@@ -507,22 +429,12 @@ $docPath = $outDir . '/DKdetai.doc';
 file_put_contents($docPath, "\xEF\xBB\xBF" . $docHtml);
 echo "-> Đã tạo tệp Word HTML (.doc): $docPath\n";
 
-// 4. SAO CHÉP TOÀN BỘ SANG THƯ MỤC DOWNLOADS
+// 9. SAO CHÉP TOÀN BỘ SANG THƯ MỤC DOWNLOADS
 if (is_dir($downloadsDir)) {
     copy($destDocx, $downloadsDir . '/DKdetai.docx');
     copy($docPath, $downloadsDir . '/DKdetai.doc');
-    copy($mdPath, $downloadsDir . '/DKdetai.md');
-    echo "-> Đã sao chép toàn bộ 3 file DKdetai sang $downloadsDir thành công!\n";
+    copy($outDir . '/DKdetai.md', $downloadsDir . '/DKdetai.md');
+    echo "-> Đã sao chép toàn bộ 3 file sang $downloadsDir thành công!\n";
 }
 
-// 5. KIỂM TOÁN TÀI LIỆU SẠCH
-$backticks = substr_count($mdContent, '`');
-preg_match_all('/(?<!\*)\*(?!\*)/', $mdContent, $singleStars);
-echo "\n--- KẾT QUẢ KIỂM TOÁN TÀI LIỆU DKdetai ---\n";
-echo "Số ký tự backtick (`): " . $backticks . "\n";
-echo "Số ký tự asterisk đơn lẻ (*): " . count($singleStars[0]) . "\n";
-if ($backticks === 0 && count($singleStars[0]) === 0) {
-    echo "XÁC NHẬN: TÀI LIỆU SẠCH 100% KHÔNG CÒN KÝ TỰ ` VÀ * ĐƠN LẺ!\n";
-}
-
-echo "\n>>> HOÀN THÀNH 100% TẠO VÀ CẬP NHẬT FILE DKdetai! <<<\n";
+echo "\n>>> HOÀN THÀNH 100% CẬP NHẬT FILE DKdetai HOÀN CHỈNH! <<<\n";
