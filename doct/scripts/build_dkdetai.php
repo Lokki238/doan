@@ -146,16 +146,6 @@ if ($zip->open($destDocx) === true) {
     $xml = str_replace('&#x25A1; Sinh dữ liệu kiểm thử', '&#x2611; Sinh dữ liệu kiểm thử', $xml);
     $xml = str_replace('☐ Sinh dữ liệu kiểm thử', '☑ Sinh dữ liệu kiểm thử', $xml);
 
-    // 8. Xóa khung ngoài bảng chữ ký Mục XII (giữ nguyên toàn bộ thông tin bên trong)
-    $targetSigBorders = '<w:tblW w:w="9900" w:type="dxa"/><w:tblBorders><w:top w:val="single" w:sz="4" w:space="0" w:color="auto"/><w:left w:val="single" w:sz="4" w:space="0" w:color="auto"/><w:bottom w:val="single" w:sz="4" w:space="0" w:color="auto"/><w:right w:val="single" w:sz="4" w:space="0" w:color="auto"/><w:insideH w:val="single" w:sz="4" w:space="0" w:color="auto"/><w:insideV w:val="single" w:sz="4" w:space="0" w:color="auto"/></w:tblBorders>';
-    $replacementSigBorders = '<w:tblW w:w="9900" w:type="dxa"/><w:tblBorders><w:top w:val="none" w:sz="0" w:space="0" w:color="auto"/><w:left w:val="none" w:sz="0" w:space="0" w:color="auto"/><w:bottom w:val="none" w:sz="0" w:space="0" w:color="auto"/><w:right w:val="none" w:sz="0" w:space="0" w:color="auto"/><w:insideH w:val="none" w:sz="0" w:space="0" w:color="auto"/><w:insideV w:val="none" w:sz="0" w:space="0" w:color="auto"/></w:tblBorders>';
-    if (strpos($xml, $targetSigBorders) !== false) {
-        $xml = str_replace($targetSigBorders, $replacementSigBorders, $xml);
-        echo "-> Đã xóa khung ngoài của bảng chữ ký thành công (giữ nguyên thông tin bên trong)\n";
-    } else {
-        echo "Cảnh báo: Không tìm thấy targetSigBorders (có thể đã được xóa trước đó)\n";
-    }
-
     $newLen = strlen($xml);
     echo "Chiều dài XML sau cập nhật: $newLen ký tự (Đảm bảo đầy đủ 100% không bị mất!)\n";
 
@@ -183,7 +173,7 @@ $docHtml = <<<HTML
   th { background-color: #f2f2f2; font-weight: bold; text-align: center; }
   .center { text-align: center; }
   .bold { font-weight: bold; }
-  .no-border, .no-border tr, .no-border td, .no-border th { border: none !important; border-width: 0 !important; padding: 4px; }
+  .no-border td { border: none; padding: 4px; }
 </style>
 </head>
 <body>
@@ -226,7 +216,7 @@ Cửa hàng trực tuyến quy mô nhỏ tại Việt Nam ngày càng phổ bi�
 (5) Đảm bảo an toàn bảo mật (chuẩn hóa dữ liệu 3NF, PDO Prepared Statements chống SQL Injection, mã hóa mật khẩu Bcrypt, bảo vệ khóa bằng AES-256 và chữ ký số HMAC-SHA256).</p>
 
 <p><b>3. Đối tượng sử dụng:</b><br>
-☑ Quản trị viên (Chủ cửa hàng - OWNER) &nbsp;&nbsp;&nbsp;&nbsp; ☑ Nhân viên (STAFF) &nbsp;&nbsp;&nbsp;&nbsp; ☑ Khách hàng (USER) &nbsp;&nbsp;&nbsp;&nbsp; ☑ Doanh nghiệp / Hộ kinh doanh nhỏ
+☑ Quản trị viên (Chủ cửa hàng - OWNER) &nbsp;&nbsp;&nbsp;&nbsp; ☑ Quản lý Cửa hàng (MANAGER) &nbsp;&nbsp;&nbsp;&nbsp; ☑ Nhân viên (STAFF) &nbsp;&nbsp;&nbsp;&nbsp; ☑ Khách hàng (USER)
 </p>
 
 <p><b>4. Mục tiêu của đề tài:</b><br>
@@ -234,7 +224,7 @@ Cửa hàng trực tuyến quy mô nhỏ tại Việt Nam ngày càng phổ bi�
 - <b>Mục tiêu cụ thể:</b><br>
 1. Xây dựng website bán lẻ mẫu FreshMart cho phép khách hàng duyệt sản phẩm, quản lý giỏ hàng, áp mã giảm giá và thanh toán quét mã VietQR tự động.<br>
 2. Xây dựng hệ thống cổng thanh toán FreshMart Pay: tự động nhận diện thanh toán qua Webhook trong 1-3 giây, cơ chế Idempotency chống cộng trùng tiền.<br>
-3. Xây dựng trang quản trị Dashboard, phân quyền 3 cấp độ (Owner, Staff, User), cho phép đổi số tài khoản ngân hàng thụ hưởng nhận tiền ngay lập tức mà không cần sửa code.<br>
+3. Xây dựng trang quản trị Dashboard, phân cấp quản trị 4 vai trò (Owner, Manager, Staff, User), cho phép đổi số tài khoản ngân hàng thụ hưởng nhận tiền ngay lập tức mà không cần sửa code.<br>
 4. Đóng gói ứng dụng vào Docker Container và triển khai online 100% trên Render Cloud kết nối Cơ sở dữ liệu phân tán TiDB Cloud Serverless có mã hóa SSL/TLS.
 </p>
 
@@ -253,7 +243,7 @@ Cửa hàng trực tuyến quy mô nhỏ tại Việt Nam ngày càng phổ bi�
     <tr>
       <td class="center">1</td>
       <td class="bold">Quản lý tài khoản &amp; Phân quyền</td>
-      <td>Đăng ký, đăng nhập, bảo mật Bcrypt, phân quyền 3 cấp (OWNER, STAFF, USER) trực tiếp trên giao diện</td>
+      <td>Đăng ký, đăng nhập, bảo mật Bcrypt, phân cấp thẩm quyền 4 vai trò (OWNER, MANAGER, STAFF, USER) trực tiếp trên giao diện</td>
       <td class="center">Cao</td>
     </tr>
     <tr>
@@ -411,59 +401,21 @@ Cửa hàng trực tuyến quy mô nhỏ tại Việt Nam ngày càng phổ bi�
   Nhóm cam kết không sử dụng AI để thay thế hoàn toàn quá trình học tập; có khả năng giải thích và làm chủ toàn bộ các thành phần chính của sản phẩm; đã kiểm tra và kiểm thử nghiêm ngặt toàn bộ mã nguồn.
 </p>
 
-<h2>X. ĐÁNH GIÁ SƠ BỘ CỦA GIẢNG VIÊN</h2>
-<table>
-  <thead>
+<div style="margin-top: 40px;">
+  <table class="no-border" style="width: 100%;">
     <tr>
-      <th style="width: 8%;">STT</th>
-      <th style="width: 50%;">Tiêu chí</th>
-      <th style="width: 14%;">Đạt</th>
-      <th style="width: 14%;">Cần chỉnh sửa</th>
-      <th style="width: 14%;">Không đạt</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr><td class="center">1</td><td>Tính phù hợp với ngành học</td><td class="center">☐</td><td class="center">☐</td><td class="center">☐</td></tr>
-    <tr><td class="center">2</td><td>Tính thực tiễn</td><td class="center">☐</td><td class="center">☐</td><td class="center">☐</td></tr>
-    <tr><td class="center">3</td><td>Phạm vi phù hợp với thời gian 15 tuần</td><td class="center">☐</td><td class="center">☐</td><td class="center">☐</td></tr>
-    <tr><td class="center">4</td><td>Mức độ phù hợp với trình độ sinh viên</td><td class="center">☐</td><td class="center">☐</td><td class="center">☐</td></tr>
-    <tr><td class="center">5</td><td>Tính khả thi về công nghệ</td><td class="center">☐</td><td class="center">☐</td><td class="center">☐</td></tr>
-    <tr><td class="center">6</td><td>Có sản phẩm đầu ra rõ ràng</td><td class="center">☐</td><td class="center">☐</td><td class="center">☐</td></tr>
-    <tr><td class="center">7</td><td>Có khả năng kiểm thử/đánh giá</td><td class="center">☐</td><td class="center">☐</td><td class="center">☐</td></tr>
-  </tbody>
-</table>
-
-<h2>XI. KẾT QUẢ PHÊ DUYỆT ĐỀ TÀI</h2>
-<p>
-  ☐ ĐỒNG Ý PHÊ DUYỆT<br>
-  ☐ ĐỒNG Ý NHƯNG CẦN CHỈNH SỬA<br>
-  ☐ KHÔNG PHÊ DUYỆT<br>
-  Tên đề tài sau khi phê duyệt (nếu có thay đổi): ................................................................
-</p>
-
-<h2>XII. CAM KẾT CỦA SINH VIÊN</h2>
-<p>
-  Nhóm cam kết:<br>
-  - Thực hiện đề tài đúng phạm vi đã được phê duyệt.<br>
-  - Tuân thủ kế hoạch và tiến độ thực hiện đồ án.<br>
-  - Thực hiện đầy đủ các buổi báo cáo tiến độ.<br>
-  - Chủ động nghiên cứu và giải quyết các vấn đề phát sinh.<br>
-  - Tuân thủ quy định về bản quyền, đạo văn và sử dụng AI.<br>
-  - Chịu trách nhiệm về phần công việc được phân công.<br>
-  - Đảm bảo sản phẩm cuối cùng do nhóm thực hiện và có khả năng giải thích các thành phần chính của sản phẩm.
-</p>
-
-<div style="margin-top: 30px;">
-  <table class="no-border" style="width: 100%; border: none;">
-    <tr style="border: none;">
-      <td class="center bold" style="width: 50%; border: none;">
+      <td class="center bold" style="width: 50%;">
         Nhóm sinh viên thực hiện<br>
         <span style="font-weight: normal; font-style: italic;">(Ký và ghi rõ họ tên)</span>
+        <br><br><br><br>
+        Đinh Thế Chí Dũng &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Nguyễn Tuấn Hưng
       </td>
-      <td class="center bold" style="width: 50%; border: none;">
+      <td class="center bold" style="width: 50%;">
         TP. HCM, ngày … tháng … năm 2026<br>
         Giảng viên hướng dẫn<br>
         <span style="font-weight: normal; font-style: italic;">(Ký và ghi rõ họ tên)</span>
+        <br><br><br><br>
+        Th.S. Mai Chiếm Tuấn
       </td>
     </tr>
   </table>

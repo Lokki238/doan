@@ -2,7 +2,11 @@
 /**
  * =====================================================
  * FILE: permissions.php
- * Mục đích: Trang Cấp quyền và Quản lý vai trò tài khoản người dùng
+ * Mục đích: Trang Cấp quyền và Quản lý phân cấp vai trò tài khoản
+ * Phân cấp thẩm quyền:
+ * - Quản trị viên (OWNER): Điều chỉnh tất cả tài khoản
+ * - Quản lý Cửa hàng (MANAGER): Điều chỉnh Nhân viên (STAFF) và Khách hàng (USER)
+ * - Nhân viên (STAFF): Chỉ điều chỉnh Khách hàng (USER)
  * =====================================================
  */
 require_once __DIR__ . '/includes/auth.php';
@@ -13,6 +17,7 @@ if (!isPrivileged()) {
 }
 
 $user = getCurrentUser();
+$myRole = strtoupper($user['vai_tro'] ?? 'USER');
 ?>
 <!DOCTYPE html>
 <html lang="vi">
@@ -31,9 +36,10 @@ $user = getCurrentUser();
     .freshmart-home { background: rgba(16, 185, 129, 0.15) !important; color: #10b981 !important; font-weight: 600; border-radius: 8px; margin: 8px 12px; }
     .content { flex-grow: 1; padding: 30px; }
     .card-custom { border: none; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,.04); background: #fff; }
-    .badge-owner { background: #fef3c7; color: #92400e; font-weight: 600; padding: 5px 10px; border-radius: 6px; }
-    .badge-staff { background: #e0f2fe; color: #0369a1; font-weight: 600; padding: 5px 10px; border-radius: 6px; }
-    .badge-user { background: #dcfce7; color: #166534; font-weight: 600; padding: 5px 10px; border-radius: 6px; }
+    .badge-owner { background: #fef3c7; color: #92400e; font-weight: 600; padding: 6px 12px; border-radius: 6px; }
+    .badge-manager { background: #ede9fe; color: #6b21a8; font-weight: 600; padding: 6px 12px; border-radius: 6px; border: 1px solid #ddd6fe; }
+    .badge-staff { background: #e0f2fe; color: #0369a1; font-weight: 600; padding: 6px 12px; border-radius: 6px; }
+    .badge-user { background: #dcfce7; color: #166534; font-weight: 600; padding: 6px 12px; border-radius: 6px; }
     .user-avatar-circle {
       width: 48px;
       height: 48px;
@@ -94,12 +100,42 @@ $user = getCurrentUser();
       <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
           <h4 class="mb-1 fw-bold"><i class="fas fa-user-shield text-success me-2"></i>Cấp quyền tài khoản</h4>
-          <p class="text-muted small mb-0">Tìm kiếm người dùng và phân quyền quản trị hệ thống (OWNER, STAFF, USER)</p>
+          <p class="text-muted small mb-0">Tìm kiếm người dùng và phân cấp quản trị hệ thống (OWNER, MANAGER, STAFF, USER)</p>
         </div>
         <div>
           <button class="btn btn-outline-secondary btn-sm" onclick="loadUsers('')">
             <i class="fas fa-sync-alt me-1"></i> Làm mới danh sách
           </button>
+        </div>
+      </div>
+
+      <!-- Banner thông tin vai trò và thẩm quyền của người đang đăng nhập -->
+      <div class="card card-custom p-3 mb-4 bg-white border-start border-4 <?= (in_array($myRole, ['OWNER', 'ADMIN', 'QUAN_TRI']) ? 'border-warning' : ($myRole === 'MANAGER' ? 'border-primary' : 'border-info')) ?>">
+        <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+          <div>
+            <span class="text-muted small">Tài khoản đang đăng nhập:</span>
+            <strong><?= htmlspecialchars($user['ho_ten'] ?: $user['email']) ?></strong>
+            <span class="ms-2">
+              <?php if (in_array($myRole, ['OWNER', 'ADMIN', 'QUAN_TRI'])): ?>
+                <span class="badge-owner"><i class="fas fa-crown me-1 text-warning"></i> Quản trị viên (OWNER)</span>
+              <?php elseif ($myRole === 'MANAGER'): ?>
+                <span class="badge-manager"><i class="fas fa-user-shield me-1"></i> Quản lý Cửa hàng (MANAGER)</span>
+              <?php elseif ($myRole === 'STAFF'): ?>
+                <span class="badge-staff"><i class="fas fa-user-tie me-1 text-primary"></i> Nhân viên (STAFF)</span>
+              <?php else: ?>
+                <span class="badge-user"><i class="fas fa-user me-1 text-success"></i> Khách hàng (USER)</span>
+              <?php endif; ?>
+            </span>
+          </div>
+          <div class="small">
+            <?php if (in_array($myRole, ['OWNER', 'ADMIN', 'QUAN_TRI'])): ?>
+              <span class="text-success fw-bold"><i class="fas fa-check-double me-1"></i> Thẩm quyền:</span> Điều chỉnh tất cả mọi tài khoản trong hệ thống
+            <?php elseif ($myRole === 'MANAGER'): ?>
+              <span class="text-primary fw-bold"><i class="fas fa-shield-alt me-1"></i> Thẩm quyền:</span> Điều chỉnh tài khoản Nhân viên và Khách hàng
+            <?php elseif ($myRole === 'STAFF'): ?>
+              <span class="text-info fw-bold"><i class="fas fa-user-check me-1"></i> Thẩm quyền:</span> Chỉ điều chỉnh tài khoản Khách hàng
+            <?php endif; ?>
+          </div>
         </div>
       </div>
 
@@ -148,8 +184,8 @@ $user = getCurrentUser();
                 <th>Họ và tên</th>
                 <th>Email tài khoản</th>
                 <th>Vai trò hiện tại</th>
-                <th style="width: 250px;">Chọn quyền mới</th>
-                <th style="width: 140px;" class="text-center">Thao tác</th>
+                <th style="width: 270px;">Chọn quyền mới</th>
+                <th style="width: 170px;" class="text-center">Thao tác</th>
               </tr>
             </thead>
             <tbody id="userTableBody">
@@ -168,6 +204,8 @@ $user = getCurrentUser();
 
   <script src="../js/bootstrap.bundle.min.js"></script>
   <script>
+    let currentViewerRole = "<?= $myRole ?>";
+
     // Bắt sự kiện phím Enter trên ô tìm kiếm
     document.getElementById('searchInput').addEventListener('keydown', function(e) {
       if (e.key === 'Enter') {
@@ -200,6 +238,27 @@ $user = getCurrentUser();
       }, 5000);
     }
 
+    function getRoleBadge(role) {
+      const r = (role || 'USER').toUpperCase();
+      if (r === 'OWNER' || r === 'ADMIN' || r === 'QUAN_TRI') {
+        return '<span class="badge-owner"><i class="fas fa-crown me-1 text-warning"></i> Quản trị viên (OWNER)</span>';
+      } else if (r === 'MANAGER') {
+        return '<span class="badge-manager"><i class="fas fa-user-shield me-1"></i> Quản lý Cửa hàng (MANAGER)</span>';
+      } else if (r === 'STAFF') {
+        return '<span class="badge-staff"><i class="fas fa-user-tie me-1 text-primary"></i> Nhân viên (STAFF)</span>';
+      } else {
+        return '<span class="badge-user"><i class="fas fa-user me-1 text-success"></i> Khách hàng (USER)</span>';
+      }
+    }
+
+    function getRoleLabel(role) {
+      const r = (role || 'USER').toUpperCase();
+      if (r === 'OWNER' || r === 'ADMIN' || r === 'QUAN_TRI') return 'Quản trị viên tối cao (OWNER)';
+      if (r === 'MANAGER') return 'Quản lý Cửa hàng (MANAGER)';
+      if (r === 'STAFF') return 'Nhân viên quản lý (STAFF)';
+      return 'Khách hàng cá nhân (USER)';
+    }
+
     // Load danh sách người dùng từ API
     async function loadUsers(query = '') {
       const tbody = document.getElementById('userTableBody');
@@ -224,6 +283,10 @@ $user = getCurrentUser();
           return;
         }
 
+        if (data.data.current_user && data.data.current_user.vai_tro) {
+          currentViewerRole = data.data.current_user.vai_tro.toUpperCase();
+        }
+
         const users = data.data.users || [];
         countBadge.textContent = `${users.length} tài khoản`;
         title.innerHTML = query 
@@ -244,15 +307,77 @@ $user = getCurrentUser();
         }
 
         tbody.innerHTML = users.map(u => {
-          const role = (u.VaiTro || 'USER').toUpperCase();
-          let roleBadge = '<span class="badge-user"><i class="fas fa-user me-1"></i> Khách hàng (USER)</span>';
-          if (role === 'OWNER') {
-            roleBadge = '<span class="badge-owner"><i class="fas fa-crown me-1 text-warning"></i> Quản trị viên (OWNER)</span>';
-          } else if (role === 'STAFF') {
-            roleBadge = '<span class="badge-staff"><i class="fas fa-user-tie me-1 text-primary"></i> Nhân viên (STAFF)</span>';
+          const targetRole = (u.VaiTro || 'USER').toUpperCase();
+          const roleBadge = getRoleBadge(targetRole);
+          const initials = (u.HoTen ? u.HoTen.charAt(0) : (u.Email ? u.Email.charAt(0) : 'U')).toUpperCase();
+
+          let canEdit = false;
+          let disabledReason = '';
+          let availableOptions = [];
+
+          // QUY TẮC PHÂN CẤP ĐIỀU CHỈNH:
+          // 1. Quản trị viên điều chỉnh tất cả
+          if (currentViewerRole === 'OWNER' || currentViewerRole === 'ADMIN' || currentViewerRole === 'QUAN_TRI') {
+            canEdit = true;
+            availableOptions = [
+              { value: 'USER', label: 'Khách hàng cá nhân (USER)' },
+              { value: 'STAFF', label: 'Nhân viên quản lý (STAFF)' },
+              { value: 'MANAGER', label: 'Quản lý Cửa hàng (MANAGER)' },
+              { value: 'OWNER', label: 'Quản trị viên tối cao (OWNER)' }
+            ];
+          }
+          // 2. Quản lý Cửa hàng điều chỉnh Nhân viên và Khách hàng
+          else if (currentViewerRole === 'MANAGER') {
+            if (targetRole === 'STAFF' || targetRole === 'USER') {
+              canEdit = true;
+              availableOptions = [
+                { value: 'USER', label: 'Khách hàng cá nhân (USER)' },
+                { value: 'STAFF', label: 'Nhân viên quản lý (STAFF)' }
+              ];
+            } else {
+              canEdit = false;
+              disabledReason = 'Chỉ Quản trị viên điều chỉnh';
+            }
+          }
+          // 3. Nhân viên chỉ điều chỉnh được Khách hàng
+          else if (currentViewerRole === 'STAFF') {
+            if (targetRole === 'USER') {
+              canEdit = true;
+              availableOptions = [
+                { value: 'USER', label: 'Khách hàng cá nhân (USER)' }
+              ];
+            } else {
+              canEdit = false;
+              disabledReason = 'Chỉ Quản lý / Admin điều chỉnh';
+            }
           }
 
-          const initials = (u.HoTen ? u.HoTen.charAt(0) : (u.Email ? u.Email.charAt(0) : 'U')).toUpperCase();
+          let selectRoleHtml = '';
+          let actionBtnHtml = '';
+
+          if (canEdit) {
+            selectRoleHtml = `
+              <select class="form-select form-select-sm" id="select-role-${u.ID}">
+                ${availableOptions.map(opt => `<option value="${opt.value}" ${targetRole === opt.value ? 'selected' : ''}>${opt.label}</option>`).join('')}
+              </select>
+            `;
+            actionBtnHtml = `
+              <button class="btn btn-success btn-sm px-3" id="btn-save-${u.ID}" onclick="updateRole('${u.ID}', '${escapeHtml(u.Email)}')">
+                <i class="fas fa-save me-1"></i> Lưu quyền
+              </button>
+            `;
+          } else {
+            selectRoleHtml = `
+              <select class="form-select form-select-sm bg-light text-muted" id="select-role-${u.ID}" disabled title="${disabledReason}">
+                <option selected>${getRoleLabel(targetRole)}</option>
+              </select>
+            `;
+            actionBtnHtml = `
+              <span class="badge bg-light text-muted border py-2 px-2 d-inline-flex align-items-center" title="${disabledReason}">
+                <i class="fas fa-lock me-1 text-secondary"></i> ${disabledReason}
+              </span>
+            `;
+          }
 
           return `
             <tr id="row-${u.ID}">
@@ -271,16 +396,10 @@ $user = getCurrentUser();
                 ${roleBadge}
               </td>
               <td>
-                <select class="form-select form-select-sm" id="select-role-${u.ID}">
-                  <option value="USER" ${role === 'USER' ? 'selected' : ''}>Khách hàng cá nhân (USER)</option>
-                  <option value="STAFF" ${role === 'STAFF' ? 'selected' : ''}>Nhân viên quản lý (STAFF)</option>
-                  <option value="OWNER" ${role === 'OWNER' ? 'selected' : ''}>Quản trị viên tối cao (OWNER)</option>
-                </select>
+                ${selectRoleHtml}
               </td>
               <td class="text-center">
-                <button class="btn btn-success btn-sm px-3" id="btn-save-${u.ID}" onclick="updateRole('${u.ID}', '${escapeHtml(u.Email)}')">
-                  <i class="fas fa-save me-1"></i> Lưu quyền
-                </button>
+                ${actionBtnHtml}
               </td>
             </tr>
           `;
@@ -295,8 +414,9 @@ $user = getCurrentUser();
     async function updateRole(userId, email) {
       const select = document.getElementById(`select-role-${userId}`);
       const btn = document.getElementById(`btn-save-${userId}`);
-      const newRole = select.value;
+      if (!select || !btn) return;
 
+      const newRole = select.value;
       btn.disabled = true;
       btn.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i> Đang lưu...';
 
@@ -314,21 +434,16 @@ $user = getCurrentUser();
         if (data.success) {
           showAlert('success', data.message);
 
-          // Cập nhật badge trực quan ngay trên dòng
-          const badgeContainer = document.getElementById(`badge-container-${userId}`);
-          let updatedBadge = '<span class="badge-user"><i class="fas fa-user me-1"></i> Khách hàng (USER)</span>';
-          if (newRole === 'OWNER') {
-            updatedBadge = '<span class="badge-owner"><i class="fas fa-crown me-1 text-warning"></i> Quản trị viên (OWNER)</span>';
-          } else if (newRole === 'STAFF') {
-            updatedBadge = '<span class="badge-staff"><i class="fas fa-user-tie me-1 text-primary"></i> Nhân viên (STAFF)</span>';
-          }
-          badgeContainer.innerHTML = updatedBadge;
+          // Cập nhật lại giao diện và quyền mới ngay lập tức
+          const q = document.getElementById('searchInput').value.trim();
+          loadUsers(q);
         } else {
           showAlert('danger', data.message || 'Cập nhật quyền thất bại.');
+          btn.disabled = false;
+          btn.innerHTML = '<i class="fas fa-save me-1"></i> Lưu quyền';
         }
       } catch (err) {
         showAlert('danger', 'Lỗi kết nối máy chủ khi cập nhật quyền.');
-      } finally {
         btn.disabled = false;
         btn.innerHTML = '<i class="fas fa-save me-1"></i> Lưu quyền';
       }

@@ -2,14 +2,18 @@
 /**
  * =====================================================
  * FILE: api/permissions.php
- * Mục đích: API Tìm kiếm tài khoản và Cập nhật phân quyền (VaiTro)
+ * Mục đích: API Tìm kiếm tài khoản và Cập nhật phân cấp quyền (VaiTro)
+ * Phân cấp thẩm quyền:
+ * - Quản trị viên (OWNER): Điều chỉnh tất cả tài khoản
+ * - Quản lý Cửa hàng (MANAGER): Điều chỉnh Nhân viên (STAFF) và Khách hàng (USER)
+ * - Nhân viên (STAFF): Chỉ điều chỉnh Khách hàng (USER)
  * =====================================================
  * 
  * - GET: Tìm kiếm người dùng theo email, họ tên, hoặc lấy danh sách
  *   Query: ?q=tu_khoa
  * 
  * - POST: Cập nhật quyền của tài khoản
- *   Body: { "user_id": "...", "vai_tro": "OWNER" | "STAFF" | "USER" }
+ *   Body: { "user_id": "...", "vai_tro": "OWNER" | "MANAGER" | "STAFF" | "USER" }
  */
 
 header('Content-Type: application/json; charset=utf-8');
@@ -23,15 +27,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 
 require_once __DIR__ . '/../includes/auth.php';
 
-// Bắt buộc phải đăng nhập và có quyền quản trị
+// Bắt buộc phải đăng nhập và có quyền từ Nhân viên trở lên
 if (!isLoggedIn()) {
     jsonResponse(false, 'Vui lòng đăng nhập để thực hiện chức năng này', [], 401);
 }
 
 $currentUser = getCurrentUser();
-$role = strtoupper($currentUser['vai_tro'] ?? '');
-if (!in_array($role, ['OWNER', 'ADMIN', 'STAFF', 'QUAN_TRI'])) {
-    jsonResponse(false, 'Bạn không có quyền thực hiện chức năng này. Chỉ Quản trị viên mới được phép.', [], 403);
+$currentRole = strtoupper($currentUser['vai_tro'] ?? 'USER');
+if (!in_array($currentRole, ['OWNER', 'ADMIN', 'QUAN_TRI', 'MANAGER', 'STAFF'])) {
+    jsonResponse(false, 'Bạn không có quyền thực hiện chức năng này. Chỉ Quản trị viên, Quản lý hoặc Nhân viên mới được phép.', [], 403);
 }
 
 try {
@@ -63,7 +67,7 @@ try {
             $searchTerm = '%' . $q . '%';
             $stmt->execute([$searchTerm, $searchTerm, $q]);
         } else {
-            // Nếu không có từ khóa: lấy danh sách 30 người dùng mới nhất
+            // Nếu không có từ khóa: lấy danh sách 50 người dùng mới nhất
             $stmt = $pdo->prepare("
                 SELECT 
                     u.ID, 
@@ -76,7 +80,7 @@ try {
                 FROM nguoidung u
                 LEFT JOIN cuahang c ON c.NguoiDung_id = u.ID
                 ORDER BY u.ThoiGianTao DESC
-                LIMIT 30
+                LIMIT 50
             ");
             $stmt->execute();
         }
@@ -84,9 +88,15 @@ try {
         $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         jsonResponse(true, 'Lấy danh sách người dùng thành công', [
-            'total' => count($users),
-            'query' => $q,
-            'users' => $users
+            'total'        => count($users),
+            'query'        => $q,
+            'users'        => $users,
+            'current_user' => [
+                'id'       => $currentUser['id'],
+                'email'    => $currentUser['email'],
+                'ho_ten'   => $currentUser['ho_ten'],
+                'vai_tro'  => $currentRole
+            ]
         ]);
     }
 
@@ -106,18 +116,46 @@ try {
             jsonResponse(false, 'Thiếu thông tin mã tài khoản (user_id)', [], 400);
         }
 
-        $allowedRoles = ['OWNER', 'STAFF', 'USER'];
+        $allowedRoles = ['OWNER', 'MANAGER', 'STAFF', 'USER'];
         if (!in_array($newRole, $allowedRoles)) {
-            jsonResponse(false, 'Vai trò không hợp lệ. Chỉ chấp nhận: OWNER, STAFF, USER', [], 400);
+            jsonResponse(false, 'Vai trò không hợp lệ. Chỉ chấp nhận: OWNER, MANAGER, STAFF, USER', [], 400);
         }
 
-        // Kiểm tra xem user có tồn tại không
+        // Kiểm tra xem tài khoản mục tiêu có tồn tại không
         $checkStmt = $pdo->prepare("SELECT ID, Email, HoTen, VaiTro FROM nguoidung WHERE ID = ? LIMIT 1");
         $checkStmt->execute([$targetUserId]);
         $targetUser = $checkStmt->fetch(PDO::FETCH_ASSOC);
 
         if (!$targetUser) {
             jsonResponse(false, 'Không tìm thấy tài khoản người dùng trong hệ thống', [], 404);
+        }
+
+        $targetRole = strtoupper($targetUser['VaiTro'] ?? 'USER');
+
+        // KIỂM TRA PHÂN CẤP THẨM QUYỀN ĐIỀU CHỈNH
+        // 1. Quản trị viên (OWNER, ADMIN, QUAN_TRI): Điều chỉnh tất cả mọi người
+        if (in_array($currentRole, ['OWNER', 'ADMIN', 'QUAN_TRI'])) {
+            // Cho phép điều chỉnh bất kỳ ai và bất kỳ vai trò nào
+        }
+        // 2. Quản lý Cửa hàng (MANAGER): Điều chỉnh Nhân viên và Khách hàng
+        elseif ($currentRole === 'MANAGER') {
+            if (!in_array($targetRole, ['STAFF', 'USER'])) {
+                jsonResponse(false, 'Quản lý Cửa hàng chỉ được phép điều chỉnh tài khoản Nhân viên và Khách hàng. Không có quyền sửa tài khoản Quản lý hoặc Quản trị viên.', [], 403);
+            }
+            if (!in_array($newRole, ['STAFF', 'USER'])) {
+                jsonResponse(false, 'Quản lý Cửa hàng chỉ có quyền cấp vai trò Nhân viên (STAFF) hoặc Khách hàng (USER). Không thể nâng lên Quản lý hoặc Quản trị viên.', [], 403);
+            }
+        }
+        // 3. Nhân viên (STAFF): Chỉ điều chỉnh được Khách hàng
+        elseif ($currentRole === 'STAFF') {
+            if ($targetRole !== 'USER') {
+                jsonResponse(false, 'Nhân viên chỉ có quyền điều chỉnh tài khoản Khách hàng (USER). Không có quyền điều chỉnh Nhân viên, Quản lý hoặc Quản trị viên.', [], 403);
+            }
+            if ($newRole !== 'USER') {
+                jsonResponse(false, 'Nhân viên chỉ có quyền điều chỉnh tài khoản Khách hàng (USER), không có thẩm quyền nâng lên vai trò Nhân viên, Quản lý hoặc Quản trị viên.', [], 403);
+            }
+        } else {
+            jsonResponse(false, 'Bạn không có quyền phân quyền tài khoản.', [], 403);
         }
 
         // Cập nhật database
@@ -134,9 +172,10 @@ try {
         }
 
         $roleNames = [
-            'OWNER' => 'Chủ cửa hàng / Quản trị viên tối cao (OWNER)',
-            'STAFF' => 'Nhân viên quản lý (STAFF)',
-            'USER'  => 'Khách hàng cá nhân (USER)'
+            'OWNER'   => 'Quản trị viên tối cao (OWNER)',
+            'MANAGER' => 'Quản lý Cửa hàng (MANAGER)',
+            'STAFF'   => 'Nhân viên quản lý (STAFF)',
+            'USER'    => 'Khách hàng cá nhân (USER)'
         ];
 
         jsonResponse(true, 'Đã cập nhật quyền cho tài khoản ' . $targetUser['Email'] . ' thành ' . ($roleNames[$newRole] ?? $newRole) . ' thành công!', [

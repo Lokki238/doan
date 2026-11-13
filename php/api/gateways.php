@@ -26,7 +26,8 @@ if (!isLoggedIn()) {
 }
 
 $user = getCurrentUser();
-$isOwner = ($user['vai_tro'] === 'OWNER');
+$role = strtoupper($user['vai_tro'] ?? '');
+$isOwner = in_array($role, ['OWNER', 'MANAGER', 'ADMIN', 'QUAN_TRI']);
 $pdo = getDB();
 
 $shopId = $user['shop_id'] ?? null;

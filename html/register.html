@@ -465,7 +465,7 @@
           alertBox.classList.remove('d-none');
           setTimeout(() => {
             const role = (data.data && data.data.vai_tro) || '';
-            const isPrivileged = ['OWNER', 'STAFF', 'ADMIN', 'QUAN_TRI'].includes(role.toUpperCase());
+            const isPrivileged = ['OWNER', 'MANAGER', 'STAFF', 'ADMIN', 'QUAN_TRI'].includes(role.toUpperCase());
             window.location.href = isPrivileged ? '../php/dashboard.php' : 'account.html';
           }, 1000);
         } else {

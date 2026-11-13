@@ -193,15 +193,16 @@ Khi cửa hàng muốn đổi sang tài khoản ngân hàng khác để nhận t
 
 ---
 
-## 3.5. Quản lý & Phân quyền người dùng trực tiếp (permissions.php)
+## 3.5. Quản lý & Phân cấp quyền người dùng trực tiếp (permissions.php)
 Truy cập menu **Cấp quyền** (**/php/permissions.php**):
-1. Giao diện hiển thị danh sách toàn bộ người dùng đã đăng ký tài khoản trong hệ thống.
-2. **Tìm kiếm:** Nhập tên hoặc email người dùng vào ô tìm kiếm nhanh.
-3. **Thay đổi vai trò (Role):** Tại cột "Vai trò", chọn cấp quyền mong muốn:
-- **OWNER**: Chủ cửa hàng (toàn quyền hệ thống).
-- **STAFF**: Nhân viên quản lý đơn hàng và đối soát.
-- **USER**: Khách hàng mua sắm tiêu chuẩn.
-4. Nhấn nút **Lưu quyền** tương ứng với người dùng đó. Hệ thống sẽ phát lệnh SQL cập nhật ngay lập tức vào CSDL.
+1. Giao diện hiển thị danh sách toàn bộ người dùng đã đăng ký trong hệ thống kèm thông tin vai trò hiện tại và banner thẩm quyền của tài khoản đang đăng nhập.
+2. **Tìm kiếm:** Nhập tên hoặc email người dùng vào ô tìm kiếm nhanh (hỗ trợ phím Enter).
+3. **Ma trận phân cấp thẩm quyền điều chỉnh tài khoản:**
+   - **Quản trị viên (OWNER):** Điều chỉnh tất cả mọi tài khoản trong hệ thống (OWNER, MANAGER, STAFF, USER).
+   - **Quản lý Cửa hàng (MANAGER):** Điều chỉnh tài khoản Nhân viên (STAFF) và Khách hàng (USER). Không được phép chỉnh Quản lý hoặc Quản trị viên.
+   - **Nhân viên (STAFF):** Chỉ điều chỉnh được tài khoản Khách hàng (USER). Không được phép chỉnh Nhân viên, Quản lý hoặc Quản trị viên.
+   - **Khách hàng (USER):** Tài khoản mua sắm cá nhân, không có quyền truy cập trang quản trị hay phân quyền.
+4. Nhấn nút **Lưu quyền** tương ứng với người dùng được phép. Hệ thống kiểm tra bảo mật 2 lớp (Frontend và Backend API) trước khi phát lệnh SQL cập nhật ngay lập tức vào CSDL.
 
 ---
 

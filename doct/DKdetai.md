@@ -45,16 +45,16 @@ Cửa hàng trực tuyến quy mô nhỏ tại Việt Nam ngày càng phổ bi�
 
 **3. Đối tượng sử dụng:**  
 ☑ Quản trị viên (Chủ cửa hàng - OWNER)  
+☑ Quản lý Cửa hàng (MANAGER)  
 ☑ Nhân viên (STAFF)  
 ☑ Khách hàng (USER)  
-☑ Doanh nghiệp / Hộ kinh doanh cá thể nhỏ  
 
 **4. Mục tiêu của đề tài:**  
 - **Mục tiêu tổng quát:** Thiết kế và triển khai hoàn chỉnh hệ thống thanh toán thông minh tích hợp VietQR và Webhook tự động cho cửa hàng trực tuyến, triển khai chạy thực tế trên máy chủ đám mây.  
 - **Mục tiêu cụ thể:**  
   1. Xây dựng website bán lẻ mẫu FreshMart cho phép khách hàng duyệt sản phẩm, quản lý giỏ hàng, áp mã giảm giá và thanh toán quét mã VietQR tự động.  
   2. Xây dựng hệ thống cổng thanh toán FreshMart Pay: tự động nhận diện thanh toán qua Webhook trong 1-3 giây, cơ chế Idempotency chống cộng trùng tiền.  
-  3. Xây dựng trang quản trị Dashboard, phân quyền 3 cấp độ (Owner, Staff, User), cho phép đổi số tài khoản ngân hàng thụ hưởng nhận tiền ngay lập tức mà không cần sửa code.  
+  3. Xây dựng trang quản trị Dashboard, phân cấp quản trị 4 vai trò (Owner, Manager, Staff, User), cho phép đổi số tài khoản ngân hàng thụ hưởng nhận tiền ngay lập tức mà không cần sửa code.  
   4. Đóng gói ứng dụng vào Docker Container và triển khai online 100% trên Render Cloud kết nối Cơ sở dữ liệu phân tán TiDB Cloud Serverless có mã hóa SSL/TLS.  
 
 ---
@@ -63,7 +63,7 @@ Cửa hàng trực tuyến quy mô nhỏ tại Việt Nam ngày càng phổ bi�
 **1. Phạm vi chức năng:**  
 | STT | Chức năng | Mô tả chi tiết | Mức độ ưu tiên |
 | :--- | :--- | :--- | :--- |
-| 1 | Quản lý tài khoản & Phân quyền | Đăng ký, đăng nhập, bảo mật Bcrypt, phân quyền 3 cấp (OWNER, STAFF, USER) trực tiếp trên giao diện | Cao |
+| 1 | Quản lý tài khoản & Phân quyền | Đăng ký, đăng nhập, bảo mật Bcrypt, phân cấp thẩm quyền 4 vai trò (OWNER, MANAGER, STAFF, USER) trực tiếp trên giao diện | Cao |
 | 2 | Cấu hình cổng thanh toán VietQR | Đổi số tài khoản ngân hàng thụ hưởng, mã ngân hàng (BIN), tên chủ shop thời gian thực lưu vào CSDL | Cao |
 | 3 | Tạo mã QR VietQR động NAPAS 247 | Sinh mã QR chứa sẵn số tài khoản, số tiền và mã đơn hàng duy nhất; đồng hồ đếm ngược 15 phút | Cao |
 | 4 | Xử lý Webhook & Đối soát tự động | Nhận tín hiệu chuyển khoản ngân hàng, xác thực chữ ký HMAC-SHA256, tự động nhảy trạng thái thành công trong 1-3s | Cao |
@@ -162,50 +162,8 @@ Nhóm cam kết:
 
 ---
 
-## X. ĐÁNH GIÁ SƠ BỘ CỦA GIẢNG VIÊN
+## X. KẾT QUẢ VÀ CHỮ KÝ XÁC NHẬN
 
-| STT | Tiêu chí | Đạt | Cần chỉnh sửa | Không đạt |
-| :---: | :--- | :---: | :---: | :---: |
-| 1 | Tính phù hợp với ngành học | ☐ | ☐ | ☐ |
-| 2 | Tính thực tiễn | ☐ | ☐ | ☐ |
-| 3 | Phạm vi phù hợp với thời gian 15 tuần | ☐ | ☐ | ☐ |
-| 4 | Mức độ phù hợp với trình độ sinh viên | ☐ | ☐ | ☐ |
-| 5 | Tính khả thi về công nghệ | ☐ | ☐ | ☐ |
-| 6 | Có sản phẩm đầu ra rõ ràng | ☐ | ☐ | ☐ |
-| 7 | Có khả năng kiểm thử/đánh giá | ☐ | ☐ | ☐ |
-
----
-
-## XI. KẾT QUẢ PHÊ DUYỆT ĐỀ TÀI
-☐ ĐỒNG Ý PHÊ DUYỆT  
-☐ ĐỒNG Ý NHƯNG CẦN CHỈNH SỬA  
-☐ KHÔNG PHÊ DUYỆT  
-Tên đề tài sau khi phê duyệt (nếu có thay đổi): ................................................................
-
----
-
-## XII. CAM KẾT CỦA SINH VIÊN
-Nhóm cam kết:
-- Thực hiện đề tài đúng phạm vi đã được phê duyệt.
-- Tuân thủ kế hoạch và tiến độ thực hiện đồ án.
-- Thực hiện đầy đủ các buổi báo cáo tiến độ.
-- Chủ động nghiên cứu và giải quyết các vấn đề phát sinh.
-- Tuân thủ quy định về bản quyền, đạo văn và sử dụng AI.
-- Chịu trách nhiệm về phần công việc được phân công.
-- Đảm bảo sản phẩm cuối cùng do nhóm thực hiện và có khả năng giải thích các thành phần chính của sản phẩm.
-
-<br>
-
-<table style="width: 100%; border: none; border-collapse: collapse;">
-  <tr style="border: none;">
-    <td style="width: 50%; text-align: center; border: none; vertical-align: top;">
-      <b>Nhóm sinh viên thực hiện</b><br>
-      <i>(Ký và ghi rõ họ tên)</i>
-    </td>
-    <td style="width: 50%; text-align: center; border: none; vertical-align: top;">
-      <i>TP. HCM, ngày … tháng … năm 2026</i><br>
-      <b>Giảng viên hướng dẫn</b><br>
-      <i>(Ký và ghi rõ họ tên)</i>
-    </td>
-  </tr>
-</table>
+| Nhóm sinh viên thực hiện (Ký và ghi rõ họ tên) | TP. HCM, ngày … tháng … năm 2026<br>Giảng viên hướng dẫn (Ký và ghi rõ họ tên) |
+| :---: | :---: |
+| <br><br><br>**Đinh Thế Chí Dũng &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Nguyễn Tuấn Hưng** | <br><br><br>**Th.S. Mai Chiếm Tuấn** |

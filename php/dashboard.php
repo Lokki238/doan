@@ -63,7 +63,16 @@ $user = getCurrentUser();
     <div class="d-flex justify-content-between align-items-center mb-4">
       <div>
         <h4 class="mb-1">Xin chào, <?= htmlspecialchars($user['ho_ten']) ?>!</h4>
-        <p class="text-muted mb-0">Vai trò: <strong><?= htmlspecialchars($user['vai_tro']) ?></strong></p>
+        <?php
+          $roleNamesMap = [
+              'OWNER'   => 'Quản trị viên (OWNER)',
+              'MANAGER' => 'Quản lý Cửa hàng (MANAGER)',
+              'STAFF'   => 'Nhân viên (STAFF)',
+              'USER'    => 'Khách hàng (USER)'
+          ];
+          $displayRole = $roleNamesMap[strtoupper($user['vai_tro'] ?? '')] ?? $user['vai_tro'];
+        ?>
+        <p class="text-muted mb-0">Vai trò: <strong><?= htmlspecialchars($displayRole) ?></strong></p>
       </div>
       <button class="btn btn-outline-primary btn-sm" onclick="loadData()">
         <i class="fas fa-sync-alt me-1"></i> Làm mới

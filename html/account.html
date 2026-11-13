@@ -489,7 +489,15 @@
         document.getElementById('userHeaderName').textContent = user.ho_ten || user.email;
         document.getElementById('userHeaderEmail').innerHTML = `<i class="fas fa-envelope me-1"></i> ${user.email}`;
         
-        const roleLabel = (user.vai_tro === 'OWNER' || user.vai_tro === 'STAFF') ? 'Chủ cửa hàng (Quản trị)' : 'Khách hàng';
+        let roleLabel = 'Khách hàng';
+        const roleUpper = (user.vai_tro || '').toUpperCase();
+        if (roleUpper === 'OWNER') {
+          roleLabel = 'Quản trị viên tối cao (OWNER)';
+        } else if (roleUpper === 'MANAGER') {
+          roleLabel = 'Quản lý Cửa hàng (MANAGER)';
+        } else if (roleUpper === 'STAFF') {
+          roleLabel = 'Nhân viên (STAFF)';
+        }
         document.getElementById('userHeaderRole').textContent = roleLabel;
         
         if (user.created_at) {

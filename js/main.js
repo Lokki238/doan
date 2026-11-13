@@ -201,7 +201,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         const user = res.data;
-        const privilegedRoles = ['OWNER', 'STAFF', 'ADMIN', 'QUAN_TRI'];
+        const privilegedRoles = ['OWNER', 'MANAGER', 'STAFF', 'ADMIN', 'QUAN_TRI'];
         const isPrivileged = privilegedRoles.includes((user.vai_tro || '').toUpperCase());
         const targetUrl = isPrivileged ? dashboardUrl : accountUrl;
         const displayName = user.ho_ten || (user.email ? user.email.split('@')[0] : 'Tài khoản');

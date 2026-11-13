@@ -76,6 +76,10 @@ runTest("Phân quyền người dùng (isPrivileged logic)", function() {
     $_SESSION['vai_tro'] = 'OWNER';
     if (!isPrivileged()) return "OWNER phải được cấp quyền";
 
+    // Giả lập session vai trò MANAGER (Quản lý cửa hàng)
+    $_SESSION['vai_tro'] = 'MANAGER';
+    if (!isPrivileged()) return "MANAGER phải được cấp quyền";
+
     // Giả lập session vai trò STAFF
     $_SESSION['vai_tro'] = 'STAFF';
     if (!isPrivileged()) return "STAFF phải được cấp quyền";
@@ -119,6 +123,29 @@ runTest("Kết nối Cơ sở dữ liệu và truy vấn bảng", function() {
     } catch (Exception $e) {
         return "SKIP: DB không chạy ở localhost (Đang chạy online trên Render + TiDB Cloud)";
     }
+});
+
+// 7. Kiểm tra ma trận phân cấp thẩm quyền (OWNER, MANAGER, STAFF, USER)
+runTest("Phân cấp thẩm quyền điều chỉnh tài khoản (Owner/Manager/Staff)", function() {
+    require_once __DIR__ . '/test_permission_hierarchy.php';
+    // Test Quản trị viên điều chỉnh tất cả
+    if (!checkPermissionRule('OWNER', 'MANAGER', 'STAFF')['allowed']) return "OWNER phải chỉnh được MANAGER";
+    if (!checkPermissionRule('OWNER', 'STAFF', 'USER')['allowed']) return "OWNER phải chỉnh được STAFF";
+    
+    // Test Quản lý Cửa hàng điều chỉnh Nhân viên và Khách hàng
+    if (!checkPermissionRule('MANAGER', 'STAFF', 'USER')['allowed']) return "MANAGER phải chỉnh được STAFF";
+    if (!checkPermissionRule('MANAGER', 'USER', 'STAFF')['allowed']) return "MANAGER phải chỉnh được USER";
+    if (checkPermissionRule('MANAGER', 'MANAGER', 'STAFF')['allowed']) return "MANAGER không được chỉnh MANAGER";
+    if (checkPermissionRule('MANAGER', 'OWNER', 'USER')['allowed']) return "MANAGER không được chỉnh OWNER";
+    if (checkPermissionRule('MANAGER', 'USER', 'MANAGER')['allowed']) return "MANAGER không được nâng cấp lên MANAGER";
+
+    // Test Nhân viên chỉ điều chỉnh được Khách hàng
+    if (!checkPermissionRule('STAFF', 'USER', 'USER')['allowed']) return "STAFF phải điều chỉnh được USER";
+    if (checkPermissionRule('STAFF', 'STAFF', 'USER')['allowed']) return "STAFF không được chỉnh STAFF";
+    if (checkPermissionRule('STAFF', 'USER', 'STAFF')['allowed']) return "STAFF không được nâng cấp lên STAFF";
+    if (checkPermissionRule('STAFF', 'USER', 'MANAGER')['allowed']) return "STAFF không được nâng cấp lên MANAGER";
+
+    return true;
 });
 
 echo "\n=========================================================\n";

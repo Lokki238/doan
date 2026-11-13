@@ -483,21 +483,22 @@ docker run -d -p 8080:10000 --name freshmart-container freshmart-pay
   <b>Cơ chế cập nhật thời gian thực:</b> Ngay khi bấm Lưu, thông tin mới được ghi đè trực tiếp vào bảng <b>CongThanhToan</b> trong cơ sở dữ liệu TiDB Cloud. Mọi khách hàng đặt đơn ngay sau thời điểm đó sẽ quét mã VietQR trỏ thẳng về số tài khoản mới này mà <b>không cần phải sửa đổi bất kỳ dòng mã nguồn PHP hay khởi động lại máy chủ</b>!
 </div>
 
-<h2 class="sec-title">3.5. Quản lý & Phân quyền người dùng trực tiếp (permissions.php)</h2>
+<h2 class="sec-title">3.5. Quản lý & Phân cấp quyền người dùng trực tiếp (permissions.php)</h2>
 <p class="text-indent">
   Truy cập menu <b>Cấp quyền</b> (<b>/php/permissions.php</b>):
 </p>
 <ul>
-  <li>Giao diện hiển thị danh sách toàn bộ người dùng đã đăng ký tài khoản trong hệ thống.</li>
-  <li><b>Tìm kiếm:</b> Nhập tên hoặc email người dùng vào ô tìm kiếm nhanh.</li>
-  <li><b>Thay đổi vai trò (Role):</b> Tại cột "Vai trò", chọn cấp quyền mong muốn:
+  <li>Giao diện hiển thị danh sách toàn bộ người dùng đã đăng ký trong hệ thống kèm thông tin vai trò hiện tại và banner thẩm quyền của tài khoản đang đăng nhập.</li>
+  <li><b>Tìm kiếm:</b> Nhập tên hoặc email người dùng vào ô tìm kiếm nhanh (hỗ trợ phím Enter).</li>
+  <li><b>Ma trận phân cấp thẩm quyền điều chỉnh tài khoản:</b>
     <ul>
-      <li><b>OWNER</b>: Chủ cửa hàng (toàn quyền hệ thống).</li>
-      <li><b>STAFF</b>: Nhân viên quản lý đơn hàng và đối soát.</li>
-      <li><b>USER</b>: Khách hàng mua sắm tiêu chuẩn.</li>
+      <li><b>Quản trị viên (OWNER):</b> Điều chỉnh tất cả mọi tài khoản trong hệ thống. Có thể phân quyền cho bất kỳ ai thành OWNER, MANAGER, STAFF hoặc USER.</li>
+      <li><b>Quản lý Cửa hàng (MANAGER):</b> Điều chỉnh tài khoản Nhân viên (STAFF) và Khách hàng (USER). Không thể can thiệp vào tài khoản Quản lý hoặc Quản trị viên, và không thể tự nâng cấp lên vai trò cao hơn.</li>
+      <li><b>Nhân viên (STAFF):</b> Chỉ điều chỉnh được tài khoản Khách hàng (USER). Các tài khoản Nhân viên, Quản lý và Quản trị viên sẽ tự động bị khóa ô chọn và hiển thị trạng thái "Không có quyền".</li>
+      <li><b>Khách hàng (USER):</b> Tài khoản mua sắm cá nhân, không có quyền truy cập trang quản trị hay phân quyền (bị chuyển hướng về trang tài khoản cá nhân).</li>
     </ul>
   </li>
-  <li>Nhấn nút <b>Lưu quyền</b> tương ứng với người dùng đó. Hệ thống sẽ phát lệnh SQL cập nhật ngay lập tức vào CSDL.</li>
+  <li>Nhấn nút <b>Lưu quyền</b> tương ứng với người dùng được phép. Hệ thống kiểm tra bảo mật 2 lớp (Frontend và Backend API) trước khi phát lệnh SQL cập nhật ngay lập tức vào CSDL.</li>
 </ul>
 
 <h2 class="sec-title">3.6. Công cụ mô phỏng Webhook kiểm thử (simulate_webhook.php)</h2>
@@ -775,15 +776,16 @@ Khi cửa hàng muốn đổi sang tài khoản ngân hàng khác để nhận t
 
 ---
 
-## 3.5. Quản lý & Phân quyền người dùng trực tiếp (permissions.php)
+## 3.5. Quản lý & Phân cấp quyền người dùng trực tiếp (permissions.php)
 Truy cập menu **Cấp quyền** (**/php/permissions.php**):
-1. Giao diện hiển thị danh sách toàn bộ người dùng đã đăng ký tài khoản trong hệ thống.
-2. **Tìm kiếm:** Nhập tên hoặc email người dùng vào ô tìm kiếm nhanh.
-3. **Thay đổi vai trò (Role):** Tại cột "Vai trò", chọn cấp quyền mong muốn:
-- **OWNER**: Chủ cửa hàng (toàn quyền hệ thống).
-- **STAFF**: Nhân viên quản lý đơn hàng và đối soát.
-- **USER**: Khách hàng mua sắm tiêu chuẩn.
-4. Nhấn nút **Lưu quyền** tương ứng với người dùng đó. Hệ thống sẽ phát lệnh SQL cập nhật ngay lập tức vào CSDL.
+1. Giao diện hiển thị danh sách toàn bộ người dùng đã đăng ký trong hệ thống kèm thông tin vai trò hiện tại và banner thẩm quyền của tài khoản đang đăng nhập.
+2. **Tìm kiếm:** Nhập tên hoặc email người dùng vào ô tìm kiếm nhanh (hỗ trợ phím Enter).
+3. **Ma trận phân cấp thẩm quyền điều chỉnh tài khoản:**
+   - **Quản trị viên (OWNER):** Điều chỉnh tất cả mọi tài khoản trong hệ thống (OWNER, MANAGER, STAFF, USER).
+   - **Quản lý Cửa hàng (MANAGER):** Điều chỉnh tài khoản Nhân viên (STAFF) và Khách hàng (USER). Không được phép chỉnh Quản lý hoặc Quản trị viên.
+   - **Nhân viên (STAFF):** Chỉ điều chỉnh được tài khoản Khách hàng (USER). Không được phép chỉnh Nhân viên, Quản lý hoặc Quản trị viên.
+   - **Khách hàng (USER):** Tài khoản mua sắm cá nhân, không có quyền truy cập trang quản trị hay phân quyền.
+4. Nhấn nút **Lưu quyền** tương ứng với người dùng được phép. Hệ thống kiểm tra bảo mật 2 lớp (Frontend và Backend API) trước khi phát lệnh SQL cập nhật ngay lập tức vào CSDL.
 
 ---
 

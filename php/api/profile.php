@@ -83,7 +83,7 @@ try {
         }
 
         $role = strtoupper($userInfo['VaiTro'] ?? 'USER');
-        $isPrivileged = in_array($role, ['OWNER', 'STAFF', 'ADMIN', 'QUAN_TRI']);
+        $isPrivileged = in_array($role, ['OWNER', 'MANAGER', 'STAFF', 'ADMIN', 'QUAN_TRI']);
 
         jsonResponse(true, 'Thành công', [
             'user' => [

@@ -43,7 +43,7 @@ try {
 }
 
 $role = strtoupper($user['vai_tro'] ?? 'USER');
-$isPrivileged = in_array($role, ['OWNER', 'STAFF', 'ADMIN', 'QUAN_TRI']);
+$isPrivileged = in_array($role, ['OWNER', 'MANAGER', 'STAFF', 'ADMIN', 'QUAN_TRI']);
 
 echo json_encode([
     'success' => true,

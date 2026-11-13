@@ -69,7 +69,7 @@ function getCurrentUser(): ?array {
 
 /**
  * Kiểm tra xem người dùng hiện tại có vai trò quản trị không
- * (OWNER, STAFF, ADMIN, QUAN_TRI)
+ * (OWNER, MANAGER, STAFF, ADMIN, QUAN_TRI)
  *
  * @return bool
  */
@@ -78,7 +78,7 @@ function isPrivileged(): bool {
         return false;
     }
     $role = strtoupper($_SESSION['vai_tro'] ?? '');
-    return in_array($role, ['OWNER', 'STAFF', 'ADMIN', 'QUAN_TRI']);
+    return in_array($role, ['OWNER', 'MANAGER', 'STAFF', 'ADMIN', 'QUAN_TRI']);
 }
 
 /**
@@ -125,9 +125,10 @@ function requireLogin(string $redirect = '/html/login.html'): void {
 function requireOwner(string $redirect = '/html/login.html'): void {
     requireLogin($redirect);
     
-    if (($_SESSION['vai_tro'] ?? '') !== 'OWNER') {
+    $role = strtoupper($_SESSION['vai_tro'] ?? '');
+    if (!in_array($role, ['OWNER', 'MANAGER', 'ADMIN', 'QUAN_TRI'])) {
         http_response_code(403); // Forbidden
-        die('Bạn không có quyền truy cập chức năng này. Chỉ Chủ cửa hàng (Owner) mới được phép.');
+        die('Bạn không có quyền truy cập chức năng này. Chỉ Quản lý Cửa hàng hoặc Quản trị viên mới được phép.');
     }
 }
 
