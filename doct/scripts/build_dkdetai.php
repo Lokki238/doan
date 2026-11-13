@@ -146,6 +146,16 @@ if ($zip->open($destDocx) === true) {
     $xml = str_replace('&#x25A1; Sinh dữ liệu kiểm thử', '&#x2611; Sinh dữ liệu kiểm thử', $xml);
     $xml = str_replace('☐ Sinh dữ liệu kiểm thử', '☑ Sinh dữ liệu kiểm thử', $xml);
 
+    // 8. Xóa khung ngoài bảng chữ ký Mục XII (giữ nguyên toàn bộ thông tin bên trong)
+    $targetSigBorders = '<w:tblW w:w="9900" w:type="dxa"/><w:tblBorders><w:top w:val="single" w:sz="4" w:space="0" w:color="auto"/><w:left w:val="single" w:sz="4" w:space="0" w:color="auto"/><w:bottom w:val="single" w:sz="4" w:space="0" w:color="auto"/><w:right w:val="single" w:sz="4" w:space="0" w:color="auto"/><w:insideH w:val="single" w:sz="4" w:space="0" w:color="auto"/><w:insideV w:val="single" w:sz="4" w:space="0" w:color="auto"/></w:tblBorders>';
+    $replacementSigBorders = '<w:tblW w:w="9900" w:type="dxa"/><w:tblBorders><w:top w:val="none" w:sz="0" w:space="0" w:color="auto"/><w:left w:val="none" w:sz="0" w:space="0" w:color="auto"/><w:bottom w:val="none" w:sz="0" w:space="0" w:color="auto"/><w:right w:val="none" w:sz="0" w:space="0" w:color="auto"/><w:insideH w:val="none" w:sz="0" w:space="0" w:color="auto"/><w:insideV w:val="none" w:sz="0" w:space="0" w:color="auto"/></w:tblBorders>';
+    if (strpos($xml, $targetSigBorders) !== false) {
+        $xml = str_replace($targetSigBorders, $replacementSigBorders, $xml);
+        echo "-> Đã xóa khung ngoài của bảng chữ ký thành công (giữ nguyên thông tin bên trong)\n";
+    } else {
+        echo "Cảnh báo: Không tìm thấy targetSigBorders (có thể đã được xóa trước đó)\n";
+    }
+
     $newLen = strlen($xml);
     echo "Chiều dài XML sau cập nhật: $newLen ký tự (Đảm bảo đầy đủ 100% không bị mất!)\n";
 
@@ -173,7 +183,7 @@ $docHtml = <<<HTML
   th { background-color: #f2f2f2; font-weight: bold; text-align: center; }
   .center { text-align: center; }
   .bold { font-weight: bold; }
-  .no-border td { border: none; padding: 4px; }
+  .no-border, .no-border tr, .no-border td, .no-border th { border: none !important; border-width: 0 !important; padding: 4px; }
 </style>
 </head>
 <body>
@@ -401,21 +411,59 @@ Cửa hàng trực tuyến quy mô nhỏ tại Việt Nam ngày càng phổ bi�
   Nhóm cam kết không sử dụng AI để thay thế hoàn toàn quá trình học tập; có khả năng giải thích và làm chủ toàn bộ các thành phần chính của sản phẩm; đã kiểm tra và kiểm thử nghiêm ngặt toàn bộ mã nguồn.
 </p>
 
-<div style="margin-top: 40px;">
-  <table class="no-border" style="width: 100%;">
+<h2>X. ĐÁNH GIÁ SƠ BỘ CỦA GIẢNG VIÊN</h2>
+<table>
+  <thead>
     <tr>
-      <td class="center bold" style="width: 50%;">
+      <th style="width: 8%;">STT</th>
+      <th style="width: 50%;">Tiêu chí</th>
+      <th style="width: 14%;">Đạt</th>
+      <th style="width: 14%;">Cần chỉnh sửa</th>
+      <th style="width: 14%;">Không đạt</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td class="center">1</td><td>Tính phù hợp với ngành học</td><td class="center">☐</td><td class="center">☐</td><td class="center">☐</td></tr>
+    <tr><td class="center">2</td><td>Tính thực tiễn</td><td class="center">☐</td><td class="center">☐</td><td class="center">☐</td></tr>
+    <tr><td class="center">3</td><td>Phạm vi phù hợp với thời gian 15 tuần</td><td class="center">☐</td><td class="center">☐</td><td class="center">☐</td></tr>
+    <tr><td class="center">4</td><td>Mức độ phù hợp với trình độ sinh viên</td><td class="center">☐</td><td class="center">☐</td><td class="center">☐</td></tr>
+    <tr><td class="center">5</td><td>Tính khả thi về công nghệ</td><td class="center">☐</td><td class="center">☐</td><td class="center">☐</td></tr>
+    <tr><td class="center">6</td><td>Có sản phẩm đầu ra rõ ràng</td><td class="center">☐</td><td class="center">☐</td><td class="center">☐</td></tr>
+    <tr><td class="center">7</td><td>Có khả năng kiểm thử/đánh giá</td><td class="center">☐</td><td class="center">☐</td><td class="center">☐</td></tr>
+  </tbody>
+</table>
+
+<h2>XI. KẾT QUẢ PHÊ DUYỆT ĐỀ TÀI</h2>
+<p>
+  ☐ ĐỒNG Ý PHÊ DUYỆT<br>
+  ☐ ĐỒNG Ý NHƯNG CẦN CHỈNH SỬA<br>
+  ☐ KHÔNG PHÊ DUYỆT<br>
+  Tên đề tài sau khi phê duyệt (nếu có thay đổi): ................................................................
+</p>
+
+<h2>XII. CAM KẾT CỦA SINH VIÊN</h2>
+<p>
+  Nhóm cam kết:<br>
+  - Thực hiện đề tài đúng phạm vi đã được phê duyệt.<br>
+  - Tuân thủ kế hoạch và tiến độ thực hiện đồ án.<br>
+  - Thực hiện đầy đủ các buổi báo cáo tiến độ.<br>
+  - Chủ động nghiên cứu và giải quyết các vấn đề phát sinh.<br>
+  - Tuân thủ quy định về bản quyền, đạo văn và sử dụng AI.<br>
+  - Chịu trách nhiệm về phần công việc được phân công.<br>
+  - Đảm bảo sản phẩm cuối cùng do nhóm thực hiện và có khả năng giải thích các thành phần chính của sản phẩm.
+</p>
+
+<div style="margin-top: 30px;">
+  <table class="no-border" style="width: 100%; border: none;">
+    <tr style="border: none;">
+      <td class="center bold" style="width: 50%; border: none;">
         Nhóm sinh viên thực hiện<br>
         <span style="font-weight: normal; font-style: italic;">(Ký và ghi rõ họ tên)</span>
-        <br><br><br><br>
-        Đinh Thế Chí Dũng &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Nguyễn Tuấn Hưng
       </td>
-      <td class="center bold" style="width: 50%;">
+      <td class="center bold" style="width: 50%; border: none;">
         TP. HCM, ngày … tháng … năm 2026<br>
         Giảng viên hướng dẫn<br>
         <span style="font-weight: normal; font-style: italic;">(Ký và ghi rõ họ tên)</span>
-        <br><br><br><br>
-        Th.S. Mai Chiếm Tuấn
       </td>
     </tr>
   </table>

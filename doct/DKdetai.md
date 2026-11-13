@@ -162,8 +162,50 @@ Nhóm cam kết:
 
 ---
 
-## X. KẾT QUẢ VÀ CHỮ KÝ XÁC NHẬN
+## X. ĐÁNH GIÁ SƠ BỘ CỦA GIẢNG VIÊN
 
-| Nhóm sinh viên thực hiện (Ký và ghi rõ họ tên) | TP. HCM, ngày … tháng … năm 2026<br>Giảng viên hướng dẫn (Ký và ghi rõ họ tên) |
-| :---: | :---: |
-| <br><br><br>**Đinh Thế Chí Dũng &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Nguyễn Tuấn Hưng** | <br><br><br>**Th.S. Mai Chiếm Tuấn** |
+| STT | Tiêu chí | Đạt | Cần chỉnh sửa | Không đạt |
+| :---: | :--- | :---: | :---: | :---: |
+| 1 | Tính phù hợp với ngành học | ☐ | ☐ | ☐ |
+| 2 | Tính thực tiễn | ☐ | ☐ | ☐ |
+| 3 | Phạm vi phù hợp với thời gian 15 tuần | ☐ | ☐ | ☐ |
+| 4 | Mức độ phù hợp với trình độ sinh viên | ☐ | ☐ | ☐ |
+| 5 | Tính khả thi về công nghệ | ☐ | ☐ | ☐ |
+| 6 | Có sản phẩm đầu ra rõ ràng | ☐ | ☐ | ☐ |
+| 7 | Có khả năng kiểm thử/đánh giá | ☐ | ☐ | ☐ |
+
+---
+
+## XI. KẾT QUẢ PHÊ DUYỆT ĐỀ TÀI
+☐ ĐỒNG Ý PHÊ DUYỆT  
+☐ ĐỒNG Ý NHƯNG CẦN CHỈNH SỬA  
+☐ KHÔNG PHÊ DUYỆT  
+Tên đề tài sau khi phê duyệt (nếu có thay đổi): ................................................................
+
+---
+
+## XII. CAM KẾT CỦA SINH VIÊN
+Nhóm cam kết:
+- Thực hiện đề tài đúng phạm vi đã được phê duyệt.
+- Tuân thủ kế hoạch và tiến độ thực hiện đồ án.
+- Thực hiện đầy đủ các buổi báo cáo tiến độ.
+- Chủ động nghiên cứu và giải quyết các vấn đề phát sinh.
+- Tuân thủ quy định về bản quyền, đạo văn và sử dụng AI.
+- Chịu trách nhiệm về phần công việc được phân công.
+- Đảm bảo sản phẩm cuối cùng do nhóm thực hiện và có khả năng giải thích các thành phần chính của sản phẩm.
+
+<br>
+
+<table style="width: 100%; border: none; border-collapse: collapse;">
+  <tr style="border: none;">
+    <td style="width: 50%; text-align: center; border: none; vertical-align: top;">
+      <b>Nhóm sinh viên thực hiện</b><br>
+      <i>(Ký và ghi rõ họ tên)</i>
+    </td>
+    <td style="width: 50%; text-align: center; border: none; vertical-align: top;">
+      <i>TP. HCM, ngày … tháng … năm 2026</i><br>
+      <b>Giảng viên hướng dẫn</b><br>
+      <i>(Ký và ghi rõ họ tên)</i>
+    </td>
+  </tr>
+</table>
