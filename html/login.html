@@ -179,6 +179,10 @@
     }
     .social-btns .fa-facebook-f { color: #1877f2; }
     .social-btns .fa-google { color: #ea4335; }
+    .demo-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+    }
     .auth-footer {
       text-align: center;
       margin-top: 24px;
@@ -314,7 +318,7 @@
                 <div id="loginAlert" class="alert d-none mb-3" role="alert"></div>
                 <div class="form-group">
                   <label class="form-label">Email</label>
-                  <input type="email" name="email" class="form-control" placeholder="email@example.com" required>
+                  <input type="email" name="email" id="loginEmail" class="form-control" placeholder="email@example.com" required>
                 </div>
                 <div class="form-group">
                   <label class="form-label">Mật khẩu</label>
@@ -335,6 +339,66 @@
                   Đăng nhập <i class="fas fa-arrow-right ms-2"></i>
                 </button>
               </form>
+
+              <!-- KHỐI TÀI KHOẢN DEMO ĐĂNG NHẬP NHANH -->
+              <div class="demo-box mt-4 p-3 rounded-3" style="background: #f8fafc; border: 1px dashed #cbd5e1;">
+                <div class="d-flex align-items-center justify-content-between mb-2">
+                  <span class="fw-bold small text-dark"><i class="fas fa-magic text-warning me-1"></i> Tài khoản Demo nhanh:</span>
+                  <small class="text-muted" style="font-size: 0.78rem;">Nhấn để tự động điền</small>
+                </div>
+                <div class="d-flex flex-column gap-2">
+                  <!-- 1. Quản lý Cửa hàng (MANAGER) -->
+                  <button type="button" class="btn btn-outline-light text-start p-2 demo-btn d-flex align-items-center justify-content-between" 
+                          onclick="fillDemoAccount('soupwo7@gmail.com', '123456', 'Quản lý Cửa hàng (MANAGER)')"
+                          title="Bấm để tự động điền tài khoản Quản lý Cửa hàng"
+                          style="border: 1px solid #ddd6fe; background: #faf5ff; border-radius: 8px; transition: all .2s; width: 100%;">
+                    <div class="d-flex align-items-center gap-2">
+                      <div style="width: 34px; height: 34px; border-radius: 50%; background: #ede9fe; color: #6b21a8; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 0.9rem; flex-shrink: 0;">
+                        <i class="fas fa-user-shield"></i>
+                      </div>
+                      <div class="text-truncate">
+                        <div class="fw-bold text-dark" style="font-size: 0.88rem;">Nguyễn Tuấn Hưng</div>
+                        <small class="text-muted" style="font-size: 0.75rem;">soupwo7@gmail.com</small>
+                      </div>
+                    </div>
+                    <span class="badge flex-shrink-0" style="background: #ede9fe; color: #6b21a8; font-size: 0.72rem; padding: 5px 8px; border: 1px solid #ddd6fe;">Quản lý (MANAGER)</span>
+                  </button>
+
+                  <!-- 2. Nhân viên (STAFF) -->
+                  <button type="button" class="btn btn-outline-light text-start p-2 demo-btn d-flex align-items-center justify-content-between" 
+                          onclick="fillDemoAccount('thechidungdinh@gmail.com', '123456', 'Nhân viên (STAFF)')"
+                          title="Bấm để tự động điền tài khoản Nhân viên"
+                          style="border: 1px solid #bae6fd; background: #f0f9ff; border-radius: 8px; transition: all .2s; width: 100%;">
+                    <div class="d-flex align-items-center gap-2">
+                      <div style="width: 34px; height: 34px; border-radius: 50%; background: #e0f2fe; color: #0369a1; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 0.9rem; flex-shrink: 0;">
+                        <i class="fas fa-user-tie"></i>
+                      </div>
+                      <div class="text-truncate">
+                        <div class="fw-bold text-dark" style="font-size: 0.88rem;">Đinh Thế Chí Tab</div>
+                        <small class="text-muted" style="font-size: 0.75rem;">thechidungdinh@gmail.com</small>
+                      </div>
+                    </div>
+                    <span class="badge flex-shrink-0" style="background: #e0f2fe; color: #0369a1; font-size: 0.72rem; padding: 5px 8px;">Nhân viên (STAFF)</span>
+                  </button>
+
+                  <!-- 3. Khách hàng (USER) -->
+                  <button type="button" class="btn btn-outline-light text-start p-2 demo-btn d-flex align-items-center justify-content-between" 
+                          onclick="fillDemoAccount('dinhthetu954@gmail.com', '123456', 'Khách hàng (USER)')"
+                          title="Bấm để tự động điền tài khoản Khách hàng"
+                          style="border: 1px solid #bbf7d0; background: #f0fdf4; border-radius: 8px; transition: all .2s; width: 100%;">
+                    <div class="d-flex align-items-center gap-2">
+                      <div style="width: 34px; height: 34px; border-radius: 50%; background: #dcfce7; color: #166534; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 0.9rem; flex-shrink: 0;">
+                        <i class="fas fa-user"></i>
+                      </div>
+                      <div class="text-truncate">
+                        <div class="fw-bold text-dark" style="font-size: 0.88rem;">Nguyễn CuCo</div>
+                        <small class="text-muted" style="font-size: 0.75rem;">dinhthetu954@gmail.com</small>
+                      </div>
+                    </div>
+                    <span class="badge flex-shrink-0" style="background: #dcfce7; color: #166534; font-size: 0.72rem; padding: 5px 8px;">Khách hàng (USER)</span>
+                  </button>
+                </div>
+              </div>
               <div class="auth-divider">hoặc đăng nhập với</div>
               <div class="social-btns">
                 <a href="#"><i class="fab fa-facebook-f"></i> Facebook</a>
@@ -474,6 +538,49 @@
         btn.innerHTML = 'Đăng nhập <i class="fas fa-arrow-right ms-2"></i>';
       }
     });
+
+    // Hàm tự động điền tài khoản Demo
+    function fillDemoAccount(email, password, roleLabel) {
+      const emailInput = document.getElementById('loginEmail') || document.querySelector('input[name="email"]');
+      const passInput = document.getElementById('loginPassword');
+      const alertBox = document.getElementById('loginAlert');
+
+      if (emailInput && passInput) {
+        emailInput.value = email;
+        passInput.value = password;
+
+        if (alertBox) {
+          alertBox.className = 'alert alert-info py-2 px-3 mb-3 d-flex align-items-center justify-content-between shadow-sm';
+          alertBox.innerHTML = `
+            <div class="small">
+              <i class="fas fa-check-circle me-1 text-primary"></i> 
+              Đã tự động điền: <strong>${escapeHtml(roleLabel)}</strong> (${escapeHtml(email)}). Nhấn <strong>Đăng nhập</strong> ngay!
+            </div>
+            <button type="button" class="btn-close btn-sm" onclick="this.parentElement.classList.add('d-none')"></button>
+          `;
+          alertBox.classList.remove('d-none');
+        }
+
+        emailInput.style.borderColor = '#10b981';
+        emailInput.style.boxShadow = '0 0 0 3px rgba(16, 185, 129, 0.2)';
+        passInput.style.borderColor = '#10b981';
+        passInput.style.boxShadow = '0 0 0 3px rgba(16, 185, 129, 0.2)';
+
+        setTimeout(() => {
+          emailInput.style.borderColor = '';
+          emailInput.style.boxShadow = '';
+          passInput.style.borderColor = '';
+          passInput.style.boxShadow = '';
+        }, 1500);
+      }
+    }
+
+    function escapeHtml(text) {
+      if (!text) return '';
+      return String(text).replace(/[&<>"']/g, function (m) {
+        return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m];
+      });
+    }
   </script>
 </body>
 </html>
