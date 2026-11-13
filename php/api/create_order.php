@@ -45,18 +45,15 @@ if (empty($maDonHang)) {
 try {
     $pdo = getDB();
 
-    // 2. Tìm hoặc liên kết Cửa hàng
-    $shopId = $user['shop_id'] ?? null;
-    if (empty($shopId)) {
-        $stmtShop = $pdo->query("SELECT ID FROM cuahang ORDER BY ThoiGianTao ASC LIMIT 1");
-        $shopRow = $stmtShop->fetch();
-        if ($shopRow) {
-            $shopId = $shopRow['ID'];
-        } else {
-            $shopId = generateUUID();
-            $pdo->prepare("INSERT INTO cuahang (ID, NguoiDung_id, TenCH, MoTaCH) VALUES (?, ?, 'FreshMart Official', 'Cửa hàng thực phẩm tươi sạch')")
-                ->execute([$shopId, $user['user_id']]);
-        }
+    // 2. Liên kết đơn hàng với Cửa hàng chính của hệ thống (FreshMart)
+    $stmtShop = $pdo->query("SELECT ID FROM cuahang ORDER BY ThoiGianTao ASC LIMIT 1");
+    $shopRow = $stmtShop->fetch();
+    if ($shopRow) {
+        $shopId = $shopRow['ID'];
+    } else {
+        $shopId = $user['shop_id'] ?? generateUUID();
+        $pdo->prepare("INSERT INTO cuahang (ID, NguoiDung_id, TenCH, MoTaCH) VALUES (?, ?, 'FreshMart Official', 'Cửa hàng thực phẩm tươi sạch')")
+            ->execute([$shopId, $user['user_id'] ?? null]);
     }
 
     // 3. Cấu hình cổng VietQR

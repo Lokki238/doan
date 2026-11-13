@@ -42,10 +42,12 @@ if (!isLoggedIn()) {
 }
 
 $user = getCurrentUser();
-$shopId = $user['shop_id'];
+$pdo = getDB();
+$shopId = $user['shop_id'] ?? null;
 
 if (empty($shopId)) {
-    jsonResponse(false, 'Tài khoản chưa gắn với cửa hàng nào', [], 400);
+    $stmtShop = $pdo->query("SELECT ID FROM cuahang ORDER BY ThoiGianTao ASC LIMIT 1");
+    $shopId = $stmtShop->fetchColumn();
 }
 
 // -----------------------------------------------------

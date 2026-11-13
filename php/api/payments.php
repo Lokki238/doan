@@ -24,9 +24,10 @@ if (!isLoggedIn()) {
 }
 
 $user = getCurrentUser();
-$shopId = $user['shop_id'];
+$isPrivilegedUser = isPrivileged();
+$shopId = $user['shop_id'] ?? null;
 
-if (empty($shopId)) {
+if (!$isPrivilegedUser && empty($shopId)) {
     jsonResponse(false, 'Tài khoản chưa gắn cửa hàng', [], 400);
 }
 
@@ -42,8 +43,14 @@ try {
     $pdo = getDB();
 
     // Xây dựng câu SQL động an toàn
-    $where = ["CuaHang_id = ?"];
-    $params = [$shopId];
+    // Đối với tài khoản cấp cao (STAFF, OWNER, ADMIN): Cho phép xem TOÀN BỘ đơn hàng trong hệ thống
+    $where = [];
+    $params = [];
+
+    if (!$isPrivilegedUser && $shopId) {
+        $where[] = "CuaHang_id = ?";
+        $params[] = $shopId;
+    }
 
     if ($trangThai !== 'all' && in_array($trangThai, ['PENDING', 'SUCCESS', 'FAILED', 'EXPIRED', 'CANCELLED'])) {
         $where[] = "TrangThai = ?";
@@ -69,7 +76,7 @@ try {
         $params[] = "%$search%";
     }
 
-    $whereSql = implode(' AND ', $where);
+    $whereSql = !empty($where) ? implode(' AND ', $where) : '1=1';
 
     // Đếm tổng
     $stmt = $pdo->prepare("SELECT COUNT(*) FROM giaodich WHERE $whereSql");
@@ -92,34 +99,62 @@ try {
     $stmt->execute($params);
     $list = $stmt->fetchAll();
 
-    // Thống kê nhanh (cho dashboard)
-    $stmt = $pdo->prepare("
-        SELECT 
-            COUNT(*) AS tong_giao_dich,
-            SUM(CASE WHEN TrangThai = 'SUCCESS' THEN 1 ELSE 0 END) AS thanh_cong,
-            SUM(CASE WHEN TrangThai = 'PENDING' THEN 1 ELSE 0 END) AS dang_cho,
-            SUM(CASE WHEN TrangThai = 'FAILED' THEN 1 ELSE 0 END) AS that_bai,
-            COALESCE(SUM(CASE WHEN TrangThai = 'SUCCESS' THEN SoTien ELSE 0 END), 0) AS tong_doanh_thu,
-            COALESCE(SUM(CASE WHEN TrangThai = 'SUCCESS' AND DATE(ThoiGianThanhToan) = CURDATE() THEN SoTien ELSE 0 END), 0) AS doanh_thu_hom_nay
-        FROM giaodich
-        WHERE CuaHang_id = ?
-    ");
-    $stmt->execute([$shopId]);
+    // Thống kê nhanh (cho dashboard): tài khoản cấp cao thống kê toàn bộ hệ thống
+    if ($isPrivilegedUser) {
+        $stmt = $pdo->prepare("
+            SELECT 
+                COUNT(*) AS tong_giao_dich,
+                SUM(CASE WHEN TrangThai = 'SUCCESS' THEN 1 ELSE 0 END) AS thanh_cong,
+                SUM(CASE WHEN TrangThai = 'PENDING' THEN 1 ELSE 0 END) AS dang_cho,
+                SUM(CASE WHEN TrangThai = 'FAILED' THEN 1 ELSE 0 END) AS that_bai,
+                COALESCE(SUM(CASE WHEN TrangThai = 'SUCCESS' THEN SoTien ELSE 0 END), 0) AS tong_doanh_thu,
+                COALESCE(SUM(CASE WHEN TrangThai = 'SUCCESS' AND DATE(ThoiGianThanhToan) = CURDATE() THEN SoTien ELSE 0 END), 0) AS doanh_thu_hom_nay
+            FROM giaodich
+        ");
+        $stmt->execute();
+    } else {
+        $stmt = $pdo->prepare("
+            SELECT 
+                COUNT(*) AS tong_giao_dich,
+                SUM(CASE WHEN TrangThai = 'SUCCESS' THEN 1 ELSE 0 END) AS thanh_cong,
+                SUM(CASE WHEN TrangThai = 'PENDING' THEN 1 ELSE 0 END) AS dang_cho,
+                SUM(CASE WHEN TrangThai = 'FAILED' THEN 1 ELSE 0 END) AS that_bai,
+                COALESCE(SUM(CASE WHEN TrangThai = 'SUCCESS' THEN SoTien ELSE 0 END), 0) AS tong_doanh_thu,
+                COALESCE(SUM(CASE WHEN TrangThai = 'SUCCESS' AND DATE(ThoiGianThanhToan) = CURDATE() THEN SoTien ELSE 0 END), 0) AS doanh_thu_hom_nay
+            FROM giaodich
+            WHERE CuaHang_id = ?
+        ");
+        $stmt->execute([$shopId]);
+    }
     $stats = $stmt->fetch();
 
     // Doanh thu 7 ngày gần nhất (cho biểu đồ)
-    $stmt = $pdo->prepare("
-        SELECT 
-            DATE(ThoiGianThanhToan) AS ngay,
-            SUM(SoTien) AS doanh_thu
-        FROM giaodich
-        WHERE CuaHang_id = ?
-          AND TrangThai = 'SUCCESS'
-          AND ThoiGianThanhToan >= DATE_SUB(CURDATE(), INTERVAL 6 DAY)
-        GROUP BY DATE(ThoiGianThanhToan)
-        ORDER BY ngay ASC
-    ");
-    $stmt->execute([$shopId]);
+    if ($isPrivilegedUser) {
+        $stmt = $pdo->prepare("
+            SELECT 
+                DATE(ThoiGianThanhToan) AS ngay,
+                SUM(SoTien) AS doanh_thu
+            FROM giaodich
+            WHERE TrangThai = 'SUCCESS'
+              AND ThoiGianThanhToan >= DATE_SUB(CURDATE(), INTERVAL 6 DAY)
+            GROUP BY DATE(ThoiGianThanhToan)
+            ORDER BY ngay ASC
+        ");
+        $stmt->execute();
+    } else {
+        $stmt = $pdo->prepare("
+            SELECT 
+                DATE(ThoiGianThanhToan) AS ngay,
+                SUM(SoTien) AS doanh_thu
+            FROM giaodich
+            WHERE CuaHang_id = ?
+              AND TrangThai = 'SUCCESS'
+              AND ThoiGianThanhToan >= DATE_SUB(CURDATE(), INTERVAL 6 DAY)
+            GROUP BY DATE(ThoiGianThanhToan)
+            ORDER BY ngay ASC
+        ");
+        $stmt->execute([$shopId]);
+    }
     $chartRaw = $stmt->fetchAll();
 
     // Điền đủ 7 ngày (kể cả ngày không có doanh thu)

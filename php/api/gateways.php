@@ -26,14 +26,14 @@ if (!isLoggedIn()) {
 }
 
 $user = getCurrentUser();
-$shopId = $user['shop_id'];
 $isOwner = ($user['vai_tro'] === 'OWNER');
-
-if (empty($shopId)) {
-    jsonResponse(false, 'Tài khoản chưa gắn với cửa hàng', [], 400);
-}
-
 $pdo = getDB();
+
+$shopId = $user['shop_id'] ?? null;
+if (empty($shopId)) {
+    $stmtShop = $pdo->query("SELECT ID FROM cuahang ORDER BY ThoiGianTao ASC LIMIT 1");
+    $shopId = $stmtShop->fetchColumn();
+}
 
 // =====================================================
 // GET: Lấy danh sách cổng thanh toán của shop

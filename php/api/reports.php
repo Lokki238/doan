@@ -14,9 +14,10 @@ if (!isLoggedIn()) {
 }
 
 $user = getCurrentUser();
-$shopId = $user['shop_id'];
+$isPrivilegedUser = isPrivileged();
+$shopId = $user['shop_id'] ?? null;
 
-if (empty($shopId)) {
+if (!$isPrivilegedUser && empty($shopId)) {
     jsonResponse(false, 'Tài khoản chưa gắn cửa hàng', [], 400);
 }
 
@@ -62,19 +63,35 @@ try {
     $pdo = getDB();
 
     // 1. Chỉ số tổng quan (KPIs) trong khoảng thời gian
-    $stmt = $pdo->prepare("
-        SELECT 
-            COUNT(*) AS tong_don,
-            COALESCE(SUM(CASE WHEN TrangThai = 'SUCCESS' THEN 1 ELSE 0 END), 0) AS don_thanh_cong,
-            COALESCE(SUM(CASE WHEN TrangThai = 'PENDING' THEN 1 ELSE 0 END), 0) AS don_dang_cho,
-            COALESCE(SUM(CASE WHEN TrangThai = 'FAILED' THEN 1 ELSE 0 END), 0) AS don_that_bai,
-            COALESCE(SUM(CASE WHEN TrangThai = 'SUCCESS' THEN SoTien ELSE 0 END), 0) AS tong_doanh_thu
-        FROM giaodich
-        WHERE CuaHang_id = ? 
-          AND DATE(ThoiGianTao) >= ? 
-          AND DATE(ThoiGianTao) <= ?
-    ");
-    $stmt->execute([$shopId, $startDate, $endDate]);
+    // Tài khoản cấp cao (STAFF, OWNER, ADMIN) xem dữ liệu toàn hệ thống
+    if ($isPrivilegedUser) {
+        $stmt = $pdo->prepare("
+            SELECT 
+                COUNT(*) AS tong_don,
+                COALESCE(SUM(CASE WHEN TrangThai = 'SUCCESS' THEN 1 ELSE 0 END), 0) AS don_thanh_cong,
+                COALESCE(SUM(CASE WHEN TrangThai = 'PENDING' THEN 1 ELSE 0 END), 0) AS don_dang_cho,
+                COALESCE(SUM(CASE WHEN TrangThai = 'FAILED' THEN 1 ELSE 0 END), 0) AS don_that_bai,
+                COALESCE(SUM(CASE WHEN TrangThai = 'SUCCESS' THEN SoTien ELSE 0 END), 0) AS tong_doanh_thu
+            FROM giaodich
+            WHERE DATE(ThoiGianTao) >= ? 
+              AND DATE(ThoiGianTao) <= ?
+        ");
+        $stmt->execute([$startDate, $endDate]);
+    } else {
+        $stmt = $pdo->prepare("
+            SELECT 
+                COUNT(*) AS tong_don,
+                COALESCE(SUM(CASE WHEN TrangThai = 'SUCCESS' THEN 1 ELSE 0 END), 0) AS don_thanh_cong,
+                COALESCE(SUM(CASE WHEN TrangThai = 'PENDING' THEN 1 ELSE 0 END), 0) AS don_dang_cho,
+                COALESCE(SUM(CASE WHEN TrangThai = 'FAILED' THEN 1 ELSE 0 END), 0) AS don_that_bai,
+                COALESCE(SUM(CASE WHEN TrangThai = 'SUCCESS' THEN SoTien ELSE 0 END), 0) AS tong_doanh_thu
+            FROM giaodich
+            WHERE CuaHang_id = ? 
+              AND DATE(ThoiGianTao) >= ? 
+              AND DATE(ThoiGianTao) <= ?
+        ");
+        $stmt->execute([$shopId, $startDate, $endDate]);
+    }
     $kpi = $stmt->fetch();
 
     $tongDon = (int)$kpi['tong_don'];
@@ -84,20 +101,36 @@ try {
     $giaTriTrungBinh = $donThanhCong > 0 ? round($tongDoanhThu / $donThanhCong) : 0;
 
     // 2. Thống kê theo ngày (Timeline)
-    $stmt = $pdo->prepare("
-        SELECT 
-            DATE(ThoiGianTao) AS ngay,
-            COUNT(*) AS tong_don,
-            SUM(CASE WHEN TrangThai = 'SUCCESS' THEN 1 ELSE 0 END) AS thanh_cong,
-            COALESCE(SUM(CASE WHEN TrangThai = 'SUCCESS' THEN SoTien ELSE 0 END), 0) AS doanh_thu
-        FROM giaodich
-        WHERE CuaHang_id = ? 
-          AND DATE(ThoiGianTao) >= ? 
-          AND DATE(ThoiGianTao) <= ?
-        GROUP BY DATE(ThoiGianTao)
-        ORDER BY ngay ASC
-    ");
-    $stmt->execute([$shopId, $startDate, $endDate]);
+    if ($isPrivilegedUser) {
+        $stmt = $pdo->prepare("
+            SELECT 
+                DATE(ThoiGianTao) AS ngay,
+                COUNT(*) AS tong_don,
+                SUM(CASE WHEN TrangThai = 'SUCCESS' THEN 1 ELSE 0 END) AS thanh_cong,
+                COALESCE(SUM(CASE WHEN TrangThai = 'SUCCESS' THEN SoTien ELSE 0 END), 0) AS doanh_thu
+            FROM giaodich
+            WHERE DATE(ThoiGianTao) >= ? 
+              AND DATE(ThoiGianTao) <= ?
+            GROUP BY DATE(ThoiGianTao)
+            ORDER BY ngay ASC
+        ");
+        $stmt->execute([$startDate, $endDate]);
+    } else {
+        $stmt = $pdo->prepare("
+            SELECT 
+                DATE(ThoiGianTao) AS ngay,
+                COUNT(*) AS tong_don,
+                SUM(CASE WHEN TrangThai = 'SUCCESS' THEN 1 ELSE 0 END) AS thanh_cong,
+                COALESCE(SUM(CASE WHEN TrangThai = 'SUCCESS' THEN SoTien ELSE 0 END), 0) AS doanh_thu
+            FROM giaodich
+            WHERE CuaHang_id = ? 
+              AND DATE(ThoiGianTao) >= ? 
+              AND DATE(ThoiGianTao) <= ?
+            GROUP BY DATE(ThoiGianTao)
+            ORDER BY ngay ASC
+        ");
+        $stmt->execute([$shopId, $startDate, $endDate]);
+    }
     $timelineRaw = $stmt->fetchAll();
 
     // Lập bản đồ ngày để điền đủ các ngày trống
@@ -124,19 +157,34 @@ try {
     }
 
     // 3. Cơ cấu theo Cổng thanh toán (Gateways)
-    $stmt = $pdo->prepare("
-        SELECT 
-            LoaiCongThanhToan AS loai_cong,
-            COUNT(*) AS tong_don,
-            SUM(CASE WHEN TrangThai = 'SUCCESS' THEN 1 ELSE 0 END) AS thanh_cong,
-            COALESCE(SUM(CASE WHEN TrangThai = 'SUCCESS' THEN SoTien ELSE 0 END), 0) AS doanh_thu
-        FROM giaodich
-        WHERE CuaHang_id = ? 
-          AND DATE(ThoiGianTao) >= ? 
-          AND DATE(ThoiGianTao) <= ?
-        GROUP BY LoaiCongThanhToan
-    ");
-    $stmt->execute([$shopId, $startDate, $endDate]);
+    if ($isPrivilegedUser) {
+        $stmt = $pdo->prepare("
+            SELECT 
+                LoaiCongThanhToan AS loai_cong,
+                COUNT(*) AS tong_don,
+                SUM(CASE WHEN TrangThai = 'SUCCESS' THEN 1 ELSE 0 END) AS thanh_cong,
+                COALESCE(SUM(CASE WHEN TrangThai = 'SUCCESS' THEN SoTien ELSE 0 END), 0) AS doanh_thu
+            FROM giaodich
+            WHERE DATE(ThoiGianTao) >= ? 
+              AND DATE(ThoiGianTao) <= ?
+            GROUP BY LoaiCongThanhToan
+        ");
+        $stmt->execute([$startDate, $endDate]);
+    } else {
+        $stmt = $pdo->prepare("
+            SELECT 
+                LoaiCongThanhToan AS loai_cong,
+                COUNT(*) AS tong_don,
+                SUM(CASE WHEN TrangThai = 'SUCCESS' THEN 1 ELSE 0 END) AS thanh_cong,
+                COALESCE(SUM(CASE WHEN TrangThai = 'SUCCESS' THEN SoTien ELSE 0 END), 0) AS doanh_thu
+            FROM giaodich
+            WHERE CuaHang_id = ? 
+              AND DATE(ThoiGianTao) >= ? 
+              AND DATE(ThoiGianTao) <= ?
+            GROUP BY LoaiCongThanhToan
+        ");
+        $stmt->execute([$shopId, $startDate, $endDate]);
+    }
     $gateways = $stmt->fetchAll();
 
     jsonResponse(true, 'OK', [
