@@ -22,3 +22,6 @@ includes/security.php
 
 # Temporary Office lock files
 ~$*
+
+# Agent workspace folder
+.agents/
