@@ -13,16 +13,54 @@ window.FreshMartCart = {
     try {
       const data = localStorage.getItem(this.STORAGE_KEY);
       let cart = data ? JSON.parse(data) : [];
-      // Tự động thay thế URL ảnh cũ bị lỗi
+      let needSave = false;
+
+      // Danh mục giá chuẩn của FreshMart để tự động sửa nếu bị dính lỗi giá trước đó
+      const knownPrices = {
+        'Cà chua bi Đà Lạt': 32000,
+        'Chuối sứ chín tự nhiên': 25000,
+        'Thịt bò Úc thăn': 189000,
+        'Sữa tươi TH True Milk': 34000,
+        'Cá hồi Na Uy fillet': 245000,
+        'Rau cải xanh hữu cơ': 18000,
+        'Phô mai Cheddar': 95000,
+        'Khoai tây Đà Lạt': 27000,
+        'Táo Mỹ nhập khẩu': 65000,
+        'Cà rốt hữu cơ Đà Lạt': 28000
+      };
+
+      // Tự động thay thế URL ảnh cũ bị lỗi và sửa lỗi giá nối chuỗi
       cart = cart.map(function (item) {
         if (item.image && item.image.indexOf('photo-1619566636858') !== -1) {
           item.image = 'img/ca-chua-bi.jpg';
+          needSave = true;
         }
         if (item.image && item.image.indexOf('photo-1464965328260') !== -1) {
           item.image = 'img/tao-nhap-khau.jpg';
+          needSave = true;
+        }
+
+        // Tự động sửa lỗi giá (nếu giá bị nối dính giá cũ 40.000 thành hàng tỷ đồng)
+        if (knownPrices[item.name]) {
+          if (item.price !== knownPrices[item.name]) {
+            item.price = knownPrices[item.name];
+            needSave = true;
+          }
+        } else if (item.price > 2000000) {
+          const pStr = String(item.price);
+          if (pStr.length >= 8) {
+            const halfLen = Math.floor(pStr.length / 2);
+            item.price = parseInt(pStr.substring(0, halfLen), 10);
+            needSave = true;
+          }
         }
         return item;
       });
+
+      if (needSave) {
+        localStorage.setItem(this.STORAGE_KEY, JSON.stringify(cart));
+      }
+
       return cart;
     } catch (e) {
       return [];
@@ -138,10 +176,27 @@ document.addEventListener('DOMContentLoaded', function () {
         const catEl = card.querySelector('.product-cat');
         if (catEl) unit = catEl.textContent.trim();
 
-        const priceEl = card.querySelector('.price-new, .product-price');
-        if (priceEl) {
-          const rawPrice = priceEl.textContent.replace(/[^\d]/g, '');
-          if (rawPrice) price = parseInt(rawPrice);
+        // 1. Kiểm tra data-price trên thẻ card hoặc nút bấm trước
+        const dataPrice = (card && card.getAttribute('data-price')) || btn.getAttribute('data-price');
+        if (dataPrice && parseInt(dataPrice, 10) > 0) {
+          price = parseInt(dataPrice, 10);
+        } else {
+          // 2. Ưu tiên bóc tách từ .price-new (loại bỏ hoàn toàn nguy cơ dính .price-old)
+          const priceNewEl = card.querySelector('.price-new');
+          if (priceNewEl) {
+            const rawPrice = priceNewEl.textContent.replace(/[^\d]/g, '');
+            if (rawPrice) price = parseInt(rawPrice, 10);
+          } else {
+            // 3. Nếu không có .price-new, bóc tách từ .product-price và xóa bỏ .price-old nếu có
+            const priceContainer = card.querySelector('.product-price');
+            if (priceContainer) {
+              const clone = priceContainer.cloneNode(true);
+              const oldPrice = clone.querySelector('.price-old');
+              if (oldPrice) oldPrice.remove();
+              const rawPrice = clone.textContent.replace(/[^\d]/g, '');
+              if (rawPrice) price = parseInt(rawPrice, 10);
+            }
+          }
         }
 
         const imgEl = card.querySelector('img');
