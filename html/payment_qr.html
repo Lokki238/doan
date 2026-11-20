@@ -203,23 +203,6 @@
       border-radius: 20px;
       margin-bottom: 12px;
     }
-
-    /* Simulation Toolbar */
-    .sim-box {
-      background: #faf5ff;
-      border: 1px dashed #c084fc;
-      border-radius: var(--radius);
-      padding: 20px;
-      margin-top: 24px;
-    }
-    .sim-box h6 {
-      color: #7e22ce;
-      font-weight: 700;
-      margin-bottom: 8px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
   </style>
 </head>
 <body>
@@ -380,33 +363,6 @@
                 </div>
               </div>
             </div>
-
-            <!-- THANH CÔNG CỤ DEMO DÀNH CHO BÁO CÁO / GIẢNG VIÊN / TESTER (GIẢ LẬP WEBHOOK) -->
-            <div class="sim-box">
-              <h6 class="mb-2"><i class="fas fa-flask text-warning"></i> Giả lập Webhook (Test)</h6>
-              <p class="small text-muted mb-3">
-                Dùng khi muốn test cập nhật trạng thái mà không cần webhook thật từ ngân hàng.
-              </p>
-              <div class="row g-2 align-items-center">
-                <div class="col-12 col-md-4">
-                  <input type="text" id="simOrderId" class="form-control form-control-sm" placeholder="Mã đơn hàng (FM...)">
-                </div>
-                <div class="col-6 col-md-3">
-                  <input type="number" id="simAmount" class="form-control form-control-sm" placeholder="Số tiền">
-                </div>
-                <div class="col-6 col-md-3">
-                  <select id="simStatus" class="form-select form-select-sm">
-                    <option value="SUCCESS" selected>SUCCESS</option>
-                    <option value="FAILED">FAILED</option>
-                  </select>
-                </div>
-                <div class="col-12 col-md-2">
-                  <button type="button" class="btn btn-warning btn-sm w-100 fw-bold" id="btnSimulateWebhook">
-                    <i class="fas fa-bolt me-1"></i> Gửi Webhook
-                  </button>
-                </div>
-              </div>
-            </div>
           </div>
 
           <!-- TRẠNG THÁI 2: THANH TOÁN THÀNH CÔNG (HIỂN THỊ KHI WEBHOOK XÁC NHẬN) -->
@@ -542,14 +498,10 @@
               document.getElementById('amountText').textContent = formatVND(d.so_tien);
               const copyBtn = document.getElementById('btnCopyAmount');
               if (copyBtn) copyBtn.setAttribute('onclick', `copyRaw('${d.so_tien}', this)`);
-              const simAmt = document.getElementById('simAmount');
-              if (simAmt && (!simAmt.value || simAmt.value == 297000)) simAmt.value = d.so_tien;
             }
             if (d.ma_don_hang) {
               document.getElementById('memoText').textContent = d.ma_don_hang;
               document.getElementById('badgeOrderCode').textContent = d.ma_don_hang;
-              const simOrd = document.getElementById('simOrderId');
-              if (simOrd && (!simOrd.value || simOrd.value.startsWith('FM000000'))) simOrd.value = d.ma_don_hang;
             }
 
             isLoadedFromDB = true;
@@ -563,12 +515,6 @@
           // Bỏ qua lỗi polling mạng tạm thời
         }
       }
-
-      // Khởi tạo giá trị ban đầu cho form giả lập webhook
-      const simOrderInput = document.getElementById('simOrderId');
-      const simAmountInput = document.getElementById('simAmount');
-      if (simOrderInput) simOrderInput.value = orderId;
-      if (simAmountInput) simAmountInput.value = currentAmount;
 
       // Gọi ngay lần đầu để tải CSDL lập tức, sau đó poll mỗi 2s
       checkPaymentStatus();
@@ -610,61 +556,6 @@
           osc.start();
           osc.stop(ctx.currentTime + 0.5);
         } catch (err) {}
-      }
-
-      // 4. Form Giả lập Webhook (Dành cho demo)
-      const btnSim = document.getElementById('btnSimulateWebhook');
-      if (btnSim) {
-        btnSim.addEventListener('click', async function () {
-          const simOrderId = (document.getElementById('simOrderId')?.value || orderId).trim();
-          const simAmount = parseInt(document.getElementById('simAmount')?.value) || currentAmount;
-          const simStatus = document.getElementById('simStatus')?.value || 'SUCCESS';
-
-          if (!simOrderId) {
-            alert('Vui lòng nhập mã đơn hàng');
-            return;
-          }
-
-          btnSim.disabled = true;
-          btnSim.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i> Đang gửi Webhook...';
-
-          try {
-            const res = await fetch('../php/api/simulate_webhook.php', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                ma_don_hang: simOrderId,
-                so_tien: simAmount,
-                status: simStatus
-              })
-            });
-            const data = await res.json();
-            if (data.success) {
-              btnSim.className = 'btn btn-success btn-sm w-100 fw-bold';
-              btnSim.innerHTML = '<i class="fas fa-check me-1"></i> Webhook thành công!';
-              if (simStatus === 'SUCCESS') {
-                setTimeout(checkPaymentStatus, 400);
-              } else {
-                alert('Đã gửi Webhook trạng thái: ' + simStatus);
-                setTimeout(() => {
-                  btnSim.disabled = false;
-                  btnSim.className = 'btn btn-warning btn-sm w-100 fw-bold';
-                  btnSim.innerHTML = '<i class="fas fa-bolt me-1"></i> Gửi Webhook';
-                }, 1500);
-              }
-            } else {
-              alert('Lỗi giả lập Webhook: ' + (data.message || 'Thất bại'));
-              btnSim.disabled = false;
-              btnSim.className = 'btn btn-warning btn-sm w-100 fw-bold';
-              btnSim.innerHTML = '<i class="fas fa-bolt me-1"></i> Gửi Webhook';
-            }
-          } catch (err) {
-            alert('Lỗi kết nối Webhook: ' + err.message);
-            btnSim.disabled = false;
-            btnSim.className = 'btn btn-warning btn-sm w-100 fw-bold';
-            btnSim.innerHTML = '<i class="fas fa-bolt me-1"></i> Gửi Webhook';
-          }
-        });
       }
     })();
 
