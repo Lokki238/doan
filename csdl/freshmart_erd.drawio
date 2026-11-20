@@ -1,0 +1,181 @@
+<mxfile host="app.diagrams.net" modified="2026-11-20T12:10:00.000Z" agent="FreshMart" version="21.0.0" type="device">
+  <diagram id="freshmart_erd" name="ERD FreshMart Payment">
+    <mxGraphModel dx="1420" dy="850" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1400" pageHeight="900" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <!-- ==================== ENTITIES ==================== -->
+        <!-- DIA_CHI_GIAO_HANG -->
+        <mxCell id="e_diachi" value="DIA_CHI_GIAO_HANG" style="shape=ext;double=1;whiteSpace=wrap;html=1;align=center;fontStyle=1;fontSize=11;strokeColor=#000000;fillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="330" y="60" width="160" height="50" as="geometry" />
+        </mxCell>
+
+        <!-- MA_GIAM_GIA -->
+        <mxCell id="e_magiamgia" value="MA_GIAM_GIA" style="shape=ext;double=1;whiteSpace=wrap;html=1;align=center;fontStyle=1;fontSize=11;strokeColor=#000000;fillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="630" y="60" width="140" height="50" as="geometry" />
+        </mxCell>
+
+        <!-- CUA_HANG -->
+        <mxCell id="e_cuahang" value="CUA_HANG" style="shape=ext;double=1;whiteSpace=wrap;html=1;align=center;fontStyle=1;fontSize=11;strokeColor=#000000;fillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="50" y="230" width="140" height="50" as="geometry" />
+        </mxCell>
+
+        <!-- NGUOI_DUNG -->
+        <mxCell id="e_nguoidung" value="NGUOI_DUNG" style="shape=ext;double=1;whiteSpace=wrap;html=1;align=center;fontStyle=1;fontSize=11;strokeColor=#000000;fillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="340" y="230" width="140" height="50" as="geometry" />
+        </mxCell>
+
+        <!-- DON_HANG -->
+        <mxCell id="e_donhang" value="DON_HANG" style="shape=ext;double=1;whiteSpace=wrap;html=1;align=center;fontStyle=1;fontSize=11;strokeColor=#000000;fillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="630" y="230" width="140" height="50" as="geometry" />
+        </mxCell>
+
+        <!-- CHI_TIET_DON_HANG -->
+        <mxCell id="e_chitiet" value="CHI_TIET_DON_HANG" style="shape=ext;double=1;whiteSpace=wrap;html=1;align=center;fontStyle=1;fontSize=11;strokeColor=#000000;fillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="925" y="230" width="160" height="50" as="geometry" />
+        </mxCell>
+
+        <!-- CONG_THANH_TOAN -->
+        <mxCell id="e_congthanhtoan" value="CONG_THANH_TOAN" style="shape=ext;double=1;whiteSpace=wrap;html=1;align=center;fontStyle=1;fontSize=11;strokeColor=#000000;fillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="45" y="430" width="150" height="50" as="geometry" />
+        </mxCell>
+
+        <!-- GIAO_DICH -->
+        <mxCell id="e_giaodich" value="GIAO_DICH" style="shape=ext;double=1;whiteSpace=wrap;html=1;align=center;fontStyle=1;fontSize=11;strokeColor=#000000;fillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="630" y="430" width="140" height="50" as="geometry" />
+        </mxCell>
+
+        <!-- SAN_PHAM -->
+        <mxCell id="e_sanpham" value="SAN_PHAM" style="shape=ext;double=1;whiteSpace=wrap;html=1;align=center;fontStyle=1;fontSize=11;strokeColor=#000000;fillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="935" y="430" width="140" height="50" as="geometry" />
+        </mxCell>
+
+        <!-- NHAT_KY_WEBHOOK -->
+        <mxCell id="e_webhook" value="NHAT_KY_WEBHOOK" style="shape=ext;double=1;whiteSpace=wrap;html=1;align=center;fontStyle=1;fontSize=11;strokeColor=#000000;fillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="620" y="630" width="160" height="50" as="geometry" />
+        </mxCell>
+
+        <!-- DANH_MUC -->
+        <mxCell id="e_danhmuc" value="DANH_MUC" style="shape=ext;double=1;whiteSpace=wrap;html=1;align=center;fontStyle=1;fontSize=11;strokeColor=#000000;fillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="935" y="630" width="140" height="50" as="geometry" />
+        </mxCell>
+
+
+        <!-- ==================== RELATION DIAMONDS ==================== -->
+        <!-- D1: DIA_CHI_GIAO_HANG - NGUOI_DUNG -->
+        <mxCell id="d_diachi_user" value="Có" style="rhombus;whiteSpace=wrap;html=1;fontSize=11;strokeColor=#000000;fillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="388" y="148" width="44" height="44" as="geometry" />
+        </mxCell>
+
+        <!-- D2: CUA_HANG - NGUOI_DUNG -->
+        <mxCell id="d_cuahang_user" value="Có" style="rhombus;whiteSpace=wrap;html=1;fontSize=11;strokeColor=#000000;fillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="243" y="233" width="44" height="44" as="geometry" />
+        </mxCell>
+
+        <!-- D3: NGUOI_DUNG - DON_HANG -->
+        <mxCell id="d_user_order" value="Có" style="rhombus;whiteSpace=wrap;html=1;fontSize=11;strokeColor=#000000;fillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="533" y="233" width="44" height="44" as="geometry" />
+        </mxCell>
+
+        <!-- D4: DON_HANG - CHI_TIET_DON_HANG -->
+        <mxCell id="d_order_item" value="Có" style="rhombus;whiteSpace=wrap;html=1;fontSize=11;strokeColor=#000000;fillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="828" y="233" width="44" height="44" as="geometry" />
+        </mxCell>
+
+        <!-- D5: MA_GIAM_GIA - DON_HANG -->
+        <mxCell id="d_magiamgia_order" value="Có" style="rhombus;whiteSpace=wrap;html=1;fontSize=11;strokeColor=#000000;fillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="678" y="148" width="44" height="44" as="geometry" />
+        </mxCell>
+
+        <!-- D6: CUA_HANG - CONG_THANH_TOAN -->
+        <mxCell id="d_cuahang_gateway" value="Có" style="rhombus;whiteSpace=wrap;html=1;fontSize=11;strokeColor=#000000;fillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="98" y="333" width="44" height="44" as="geometry" />
+        </mxCell>
+
+        <!-- D7: DON_HANG - GIAO_DICH -->
+        <mxCell id="d_order_trans" value="Có" style="rhombus;whiteSpace=wrap;html=1;fontSize=11;strokeColor=#000000;fillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="678" y="333" width="44" height="44" as="geometry" />
+        </mxCell>
+
+        <!-- D8: CONG_THANH_TOAN - GIAO_DICH -->
+        <mxCell id="d_gateway_trans" value="Có" style="rhombus;whiteSpace=wrap;html=1;fontSize=11;strokeColor=#000000;fillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="388" y="433" width="44" height="44" as="geometry" />
+        </mxCell>
+
+        <!-- D9: GIAO_DICH - NHAT_KY_WEBHOOK -->
+        <mxCell id="d_trans_webhook" value="Có" style="rhombus;whiteSpace=wrap;html=1;fontSize=11;strokeColor=#000000;fillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="678" y="533" width="44" height="44" as="geometry" />
+        </mxCell>
+
+        <!-- D10: CHI_TIET_DON_HANG - SAN_PHAM -->
+        <mxCell id="d_item_product" value="Có" style="rhombus;whiteSpace=wrap;html=1;fontSize=11;strokeColor=#000000;fillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="983" y="333" width="44" height="44" as="geometry" />
+        </mxCell>
+
+        <!-- D11: SAN_PHAM - DANH_MUC -->
+        <mxCell id="d_product_category" value="Có" style="rhombus;whiteSpace=wrap;html=1;fontSize=11;strokeColor=#000000;fillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="983" y="533" width="44" height="44" as="geometry" />
+        </mxCell>
+
+
+        <!-- ==================== CONNECTORS ==================== -->
+        <!-- 1. DIA_CHI_GIAO_HANG <-> d_diachi_user <-> NGUOI_DUNG -->
+        <mxCell id="c1" edge="1" source="e_diachi" target="e_nguoidung" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#000000;startArrow=ERmany;endArrow=ERone;" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- 2. CUA_HANG <-> d_cuahang_user <-> NGUOI_DUNG -->
+        <mxCell id="c2" edge="1" source="e_cuahang" target="e_nguoidung" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#000000;startArrow=ERone;endArrow=ERone;" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- 3. NGUOI_DUNG <-> d_user_order <-> DON_HANG -->
+        <mxCell id="c3" edge="1" source="e_nguoidung" target="e_donhang" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#000000;startArrow=ERone;endArrow=ERmany;" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- 4. DON_HANG <-> d_order_item <-> CHI_TIET_DON_HANG -->
+        <mxCell id="c4" edge="1" source="e_donhang" target="e_chitiet" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#000000;startArrow=ERone;endArrow=ERmany;" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- 5. MA_GIAM_GIA <-> d_magiamgia_order <-> DON_HANG -->
+        <mxCell id="c5" edge="1" source="e_magiamgia" target="e_donhang" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#000000;startArrow=ERone;endArrow=ERmany;" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- 6. CUA_HANG <-> d_cuahang_gateway <-> CONG_THANH_TOAN -->
+        <mxCell id="c6" edge="1" source="e_cuahang" target="e_congthanhtoan" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#000000;startArrow=ERone;endArrow=ERmany;" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- 7. DON_HANG <-> d_order_trans <-> GIAO_DICH -->
+        <mxCell id="c7" edge="1" source="e_donhang" target="e_giaodich" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#000000;startArrow=ERone;endArrow=ERmany;" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- 8. CONG_THANH_TOAN <-> d_gateway_trans <-> GIAO_DICH -->
+        <mxCell id="c8" edge="1" source="e_congthanhtoan" target="e_giaodich" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#000000;startArrow=ERone;endArrow=ERmany;" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- 9. GIAO_DICH <-> d_trans_webhook <-> NHAT_KY_WEBHOOK -->
+        <mxCell id="c9" edge="1" source="e_giaodich" target="e_webhook" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#000000;startArrow=ERone;endArrow=ERmany;" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- 10. CHI_TIET_DON_HANG <-> d_item_product <-> SAN_PHAM -->
+        <mxCell id="c10" edge="1" source="e_chitiet" target="e_sanpham" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#000000;startArrow=ERmany;endArrow=ERone;" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- 11. SAN_PHAM <-> d_product_category <-> DANH_MUC -->
+        <mxCell id="c11" edge="1" source="e_sanpham" target="e_danhmuc" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#000000;startArrow=ERmany;endArrow=ERone;" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
