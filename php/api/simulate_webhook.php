@@ -105,6 +105,14 @@ if (!$curlSuccess) {
                     ThoiGianCapNhat = NOW()
                 WHERE ID = ?
             ")->execute([$fakeWebhookData['referenceCode'], $gdId]);
+
+            // Cập nhật trạng thái thanh toán và đơn hàng trong bảng donhang
+            $pdo->prepare("
+                UPDATE donhang SET
+                    TrangThaiThanhToan = 'DA_THANH_TOAN',
+                    TrangThaiDonHang = 'DANG_XU_LY'
+                WHERE MaDonHang = ?
+            ")->execute([$maDonHang]);
         }
 
         $curlSuccess = true;

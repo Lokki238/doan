@@ -654,6 +654,7 @@
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
+            items: cart, // Danh sách sản phẩm mua: id, name, price, qty
             so_tien: totalAmount,
             phuong_thuc: (method === 'bank' ? 'VIETQR' : method.toUpperCase()),
             ho_ten: custName,

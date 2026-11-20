@@ -226,13 +226,13 @@
         <div class="col-lg-3 d-none d-lg-block">
           <div class="filter-box">
             <h5>Danh mục</h5>
-            <div class="filter-list">
-              <label><input type="checkbox" checked> Tất cả</label>
-              <label><input type="checkbox"> Rau củ quả</label>
-              <label><input type="checkbox"> Thịt & Hải sản</label>
-              <label><input type="checkbox"> Sữa & Trứng</label>
-              <label><input type="checkbox"> Gạo & Ngũ cốc</label>
-              <label><input type="checkbox"> Đồ uống</label>
+            <div class="filter-list" id="categoryFilterList">
+              <label><input type="radio" name="catFilter" value="all" checked> Tất cả</label>
+              <label><input type="radio" name="catFilter" value="rau-cu-qua"> Rau củ quả</label>
+              <label><input type="radio" name="catFilter" value="trai-cay"> Trái cây tươi</label>
+              <label><input type="radio" name="catFilter" value="thit-hai-san"> Thịt & Hải sản</label>
+              <label><input type="radio" name="catFilter" value="sua-trung"> Sữa & Trứng</label>
+              <label><input type="radio" name="catFilter" value="gao-ngu-coc"> Gạo & Ngũ cốc</label>
             </div>
           </div>
           <div class="filter-box">
@@ -259,17 +259,16 @@
         <!-- Product Grid -->
         <div class="col-lg-9">
           <div class="product-toolbar">
-            <span class="result-count">Hiển thị <strong>1-12</strong> / 48 sản phẩm</span>
-            <select class="sort-select">
-              <option>Mới nhất</option>
-              <option>Giá thấp → cao</option>
-              <option>Giá cao → thấp</option>
-              <option>Bán chạy nhất</option>
-              <option>Đánh giá cao</option>
+            <span class="result-count" id="productResultCount">Hiển thị <strong>1-12</strong> / 48 sản phẩm</span>
+            <select class="sort-select" id="sortSelect">
+              <option value="newest">Mới nhất</option>
+              <option value="price_asc">Giá thấp → cao</option>
+              <option value="price_desc">Giá cao → thấp</option>
+              <option value="name_asc">Tên A → Z</option>
             </select>
           </div>
 
-          <div class="row g-4">
+          <div class="row g-4" id="productListContainer">
             <div class="col-6 col-md-4">
               <div class="product-card" data-price="32000">
                 <div class="product-badge sale">-20%</div>
@@ -570,5 +569,137 @@
   <script src="../js/bootstrap.bundle.min.js"></script>
   <script src="../js/main.js?v=20261117_fix_price"></script>
   <script src="../js/admin_notifications.js"></script>
+
+  <script>
+    // =====================================================
+    // Tự động tải sản phẩm động từ CSDL FreshMart (api/get_products.php)
+    // =====================================================
+    async function fetchDynamicProducts() {
+      const container = document.getElementById('productListContainer');
+      if (!container) return;
+
+      const urlParams = new URLSearchParams(window.location.search);
+      const queryParam = urlParams.get('q') || '';
+      const sortSelect = document.getElementById('sortSelect');
+      const sortVal = sortSelect ? sortSelect.value : 'newest';
+
+      const checkedCat = document.querySelector('input[name="catFilter"]:checked');
+      const catVal = checkedCat ? checkedCat.value : 'all';
+
+      let apiUrl = `../php/api/get_products.php?sort=${encodeURIComponent(sortVal)}`;
+      if (catVal && catVal !== 'all') apiUrl += `&category=${encodeURIComponent(catVal)}`;
+      if (queryParam) apiUrl += `&search=${encodeURIComponent(queryParam)}`;
+
+      try {
+        const res = await fetch(apiUrl);
+        const data = await res.json();
+
+        if (data && data.success && Array.isArray(data.data) && data.data.length > 0) {
+          const countEl = document.getElementById('productResultCount');
+          if (countEl) {
+            countEl.innerHTML = `Hiển thị <strong>1-${data.data.length}</strong> / ${data.total || data.data.length} sản phẩm CSDL`;
+          }
+
+          container.innerHTML = data.data.map(p => {
+            const hasDiscount = p.discount_pct > 0;
+            const badgeHtml = hasDiscount 
+              ? `<div class="product-badge sale">-${p.discount_pct}%</div>`
+              : (p.standard ? `<div class="product-badge new">${escapeHtml(p.standard)}</div>` : '');
+
+            const oldPriceHtml = hasDiscount
+              ? `<span class="price-old">${new Intl.NumberFormat('vi-VN').format(p.old_price)}đ</span>`
+              : '';
+
+            return `
+              <div class="col-6 col-md-4">
+                <div class="product-card" data-price="${p.price}">
+                  ${badgeHtml}
+                  <div class="product-img">
+                    <img src="${p.image || 'img/ca-chua-bi.jpg'}" alt="${escapeHtml(p.name)}">
+                    <div class="product-actions">
+                      <button class="action-icon" title="Yêu thích"><i class="far fa-heart"></i></button>
+                      <a href="products.html?category=${p.category_slug}" class="action-icon" title="Xem chi tiết"><i class="far fa-eye"></i></a>
+                    </div>
+                  </div>
+                  <div class="product-body">
+                    <span class="product-cat">${escapeHtml(p.category || 'Thực phẩm sạch')}</span>
+                    <h3 class="product-name"><a href="#">${escapeHtml(p.name)}</a></h3>
+                    <div class="product-rating">
+                      <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                      <i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+                      <span>(48)</span>
+                    </div>
+                    <div class="product-price">
+                      <span class="price-new">${new Intl.NumberFormat('vi-VN').format(p.price)}đ</span>
+                      ${oldPriceHtml}
+                    </div>
+                    <button class="btn btn-primary btn-sm w-100 add-to-cart" data-price="${p.price}"><i class="fas fa-shopping-basket me-1"></i> Thêm vào giỏ</button>
+                  </div>
+                </div>
+              </div>
+            `;
+          }).join('');
+
+          // Gắn sự kiện thêm vào giỏ hàng cho các nút sản phẩm động
+          bindAddToCartEvents();
+        }
+      } catch (err) {
+        console.warn('Không thể kết nối API sản phẩm động, sử dụng dữ liệu tĩnh:', err);
+      }
+    }
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str).replace(/[&<>"']/g, m => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[m]));
+    }
+
+    function bindAddToCartEvents() {
+      const btns = document.querySelectorAll('#productListContainer .add-to-cart');
+      btns.forEach(btn => {
+        btn.onclick = function(e) {
+          e.preventDefault();
+          const card = btn.closest('.product-card');
+          if (!card) return;
+          const nameEl = card.querySelector('.product-name a, .product-name');
+          const name = nameEl ? nameEl.textContent.trim() : 'Sản phẩm FreshMart';
+          const price = parseInt(card.getAttribute('data-price') || btn.getAttribute('data-price'), 10) || 32000;
+          const imgEl = card.querySelector('img');
+          const image = imgEl ? imgEl.src : 'img/ca-chua-bi.jpg';
+          const catEl = card.querySelector('.product-cat');
+          const unit = catEl ? catEl.textContent.trim() : '500g';
+
+          if (window.FreshMartCart) {
+            window.FreshMartCart.addItem({ name, price, image, unit, qty: 1 });
+          }
+
+          const original = btn.innerHTML;
+          btn.innerHTML = '<i class="fas fa-check me-1"></i> Đã thêm';
+          btn.disabled = true;
+          btn.style.background = '#059669';
+          btn.style.borderColor = '#059669';
+
+          setTimeout(() => {
+            btn.innerHTML = original;
+            btn.disabled = false;
+            btn.style.background = '';
+            btn.style.borderColor = '';
+          }, 1200);
+        };
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      fetchDynamicProducts();
+
+      const sortSelect = document.getElementById('sortSelect');
+      if (sortSelect) {
+        sortSelect.addEventListener('change', fetchDynamicProducts);
+      }
+
+      document.querySelectorAll('input[name="catFilter"]').forEach(radio => {
+        radio.addEventListener('change', fetchDynamicProducts);
+      });
+    });
+  </script>
 </body>
 </html>

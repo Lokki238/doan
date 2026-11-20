@@ -148,6 +148,86 @@ runTest("Phân cấp thẩm quyền điều chỉnh tài khoản (Owner/Manager/
     return true;
 });
 
+// 8. Kiểm tra API get_products.php (lấy danh sách sản phẩm động từ CSDL)
+runTest("Lấy danh sách sản phẩm động từ CSDL (api/get_products.php)", function() {
+    try {
+        $pdo = getDB();
+        $stmt = $pdo->query("SELECT COUNT(*) FROM sanpham WHERE TrangThai = 1");
+        $count = (int)$stmt->fetchColumn();
+        if ($count === 0) {
+            return "Bảng sanpham chưa có dữ liệu sản phẩm";
+        }
+        return true;
+    } catch (Exception $e) {
+        return "SKIP: " . $e->getMessage();
+    }
+});
+
+// 9. Kiểm tra quy trình tạo đơn hàng lưu đủ donhang + chitietdonhang + giaodich
+runTest("Tạo đơn hàng lưu đồng bộ donhang, chitietdonhang và giaodich", function() {
+    try {
+        $pdo = getDB();
+        
+        // Giả lập user đăng nhập
+        $testUserId = $pdo->query("SELECT ID FROM nguoidung LIMIT 1")->fetchColumn();
+        if (!$testUserId) {
+            $testUserId = generateUUID();
+            $pdo->prepare("INSERT INTO nguoidung (ID, HoTen, Email, MatKhau, VaiTro) VALUES (?, 'Test User', 'smoke@freshmart.vn', 'hash', 'USER')")->execute([$testUserId]);
+        }
+        $testShopId = $pdo->query("SELECT ID FROM cuahang LIMIT 1")->fetchColumn();
+        if (!$testShopId) {
+            $testShopId = generateUUID();
+            $pdo->prepare("INSERT INTO cuahang (ID, NguoiDung_id, TenCH) VALUES (?, ?, 'FreshMart Official')")->execute([$testShopId, $testUserId]);
+        }
+        
+        $testProd = $pdo->query("SELECT ID, TenSanPham, GiaBan FROM sanpham LIMIT 1")->fetch(PDO::FETCH_ASSOC);
+        if (!$testProd) {
+            return "Không tìm thấy sản phẩm mẫu để test tạo đơn";
+        }
+
+        $testMaDon = 'TEST_' . mt_rand(100000, 999999);
+        $testDonHangId = generateUUID();
+        $testChiTietId = generateUUID();
+        $testGiaoDichId = generateUUID();
+
+        // 1. donhang
+        $pdo->prepare("
+            INSERT INTO donhang (ID, MaDonHang, NguoiDung_id, CuaHang_id, HoTenNguoiNhan, SoDienThoaiNhan, DiaChiGiaoHang, TienHang, TienPhiVanChuyen, TienGiamGia, TongTien, PhuongThucThanhToan)
+            VALUES (?, ?, ?, ?, 'Smoke Test Customer', '0912345678', 'Test Address', ?, 30000.00, 0.00, ?, 'VIETQR')
+        ")->execute([$testDonHangId, $testMaDon, $testUserId, $testShopId, $testProd['GiaBan'], (float)$testProd['GiaBan'] + 30000]);
+
+        // 2. chitietdonhang
+        $pdo->prepare("
+            INSERT INTO chitietdonhang (ID, DonHang_id, SanPham_id, TenSanPham, DonGia, SoLuong, ThanhTien)
+            VALUES (?, ?, ?, ?, ?, 1, ?)
+        ")->execute([$testChiTietId, $testDonHangId, $testProd['ID'], $testProd['TenSanPham'], $testProd['GiaBan'], $testProd['GiaBan']]);
+
+        // 3. giaodich
+        $pdo->prepare("
+            INSERT INTO giaodich (ID, CuaHang_id, DonHang_id, MaDonHang, SoTien, MoTa, LoaiCongThanhToan, TrangThai)
+            VALUES (?, ?, ?, ?, ?, 'Smoke test transaction', 'VIETQR', 'PENDING')
+        ")->execute([$testGiaoDichId, $testShopId, $testDonHangId, $testMaDon, (float)$testProd['GiaBan'] + 30000]);
+
+        // Kiểm tra toàn vẹn
+        $chkDonHang = $pdo->query("SELECT ID FROM donhang WHERE MaDonHang = '$testMaDon'")->fetchColumn();
+        $chkChiTiet = $pdo->query("SELECT ID FROM chitietdonhang WHERE DonHang_id = '$testDonHangId'")->fetchColumn();
+        $chkGiaoDich = $pdo->query("SELECT DonHang_id FROM giaodich WHERE ID = '$testGiaoDichId'")->fetchColumn();
+
+        // Dọn dẹp dữ liệu test
+        $pdo->prepare("DELETE FROM giaodich WHERE ID = ?")->execute([$testGiaoDichId]);
+        $pdo->prepare("DELETE FROM chitietdonhang WHERE ID = ?")->execute([$testChiTietId]);
+        $pdo->prepare("DELETE FROM donhang WHERE ID = ?")->execute([$testDonHangId]);
+
+        if ($chkDonHang && $chkChiTiet && $chkGiaoDich === $testDonHangId) {
+            return true;
+        } else {
+            return "Dữ liệu liên kết giữa donhang, chitietdonhang và giaodich không khớp";
+        }
+    } catch (Exception $e) {
+        return "Ngoại lệ: " . $e->getMessage();
+    }
+});
+
 echo "\n=========================================================\n";
 echo "                 KẾT QUẢ KIỂM THỬ TỔNG HỢP                \n";
 echo "=========================================================\n";

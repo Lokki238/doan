@@ -104,9 +104,9 @@ try {
         jsonResponse(false, 'Email này đã được đăng ký. Vui lòng dùng email khác.', [], 409);
     }
 
-    // 3.2. Tạo ID duy nhất cho User và Shop
+    // 3.2. Tạo ID duy nhất cho User
     $userId = generateUUID();
-    $shopId = generateUUID();
+    $shopId = null;
 
     // 3.3. Mã hóa mật khẩu
     // PASSWORD_DEFAULT hiện tại dùng thuật toán bcrypt (rất an toàn)
@@ -114,24 +114,25 @@ try {
     $matKhauMaHoa = password_hash($matKhau, PASSWORD_DEFAULT);
 
     // 3.4. Bắt đầu Transaction
-    // Transaction đảm bảo: hoặc cả 2 bảng đều thành công, hoặc cả 2 đều thất bại
-    // (tránh trường hợp tạo được User nhưng không tạo được Shop)
     $pdo->beginTransaction();
 
-    // 3.5. Thêm vào bảng nguoidung (USER hoặc OWNER)
+    // 3.5. Thêm vào bảng nguoidung
     $stmt = $pdo->prepare("
         INSERT INTO nguoidung (ID, Email, MatKhauMaHoa, HoTen, VaiTro)
         VALUES (?, ?, ?, ?, ?)
     ");
     $stmt->execute([$userId, $email, $matKhauMaHoa, $hoTen, $vaiTro]);
 
-    // 3.6. Thêm vào bảng cuahang (quan hệ 1-1 với User)
-    $stmt = $pdo->prepare("
-        INSERT INTO cuahang (ID, NguoiDung_id, TenCH, MoTaCH)
-        VALUES (?, ?, ?, ?)
-    ");
-    $moTa = ($vaiTro === 'OWNER') ? 'Cửa hàng tạo tự động' : 'Hồ sơ người dùng cá nhân';
-    $stmt->execute([$shopId, $userId, $tenCuaHang, $moTa]);
+    // 3.6. Chỉ tạo bản ghi trong bảng cuahang nếu người đăng ký có vai trò là OWNER
+    // Khách hàng thông thường (USER) chỉ lưu ở bảng nguoidung
+    if ($vaiTro === 'OWNER') {
+        $shopId = generateUUID();
+        $stmt = $pdo->prepare("
+            INSERT INTO cuahang (ID, NguoiDung_id, TenCH, MoTaCH)
+            VALUES (?, ?, ?, ?)
+        ");
+        $stmt->execute([$shopId, $userId, $tenCuaHang, 'Cửa hàng tạo tự động']);
+    }
 
     // 3.7. Commit Transaction → lưu thật vào database
     $pdo->commit();
@@ -143,7 +144,7 @@ try {
     $_SESSION['ho_ten']   = $hoTen;
     $_SESSION['vai_tro']  = $vaiTro;
     $_SESSION['shop_id']  = $shopId;
-    $_SESSION['ten_ch']   = $tenCuaHang;
+    $_SESSION['ten_ch']   = ($vaiTro === 'OWNER') ? $tenCuaHang : null;
 
     // 3.9. Trả về kết quả thành công
     jsonResponse(true, 'Đăng ký thành công! Chào mừng bạn đến với FreshMart.', [

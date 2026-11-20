@@ -19,6 +19,7 @@ config/db.php
 includes/security.php
 .env
 .env.*
+!.env.example
 
 # Temporary Office lock files
 ~$*

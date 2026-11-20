@@ -221,6 +221,16 @@ try {
         $giaoDich['ID']
     ]);
 
+    // Cập nhật trạng thái trong bảng donhang nếu có
+    if ($newStatus === 'SUCCESS') {
+        $pdo->prepare("
+            UPDATE donhang SET
+                TrangThaiThanhToan = 'DA_THANH_TOAN',
+                TrangThaiDonHang = 'DANG_XU_LY'
+            WHERE MaDonHang = ?
+        ")->execute([$orderId]);
+    }
+
     // -----------------------------------------------------
     // 6. CẬP NHẬT LOG WEBHOOK
     // -----------------------------------------------------
