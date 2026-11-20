@@ -179,6 +179,134 @@ ALTER TABLE `giaodich`
 --
 ALTER TABLE `nhatkywebhook`
   ADD CONSTRAINT `nhatkywebhook_ibfk_1` FOREIGN KEY (`GiaoDich_id`) REFERENCES `giaodich` (`ID`);
+
+-- --------------------------------------------------------
+--
+-- PHẦN BỔ SUNG: BẢNG DANH MỤC, SẢN PHẨM, ĐƠN HÀNG VÀ MÃ GIẢM GIÁ
+-- (Hệ thống thực phẩm sạch FreshMart)
+--
+-- --------------------------------------------------------
+
+-- 1. Bảng Danh mục sản phẩm
+CREATE TABLE IF NOT EXISTS `danhmuc` (
+  `ID` char(36) NOT NULL,
+  `TenDanhMuc` varchar(150) NOT NULL,
+  `Slug` varchar(150) NOT NULL,
+  `Icon` varchar(100) DEFAULT NULL,
+  `ThuTu` int(11) DEFAULT 0,
+  `TrangThai` tinyint(1) DEFAULT 1,
+  `ThoiGianTao` datetime DEFAULT current_timestamp(),
+  PRIMARY KEY (`ID`),
+  UNIQUE KEY `UQ_DanhMuc_Slug` (`Slug`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+-- 2. Bảng Sản phẩm thực phẩm sạch
+CREATE TABLE IF NOT EXISTS `sanpham` (
+  `ID` char(36) NOT NULL,
+  `DanhMuc_id` char(36) NOT NULL,
+  `CuaHang_id` char(36) NOT NULL,
+  `TenSanPham` varchar(255) NOT NULL,
+  `Slug` varchar(255) NOT NULL,
+  `GiaGoc` bigint(20) NOT NULL,
+  `GiaBan` bigint(20) NOT NULL,
+  `DonViTinh` varchar(50) DEFAULT 'kg',
+  `SoLuongTon` int(11) DEFAULT 0,
+  `HinhAnh` varchar(500) DEFAULT NULL,
+  `TieuChuan` varchar(100) DEFAULT 'VietGAP',
+  `MoTa` text DEFAULT NULL,
+  `TrangThai` tinyint(1) DEFAULT 1,
+  `ThoiGianTao` datetime DEFAULT current_timestamp(),
+  `ThoiGianCapNhat` datetime DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  PRIMARY KEY (`ID`),
+  UNIQUE KEY `UQ_SanPham_Slug` (`Slug`),
+  CONSTRAINT `sanpham_ibfk_danhmuc` FOREIGN KEY (`DanhMuc_id`) REFERENCES `danhmuc` (`ID`) ON DELETE CASCADE,
+  CONSTRAINT `sanpham_ibfk_cuahang` FOREIGN KEY (`CuaHang_id`) REFERENCES `cuahang` (`ID`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+-- 3. Bảng Mã giảm giá (Vouchers)
+CREATE TABLE IF NOT EXISTS `magiamgia` (
+  `ID` char(36) NOT NULL,
+  `MaCode` varchar(50) NOT NULL,
+  `TieuDe` varchar(200) NOT NULL,
+  `LoaiGiam` varchar(20) NOT NULL DEFAULT 'CO_DINH',
+  `GiaTriGiam` bigint(20) NOT NULL,
+  `DonHangToiThieu` bigint(20) DEFAULT 0,
+  `SoLuongMa` int(11) DEFAULT 100,
+  `NgayKetThuc` datetime NOT NULL,
+  `TrangThai` tinyint(1) DEFAULT 1,
+  PRIMARY KEY (`ID`),
+  UNIQUE KEY `UQ_MaGiamGia_Code` (`MaCode`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+-- 4. Bảng Sổ địa chỉ người nhận
+CREATE TABLE IF NOT EXISTS `diachigiaohang` (
+  `ID` char(36) NOT NULL,
+  `NguoiDung_id` char(36) NOT NULL,
+  `TenNguoiNhan` varchar(150) NOT NULL,
+  `SoDienThoai` varchar(20) NOT NULL,
+  `TinhThanh` varchar(100) NOT NULL,
+  `QuanHuyen` varchar(100) NOT NULL,
+  `DiaChiChiTiet` varchar(255) NOT NULL,
+  `LaMacDinh` tinyint(1) DEFAULT 0,
+  PRIMARY KEY (`ID`),
+  CONSTRAINT `diachigiaohang_ibfk_nguoidung` FOREIGN KEY (`NguoiDung_id`) REFERENCES `nguoidung` (`ID`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+-- 5. Bảng Đơn hàng (Orders)
+CREATE TABLE IF NOT EXISTS `donhang` (
+  `ID` char(36) NOT NULL,
+  `MaDonHang` varchar(50) NOT NULL,
+  `NguoiDung_id` char(36) NOT NULL,
+  `CuaHang_id` char(36) NOT NULL,
+  `MaGiamGia_id` char(36) DEFAULT NULL,
+  `HoTenNguoiNhan` varchar(150) NOT NULL,
+  `SoDienThoaiNhan` varchar(20) NOT NULL,
+  `DiaChiGiaoHang` varchar(500) NOT NULL,
+  `TienHang` bigint(20) NOT NULL,
+  `TienPhiVanChuyen` bigint(20) DEFAULT 30000,
+  `TienGiamGia` bigint(20) DEFAULT 0,
+  `TongTien` bigint(20) NOT NULL,
+  `PhuongThucThanhToan` varchar(30) NOT NULL DEFAULT 'VIETQR',
+  `TrangThaiDonHang` varchar(30) NOT NULL DEFAULT 'CHO_XAC_NHAN',
+  `TrangThaiThanhToan` varchar(20) NOT NULL DEFAULT 'CHUA_THANH_TOAN',
+  `NgayDat` datetime DEFAULT current_timestamp(),
+  PRIMARY KEY (`ID`),
+  UNIQUE KEY `UQ_DonHang_Ma` (`MaDonHang`),
+  CONSTRAINT `donhang_ibfk_nguoidung` FOREIGN KEY (`NguoiDung_id`) REFERENCES `nguoidung` (`ID`) ON DELETE CASCADE,
+  CONSTRAINT `donhang_ibfk_cuahang` FOREIGN KEY (`CuaHang_id`) REFERENCES `cuahang` (`ID`) ON DELETE CASCADE,
+  CONSTRAINT `donhang_ibfk_magiamgia` FOREIGN KEY (`MaGiamGia_id`) REFERENCES `magiamgia` (`ID`) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+-- 6. Bảng Chi tiết đơn hàng
+CREATE TABLE IF NOT EXISTS `chitietdonhang` (
+  `ID` char(36) NOT NULL,
+  `DonHang_id` char(36) NOT NULL,
+  `SanPham_id` char(36) NOT NULL,
+  `TenSanPham` varchar(255) NOT NULL,
+  `DonGia` bigint(20) NOT NULL,
+  `SoLuong` int(11) NOT NULL DEFAULT 1,
+  `ThanhTien` bigint(20) NOT NULL,
+  PRIMARY KEY (`ID`),
+  CONSTRAINT `chitietdonhang_ibfk_donhang` FOREIGN KEY (`DonHang_id`) REFERENCES `donhang` (`ID`) ON DELETE CASCADE,
+  CONSTRAINT `chitietdonhang_ibfk_sanpham` FOREIGN KEY (`SanPham_id`) REFERENCES `sanpham` (`ID`) ON DELETE RESTRICT
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+-- 7. Cập nhật bảng Giao dịch để liên kết với Đơn hàng
+ALTER TABLE `giaodich` 
+  ADD COLUMN `DonHang_id` char(36) DEFAULT NULL AFTER `CongThanhToan_id`,
+  ADD CONSTRAINT `giaodich_ibfk_donhang` FOREIGN KEY (`DonHang_id`) REFERENCES `donhang` (`ID`) ON DELETE SET NULL;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
