@@ -178,6 +178,31 @@ $user = getCurrentUser();
           </div>
         </div>
       </div>
+
+      <!-- Form giả lập webhook (hữu ích khi demo) -->
+      <div class="card card-table p-4 mt-4">
+        <h6 class="mb-3 fw-bold"><i class="fas fa-flask me-2 text-warning"></i>Giả lập Webhook (Test)</h6>
+        <p class="text-muted small">Dùng khi muốn test cập nhật trạng thái mà không cần webhook thật từ ngân hàng.</p>
+        <div class="row g-2">
+          <div class="col-md-4">
+            <input type="text" id="simOrderId" class="form-control form-control-sm" placeholder="Mã đơn hàng (FM...)">
+          </div>
+          <div class="col-md-3">
+            <input type="number" id="simAmount" class="form-control form-control-sm" placeholder="Số tiền">
+          </div>
+          <div class="col-md-3">
+            <select id="simStatus" class="form-select form-select-sm">
+              <option value="SUCCESS">SUCCESS</option>
+              <option value="FAILED">FAILED</option>
+            </select>
+          </div>
+          <div class="col-md-2">
+            <button class="btn btn-warning btn-sm w-100 fw-bold" onclick="simulateWebhook()">
+              Gửi Webhook
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -347,6 +372,27 @@ $user = getCurrentUser();
       a.href = url;
       a.download = `Danh_sach_giao_dich_${new Date().toISOString().slice(0,10)}.csv`;
       a.click();
+    }
+
+    // Giả lập webhook
+    async function simulateWebhook() {
+      const orderId = document.getElementById('simOrderId').value.trim();
+      const amount  = document.getElementById('simAmount').value;
+      const status  = document.getElementById('simStatus').value;
+
+      if (!orderId) {
+        alert('Vui lòng nhập mã đơn hàng');
+        return;
+      }
+
+      const res = await fetch('api/simulate_webhook.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ma_don_hang: orderId, so_tien: amount, status })
+      });
+      const json = await res.json();
+      alert(json.message);
+      if (json.success) loadTransactions(currentOffset);
     }
 
     // Enter để tìm kiếm
