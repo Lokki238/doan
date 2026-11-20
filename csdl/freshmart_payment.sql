@@ -305,7 +305,9 @@ CREATE TABLE IF NOT EXISTS `chitietdonhang` (
 
 -- 7. Cập nhật bảng Giao dịch để liên kết với Đơn hàng
 ALTER TABLE `giaodich` 
-  ADD COLUMN `DonHang_id` char(36) DEFAULT NULL AFTER `CongThanhToan_id`,
+  ADD COLUMN `DonHang_id` char(36) DEFAULT NULL AFTER `CongThanhToan_id`;
+
+ALTER TABLE `giaodich` 
   ADD CONSTRAINT `giaodich_ibfk_donhang` FOREIGN KEY (`DonHang_id`) REFERENCES `donhang` (`ID`) ON DELETE SET NULL;
 COMMIT;
 
