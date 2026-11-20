@@ -7,57 +7,57 @@
 
         <!-- ==================== ENTITIES ==================== -->
         <!-- DIA_CHI_GIAO_HANG -->
-        <mxCell id="e_diachi" value="DIA_CHI_GIAO_HANG" style="shape=ext;double=1;whiteSpace=wrap;html=1;align=center;fontStyle=1;fontSize=11;strokeColor=#000000;fillColor=#ffffff;" vertex="1" parent="1">
+        <mxCell id="e_diachi" value="DIA_CHI_GIAO_HANG" style="rounded=0;whiteSpace=wrap;html=1;align=center;fontStyle=1;fontSize=11;strokeColor=#000000;fillColor=#ffffff;" vertex="1" parent="1">
           <mxGeometry x="330" y="60" width="160" height="50" as="geometry" />
         </mxCell>
 
         <!-- MA_GIAM_GIA -->
-        <mxCell id="e_magiamgia" value="MA_GIAM_GIA" style="shape=ext;double=1;whiteSpace=wrap;html=1;align=center;fontStyle=1;fontSize=11;strokeColor=#000000;fillColor=#ffffff;" vertex="1" parent="1">
+        <mxCell id="e_magiamgia" value="MA_GIAM_GIA" style="rounded=0;whiteSpace=wrap;html=1;align=center;fontStyle=1;fontSize=11;strokeColor=#000000;fillColor=#ffffff;" vertex="1" parent="1">
           <mxGeometry x="630" y="60" width="140" height="50" as="geometry" />
         </mxCell>
 
         <!-- CUA_HANG -->
-        <mxCell id="e_cuahang" value="CUA_HANG" style="shape=ext;double=1;whiteSpace=wrap;html=1;align=center;fontStyle=1;fontSize=11;strokeColor=#000000;fillColor=#ffffff;" vertex="1" parent="1">
+        <mxCell id="e_cuahang" value="CUA_HANG" style="rounded=0;whiteSpace=wrap;html=1;align=center;fontStyle=1;fontSize=11;strokeColor=#000000;fillColor=#ffffff;" vertex="1" parent="1">
           <mxGeometry x="50" y="230" width="140" height="50" as="geometry" />
         </mxCell>
 
         <!-- NGUOI_DUNG -->
-        <mxCell id="e_nguoidung" value="NGUOI_DUNG" style="shape=ext;double=1;whiteSpace=wrap;html=1;align=center;fontStyle=1;fontSize=11;strokeColor=#000000;fillColor=#ffffff;" vertex="1" parent="1">
+        <mxCell id="e_nguoidung" value="NGUOI_DUNG" style="rounded=0;whiteSpace=wrap;html=1;align=center;fontStyle=1;fontSize=11;strokeColor=#000000;fillColor=#ffffff;" vertex="1" parent="1">
           <mxGeometry x="340" y="230" width="140" height="50" as="geometry" />
         </mxCell>
 
         <!-- DON_HANG -->
-        <mxCell id="e_donhang" value="DON_HANG" style="shape=ext;double=1;whiteSpace=wrap;html=1;align=center;fontStyle=1;fontSize=11;strokeColor=#000000;fillColor=#ffffff;" vertex="1" parent="1">
+        <mxCell id="e_donhang" value="DON_HANG" style="rounded=0;whiteSpace=wrap;html=1;align=center;fontStyle=1;fontSize=11;strokeColor=#000000;fillColor=#ffffff;" vertex="1" parent="1">
           <mxGeometry x="630" y="230" width="140" height="50" as="geometry" />
         </mxCell>
 
         <!-- CHI_TIET_DON_HANG -->
-        <mxCell id="e_chitiet" value="CHI_TIET_DON_HANG" style="shape=ext;double=1;whiteSpace=wrap;html=1;align=center;fontStyle=1;fontSize=11;strokeColor=#000000;fillColor=#ffffff;" vertex="1" parent="1">
+        <mxCell id="e_chitiet" value="CHI_TIET_DON_HANG" style="rounded=0;whiteSpace=wrap;html=1;align=center;fontStyle=1;fontSize=11;strokeColor=#000000;fillColor=#ffffff;" vertex="1" parent="1">
           <mxGeometry x="925" y="230" width="160" height="50" as="geometry" />
         </mxCell>
 
         <!-- CONG_THANH_TOAN -->
-        <mxCell id="e_congthanhtoan" value="CONG_THANH_TOAN" style="shape=ext;double=1;whiteSpace=wrap;html=1;align=center;fontStyle=1;fontSize=11;strokeColor=#000000;fillColor=#ffffff;" vertex="1" parent="1">
+        <mxCell id="e_congthanhtoan" value="CONG_THANH_TOAN" style="rounded=0;whiteSpace=wrap;html=1;align=center;fontStyle=1;fontSize=11;strokeColor=#000000;fillColor=#ffffff;" vertex="1" parent="1">
           <mxGeometry x="45" y="430" width="150" height="50" as="geometry" />
         </mxCell>
 
         <!-- GIAO_DICH -->
-        <mxCell id="e_giaodich" value="GIAO_DICH" style="shape=ext;double=1;whiteSpace=wrap;html=1;align=center;fontStyle=1;fontSize=11;strokeColor=#000000;fillColor=#ffffff;" vertex="1" parent="1">
+        <mxCell id="e_giaodich" value="GIAO_DICH" style="rounded=0;whiteSpace=wrap;html=1;align=center;fontStyle=1;fontSize=11;strokeColor=#000000;fillColor=#ffffff;" vertex="1" parent="1">
           <mxGeometry x="630" y="430" width="140" height="50" as="geometry" />
         </mxCell>
 
         <!-- SAN_PHAM -->
-        <mxCell id="e_sanpham" value="SAN_PHAM" style="shape=ext;double=1;whiteSpace=wrap;html=1;align=center;fontStyle=1;fontSize=11;strokeColor=#000000;fillColor=#ffffff;" vertex="1" parent="1">
+        <mxCell id="e_sanpham" value="SAN_PHAM" style="rounded=0;whiteSpace=wrap;html=1;align=center;fontStyle=1;fontSize=11;strokeColor=#000000;fillColor=#ffffff;" vertex="1" parent="1">
           <mxGeometry x="935" y="430" width="140" height="50" as="geometry" />
         </mxCell>
 
         <!-- NHAT_KY_WEBHOOK -->
-        <mxCell id="e_webhook" value="NHAT_KY_WEBHOOK" style="shape=ext;double=1;whiteSpace=wrap;html=1;align=center;fontStyle=1;fontSize=11;strokeColor=#000000;fillColor=#ffffff;" vertex="1" parent="1">
+        <mxCell id="e_webhook" value="NHAT_KY_WEBHOOK" style="rounded=0;whiteSpace=wrap;html=1;align=center;fontStyle=1;fontSize=11;strokeColor=#000000;fillColor=#ffffff;" vertex="1" parent="1">
           <mxGeometry x="620" y="630" width="160" height="50" as="geometry" />
         </mxCell>
 
         <!-- DANH_MUC -->
-        <mxCell id="e_danhmuc" value="DANH_MUC" style="shape=ext;double=1;whiteSpace=wrap;html=1;align=center;fontStyle=1;fontSize=11;strokeColor=#000000;fillColor=#ffffff;" vertex="1" parent="1">
+        <mxCell id="e_danhmuc" value="DANH_MUC" style="rounded=0;whiteSpace=wrap;html=1;align=center;fontStyle=1;fontSize=11;strokeColor=#000000;fillColor=#ffffff;" vertex="1" parent="1">
           <mxGeometry x="935" y="630" width="140" height="50" as="geometry" />
         </mxCell>
 
