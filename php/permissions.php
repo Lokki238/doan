@@ -459,6 +459,6 @@ $myRole = strtoupper($user['vai_tro'] ?? 'USER');
     // Tự động load danh sách ban đầu khi vào trang
     loadUsers('');
   </script>
-  <script src="../js/admin_notifications.js"></script>
+  <script src="../js/admin_notifications.js?v=20261125"></script>
 </body>
 </html>

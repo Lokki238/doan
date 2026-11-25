@@ -8,16 +8,21 @@
 (function () {
   'use strict';
 
-  // Xác định đường dẫn gốc API tương ứng với vị trí trang hiện tại
-  function getApiUrl() {
+  // Xác định đường dẫn tương ứng tới thư mục php/ từ vị trí trang hiện tại
+  function getPhpUrl(subPath) {
     const path = window.location.pathname;
     if (path.includes('/admin/')) {
-      return '../api/notifications.php';
+      return '../' + subPath;
     } else if (path.includes('/php/')) {
-      return 'api/notifications.php';
-    } else {
-      return '../php/api/notifications.php';
+      return subPath;
+    } else if (path.includes('/html/')) {
+      return '../php/' + subPath;
     }
+    return 'php/' + subPath;
+  }
+
+  function getApiUrl() {
+    return getPhpUrl('api/notifications.php');
   }
 
   // Khởi tạo âm thanh thông báo chuông "Ting!" nhẹ nhàng qua Web Audio API
@@ -329,7 +334,7 @@
         <small class="text-muted"><i class="far fa-clock me-1"></i>${timeAgo} · Phương thức: VietQR</small>
       </div>
       <div class="fm-toast-actions">
-        <a href="${window.location.pathname.includes('/php/') ? 'transactions.php' : '../php/transactions.php'}" class="fm-toast-btn fm-toast-btn-primary">
+        <a href="${getPhpUrl('dashboard.php')}" class="fm-toast-btn fm-toast-btn-primary">
           <i class="fas fa-external-link-alt me-1"></i> Xem đơn hàng
         </a>
       </div>
@@ -383,8 +388,8 @@
             <div class="p-3 text-center text-muted small">Đang kiểm tra...</div>
           </div>
           <div class="fm-dropdown-footer">
-            <a href="${window.location.pathname.includes('/php/') ? 'transactions.php' : '../php/transactions.php'}">
-              Xem tất cả giao dịch <i class="fas fa-arrow-right ms-1"></i>
+            <a href="${getPhpUrl('dashboard.php')}">
+              Xem trên Dashboard <i class="fas fa-arrow-right ms-1"></i>
             </a>
           </div>
         </div>
@@ -436,9 +441,9 @@
       dropCount.textContent = totalPending + ' đơn';
 
       dropList.innerHTML = orders.map(function (o) {
-        const transLink = window.location.pathname.includes('/php/') ? 'transactions.php' : '../php/transactions.php';
+        const dashboardLink = getPhpUrl('dashboard.php');
         return `
-          <a href="${transLink}" class="fm-dropdown-item">
+          <a href="${dashboardLink}" class="fm-dropdown-item">
             <div class="d-flex justify-content-between align-items-center mb-1">
               <strong class="text-primary small">#${o.ma_don_hang}</strong>
               <span class="badge bg-warning bg-opacity-25 text-warning small">${o.thoi_gian_truoc}</span>
