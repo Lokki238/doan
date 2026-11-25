@@ -26,3 +26,6 @@ includes/security.php
 
 # Agent workspace folder
 .agents/
+
+# Backup files
+*.backup.docx
